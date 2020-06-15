@@ -1,0 +1,64 @@
+{
+  "name": "rslang",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "clean:dist": "rimraf dist"
+  },
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "vue": "^2.6.11",
+    "vue-router": "^3.3.4"
+  },
+  "devDependencies": {
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.2",
+    "commit-message-validator": "^0.1.11",
+    "@vue/cli-plugin-babel": "~4.4.0",
+    "@vue/cli-plugin-eslint": "~4.4.0",
+    "@vue/cli-service": "~4.4.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commit-message-validator",
+      "pre-push": "npm run build && npm run lint"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,md,scss,vue}": "prettier --write",
+    "*.{js,vue}": "npm run lint"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "config": {
+    "commit-message-validator": {
+      "pattern": "^RS-(XXX|\\d{1,5}) (build|ci|chore|docs|feat|fix|perf|refactor|revert|style|test) ?\\((\\*|.{1,20})\\): ",
+      "errorMessage": "Commit message does not satisfy the requirements"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
