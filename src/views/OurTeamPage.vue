@@ -118,57 +118,53 @@ export default {
 <style scoped lang="scss">
 .our-team {
   background-color: $color-ghost;
-}
 
-.our-team__wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  max-width: $content-width;
-  margin: auto;
-}
+  &__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    max-width: $content-width;
+    margin: auto;
+  }
 
-.our-team__card {
-  display: inline-flex;
-  width: 545px;
-  height: 275px;
-  margin: 6px 0;
-  background-color: $color-white;
-  border-radius: 25px;
-}
+  &__card {
+    display: inline-flex;
+    width: 545px;
+    height: 275px;
+    margin: 6px 0;
+    background-color: $color-white;
+    border-radius: 25px;
+  }
 
-.our-team__img {
-  width: 187px;
-  height: 275px;
-}
+  &__img {
+    width: 187px;
+    height: 275px;
+  }
 
-.our-team__information {
-  width: 310px;
-  height: 199px;
-  margin-top: 35px;
-  margin-left: 24px;
-}
+  &__information {
+    width: 310px;
+    height: 199px;
+    margin-top: 35px;
+    margin-left: 24px;
+  }
 
-.our-team__name {
-  margin-bottom: 5px;
+  &__name {
+    margin-bottom: 5px;
 
-  @include font($size: 18px, $height: 22px);
-}
+    @include font($size: 18px, $height: 22px);
+  }
 
-.our-team__major {
-  margin-bottom: 8px;
+  &__major {
+    margin-bottom: 8px;
 
-  @include font($size: 16px, $height: 18px, $weight: 300);
+    @include font($size: 16px, $height: 18px, $weight: 300);
 
-  color: $color-ghost;
-}
+    color: $color-ghost;
+  }
 
-.our-team__my-work {
-  margin-bottom: 17px;
-}
-
-.icon {
-  display: inline-block;
+  &__my-work {
+    margin-bottom: 17px;
+  }
 }
 
 .icon-circle {
