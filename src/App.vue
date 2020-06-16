@@ -1,12 +1,26 @@
 <template>
-  <div>Very important text</div>
+  <div>
+    <transition name="fade" mode="out-in">
+      <router-view />
+    </transition>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "App",
-  components: {}
+  name: 'App',
+  components: {},
 };
 </script>
 
-<style></style>
+<style lang="scss">
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

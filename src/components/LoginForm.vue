@@ -4,8 +4,8 @@
 
 <script>
 export default {
-  name: "LoginForm",
-  components: {}
+  name: 'LoginForm',
+  components: {},
 };
 </script>
 

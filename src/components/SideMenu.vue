@@ -4,8 +4,8 @@
 
 <script>
 export default {
-  name: "SideMenu",
-  components: {}
+  name: 'SideMenu',
+  components: {},
 };
 </script>
 
