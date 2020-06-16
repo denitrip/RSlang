@@ -7,4 +7,8 @@ export default {
     path: '/login',
     name: 'login',
   },
+  ourTeamPage: {
+    path: '/ourTeam',
+    name: 'ourTeam',
+  },
 };
