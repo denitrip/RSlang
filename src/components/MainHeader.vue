@@ -4,8 +4,8 @@
 
 <script>
 export default {
-  name: "MainHeader",
-  components: {}
+  name: 'MainHeader',
+  components: {},
 };
 </script>
 
