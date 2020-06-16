@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import routerConsts from '@/router/routerConsts';
 import HomePage from '@/views/HomePage.vue';
 import LoginPage from '@/views/LoginPage.vue';
-import routerConsts from '@/router/routerConsts';
+import MiniGamesPage from '@/views/MiniGamesPage.vue';
 
 Vue.use(VueRouter);
 
@@ -11,6 +12,13 @@ const routes = [
     path: routerConsts.homePage.path,
     name: routerConsts.homePage.name,
     component: HomePage,
+    children: [
+      {
+        path: routerConsts.miniGamesPage.path,
+        name: routerConsts.miniGamesPage.name,
+        component: MiniGamesPage,
+      },
+    ],
   },
   {
     path: routerConsts.loginPage.path,

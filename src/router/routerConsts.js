@@ -7,4 +7,8 @@ export default {
     path: '/login',
     name: 'login',
   },
+  miniGamesPage: {
+    path: '',
+    name: 'miniGames',
+  },
 };
