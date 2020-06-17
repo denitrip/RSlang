@@ -1,11 +1,15 @@
 <template>
-  <div class="">Home Page</div>
+  <div class=""><SideMenu /></div>
 </template>
 
 <script>
+import SideMenu from '../components/SideMenu.vue';
+
 export default {
   name: 'HomePage',
-  components: {},
+  components: {
+    SideMenu,
+  },
 };
 </script>
 
