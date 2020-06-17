@@ -8,11 +8,27 @@ export default {
     name: 'login',
   },
   miniGamesPage: {
-    path: '',
+    path: '/miniGames',
     name: 'miniGames',
   },
   ourTeamPage: {
     path: '/ourTeam',
     name: 'ourTeam',
+  },
+  learning: {
+    path: '/learning',
+    name: 'learning',
+  },
+  dictionary: {
+    path: '/dictionary',
+    name: 'dictionary',
+  },
+  statistic: {
+    path: '/statistic',
+    name: 'statistic',
+  },
+  settings: {
+    path: '/settings',
+    name: 'settings',
   },
 };
