@@ -1,28 +1,45 @@
 <template>
   <div class="wrapper">
     <header>
+      <!-- TODO links -->
+      <!-- <router-link to="/welcome"> -->
       <img src="~@/assets/images/Logo.png" alt="logo" class="logo" width="118" height="72" />
+      <!-- </router-link> -->
       <ul class="header_buttons">
-        <li class="header_buttons-button button button--bordered">Log In</li>
-        <li class="header_buttons-button button button--filled">Sign Up</li>
+        <li v-if="isWelcomePage || isSignUp" class="header_buttons-button button button--bordered">
+          Log In
+        </li>
+        <li v-if="isWelcomePage || isLogIn" class="header_buttons-button button button--filled">
+          Sign Up
+        </li>
       </ul>
     </header>
     <main v-if="isWelcomePage" class="main-welcome">
-      <p class="title">Learn new words every day with RSlang</p>
-      <p class="subtitle">
-        An application for learning foreign words with interval repetition techniques, tracking
-        individual progress and mini-games
-      </p>
-      <ul class="main_buttons">
-        <li class="main_buttons-button button button--filled">Start learning</li>
-        <li class="main_buttons-button button button--bordered">Watch video</li>
-      </ul>
+      <div class="main-descr">
+        <p class="title">Learn new words every day with RSlang</p>
+        <p class="subtitle">
+          An application for learning foreign words with interval repetition techniques, tracking
+          individual progress and mini-games
+        </p>
+        <ul class="main_buttons">
+          <li class="main_buttons-button button button--filled">Start learning</li>
+          <li class="main_buttons-button button button--bordered">Watch video</li>
+        </ul>
+      </div>
+      <img src="~@/assets/images/welcome-bg.png" alt class="main-image" />
     </main>
     <main v-if="isLogin" class="main-login">
-      <p>LOGIN TEXT</p>
+      <p class="title">
+        <span class="text-colored">We miss you,</span> are you ready to continue training?
+      </p>
+      <img src="~@/assets/images/login-bg.png" alt class="main-image" />
     </main>
-    <main v-if="isSignIn" class="main-signin">
-      <p>SIGN IN TEXT</p>
+    <main v-if="isSignUp" class="main-signup">
+      <p class="title">
+        Let’s start our jorney with
+        <span class="text-colored">RSlang!</span>
+      </p>
+      <img src="~@/assets/images/signin-bg.png" alt class="main-image" />
     </main>
     <footer>
       <ul class="footer_features">
@@ -60,8 +77,8 @@ export default {
     isLogin() {
       return this.$router.currentRoute.name === routerConsts.loginPage.name;
     },
-    isSignIn() {
-      return this.$router.currentRoute.name === routerConsts.signInPage.name;
+    isSignUp() {
+      return this.$router.currentRoute.name === routerConsts.signUpPage.name;
     },
     isWelcomePage() {
       return this.$router.currentRoute.name === routerConsts.welcomePage.name;
@@ -81,10 +98,13 @@ export default {
 
 main {
   display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
   flex-grow: 20;
+}
+.main-image {
+  width: 45vw;
 }
 
 h1 {
@@ -106,7 +126,6 @@ header {
   font-size: 20px;
   line-height: 54px;
   border-radius: 20px;
-  // margin-right: 16px;
   cursor: pointer;
   box-sizing: border-box;
 }
@@ -150,16 +169,13 @@ header {
   text-align: center;
 }
 
-.main-welcome {
-  background-image: url(~@/assets/images/welcome-bg.png);
-  background-repeat: no-repeat;
-  background-position: right;
+.main-descr {
+  width: 30vw;
+  z-index: 2;
 }
-
 .title {
   font-weight: 900;
   font-size: 56px;
-  width: 30vw;
   margin: 8px 0;
 }
 .subtitle {
@@ -188,18 +204,18 @@ header {
 .footer_features-feature p {
   position: relative;
   display: inline-block;
-  // padding-left: 10px;
 }
+
 .feature-before {
   display: inline-block;
   height: 11px;
   width: 11px;
   background-color: #f1e134;
-  // position: absolute;
   top: 36%;
-  // left: -15px;
   margin-right: 16px;
-  // margin-bottom: 2px;
   border-radius: 5px;
+}
+.text-colored {
+  color: #f1e134;
 }
 </style>

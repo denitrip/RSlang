@@ -11,8 +11,8 @@ export default {
     path: '/welcome',
     name: 'welcome',
   },
-  signInPage: {
-    path: '/signIn',
-    name: 'signIn',
+  signUpPage: {
+    path: '/signUp',
+    name: 'signUp',
   },
 };

@@ -23,8 +23,8 @@ const routes = [
     component: LoginPage,
   },
   {
-    path: routerConsts.signInPage.path,
-    name: routerConsts.signInPage.name,
+    path: routerConsts.signUpPage.path,
+    name: routerConsts.signUpPage.name,
     component: LoginPage,
   },
   { path: '*', redirect: '/' },
