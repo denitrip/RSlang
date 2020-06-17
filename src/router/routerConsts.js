@@ -7,6 +7,10 @@ export default {
     path: '/login',
     name: 'login',
   },
+  miniGamesPage: {
+    path: '',
+    name: 'miniGames',
+  },
   ourTeamPage: {
     path: '/ourTeam',
     name: 'ourTeam',
