@@ -1,11 +1,11 @@
 <template>
-  <header class="container">
+  <header class="header-container">
     <div class="container-label">
       <h2>Dictionary</h2>
     </div>
-    <div class="container user-section">
-      <img src="assets/images/notifications_image.png" alt="#" />
-      <img src="assets/images/settings_image.png" alt="#" />
+    <div class="user-section">
+      <img src="../assets/img/header/notifications_image.png" alt="#" />
+      <img src="../assets/img/header/settings_image.png" alt="#" />
       <div class="user-details">
         <div class="user-name">
           Ivan Ivanov
@@ -14,7 +14,7 @@
           Level 3
         </div>
       </div>
-      <div class="user-avatar"><img src="assets/images/user_image.png" alt="#" /></div>
+      <div class="user-avatar"><img src="../assets/img/header/user_image.png" alt="#" /></div>
     </div>
   </header>
 </template>
@@ -26,19 +26,20 @@ export default {
 };
 </script>
 
-<style>
-.container {
-  margin-left: 40px;
-  margin-right: 40px;
+<style scoped lang="scss">
+.header-container {
+  margin: 0 60px 0 75px;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
+  height: 86px;
 }
 
 img {
   height: 20px;
   width: 20px;
-  margin-left: 10px;
+  margin-left: 16px;
 }
 
 .container-label h2 {
@@ -51,12 +52,15 @@ img {
 
 .user-section {
   margin-left: 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .user-details {
+  margin-left: 16px;
   display: block;
   align-items: center;
-  margin-left: 10px;
 }
 
 .user-level {
@@ -66,7 +70,7 @@ img {
 
 .user-avatar img {
   border-radius: 50%;
-  height: 30px;
-  width: 30px;
+  height: 50px;
+  width: 50px;
 }
 </style>
