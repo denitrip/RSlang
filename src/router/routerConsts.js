@@ -7,4 +7,12 @@ export default {
     path: '/login',
     name: 'login',
   },
+  welcomePage: {
+    path: '/welcome',
+    name: 'welcome',
+  },
+  signInPage: {
+    path: '/signIn',
+    name: 'signIn',
+  },
 };

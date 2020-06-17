@@ -17,6 +17,16 @@ const routes = [
     name: routerConsts.loginPage.name,
     component: LoginPage,
   },
+  {
+    path: routerConsts.welcomePage.path,
+    name: routerConsts.welcomePage.name,
+    component: LoginPage,
+  },
+  {
+    path: routerConsts.signInPage.path,
+    name: routerConsts.signInPage.name,
+    component: LoginPage,
+  },
   { path: '*', redirect: '/' },
 ];
 
