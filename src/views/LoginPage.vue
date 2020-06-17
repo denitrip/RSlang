@@ -28,7 +28,7 @@
       </div>
       <img src="~@/assets/images/welcome-bg.png" alt class="main-image" />
     </main>
-    <main v-if="isLogin" class="main-login">
+    <main v-if="isLogIn" class="main-login">
       <p class="title">
         <span class="text-colored">We miss you,</span> are you ready to continue training?
       </p>
@@ -74,7 +74,7 @@ export default {
     return {};
   },
   computed: {
-    isLogin() {
+    isLogIn() {
       return this.$router.currentRoute.name === routerConsts.loginPage.name;
     },
     isSignUp() {
@@ -88,18 +88,28 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.wrapper {
-  width: 80vw;
-  margin: 0 auto;
+%flex-column {
   display: flex;
   flex-direction: column;
+}
+%flex-row {
+  display: flex;
+  flex-direction: row;
+}
+$color-primary: #407df4;
+$color-primary-hover: #709ef7;
+$color-secondary: #f1e134;
+
+.wrapper {
+  @extend %flex-column;
+  width: 80vw;
+  margin: 0 auto;
   height: 100vh;
 }
 
 main {
-  display: flex;
+  @extend %flex-row;
   justify-content: space-between;
-  flex-direction: row;
   align-items: center;
   flex-grow: 20;
 }
@@ -115,9 +125,8 @@ h1 {
 }
 
 header {
+  @extend %flex-row;
   flex-grow: 1;
-  display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
@@ -133,26 +142,25 @@ header {
   margin-right: 16px;
 }
 .button--bordered {
-  border: 1px solid #407df4;
-  color: #407df4;
+  border: 1px solid $color-primary;
+  color: $color-primary;
 }
 .button--bordered:hover {
-  border: 1px solid #709ef7;
-  color: #709ef7;
+  border: 1px solid $color-primary-hover;
+  color: $color-primary-hover;
 }
 
 .button--filled {
-  background-color: #407df4;
+  background-color: $color-primary;
   color: #ffffff;
 }
 .button--filled:hover {
-  background-color: #709ef7;
+  background-color: $color-primary-hover;
 }
 
 .header_buttons,
 .main_buttons {
-  display: flex;
-  flex-direction: row;
+  @extend %flex-row;
   list-style-type: none;
   padding: 0;
 }
@@ -188,8 +196,7 @@ header {
 }
 
 .footer_features {
-  display: flex;
-  flex-direction: row;
+  @extend %flex-row;
   list-style-type: none;
   padding: 0;
   justify-content: space-between;
@@ -197,8 +204,7 @@ header {
   margin: 30px 0;
 }
 .footer_features-feature {
-  display: flex;
-  flex-direction: row;
+  @extend %flex-row;
   align-items: center;
 }
 .footer_features-feature p {
@@ -210,12 +216,12 @@ header {
   display: inline-block;
   height: 11px;
   width: 11px;
-  background-color: #f1e134;
+  background-color: $color-secondary;
   top: 36%;
   margin-right: 16px;
   border-radius: 5px;
 }
 .text-colored {
-  color: #f1e134;
+  color: $color-secondary;
 }
 </style>
