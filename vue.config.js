@@ -6,6 +6,7 @@ module.exports = {
           @import "@/styles/variables.scss";
           @import "@/styles/typography.scss";
           @import "@/styles/base.scss";
+          @import "@/styles/mixins.scss";
         `,
       },
     },

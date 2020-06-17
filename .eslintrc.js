@@ -13,6 +13,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'max-len': ['off'],
     'object-curly-newline': ['off'],
+    'global-require': 0,
   },
   settings: {
     'import/resolver': {
