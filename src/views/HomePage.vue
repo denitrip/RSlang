@@ -1,5 +1,11 @@
 <template>
-  <div class=""><SideMenu /></div>
+  <div class="">
+    Home Page
+    <SideMenu />
+    <transition name="component-fade" mode="out-in">
+      <router-view />
+    </transition>
+  </div>
 </template>
 
 <script>
