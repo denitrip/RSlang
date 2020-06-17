@@ -11,4 +11,8 @@ export default {
     path: '',
     name: 'miniGames',
   },
+  ourTeamPage: {
+    path: '/ourTeam',
+    name: 'ourTeam',
+  },
 };
