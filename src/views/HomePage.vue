@@ -1,6 +1,7 @@
 <template>
   <div class="">
     Home Page
+    <SideMenu />
     <transition name="component-fade" mode="out-in">
       <router-view />
     </transition>
@@ -8,9 +9,13 @@
 </template>
 
 <script>
+import SideMenu from '../components/SideMenu.vue';
+
 export default {
   name: 'HomePage',
-  components: {},
+  components: {
+    SideMenu,
+  },
 };
 </script>
 
