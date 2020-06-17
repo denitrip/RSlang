@@ -28,3 +28,19 @@
     @content;
   }
 }
+
+@mixin spinner($size) {
+  width: $size;
+  height: $size;
+
+  div {
+    transform-origin: $size / 2 $size / 2;
+
+    &::after {
+      top: $size * 0.5 - $size * 0.35 - $size * 0.22 * 0.5;
+      left: $size * 0.5 - $size * 0.08 * 0.5;
+      width: $size * 0.08;
+      height: $size * 0.22;
+    }
+  }
+}
