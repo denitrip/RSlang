@@ -19,17 +19,17 @@ const routes = [
         name: routerConsts.miniGamesPage.name,
         component: MiniGamesPage,
       },
+      {
+        path: routerConsts.ourTeamPage.path,
+        name: routerConsts.ourTeamPage.name,
+        component: OurTeamPage,
+      },
     ],
   },
   {
     path: routerConsts.loginPage.path,
     name: routerConsts.loginPage.name,
     component: LoginPage,
-  },
-  {
-    path: routerConsts.ourTeamPage.path,
-    name: routerConsts.ourTeamPage.name,
-    component: OurTeamPage,
   },
   { path: '*', redirect: '/' },
 ];
