@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import HomePage from '@/views/HomePage.vue';
 import LoginPage from '@/views/LoginPage.vue';
+import OurTeamPage from '@/views/OurTeamPage.vue';
 import routerConsts from '@/router/routerConsts';
 
 Vue.use(VueRouter);
@@ -16,6 +17,11 @@ const routes = [
     path: routerConsts.loginPage.path,
     name: routerConsts.loginPage.name,
     component: LoginPage,
+  },
+  {
+    path: routerConsts.ourTeamPage.path,
+    name: routerConsts.ourTeamPage.name,
+    component: OurTeamPage,
   },
   { path: '*', redirect: '/' },
 ];
