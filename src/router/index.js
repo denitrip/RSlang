@@ -5,6 +5,7 @@ import HomePage from '@/views/HomePage.vue';
 import LoginPage from '@/views/LoginPage.vue';
 import MiniGamesPage from '@/views/MiniGamesPage.vue';
 import OurTeamPage from '@/views/OurTeamPage.vue';
+import SettingPage from '@/views/SettingPage.vue';
 
 Vue.use(VueRouter);
 
@@ -24,21 +25,16 @@ const routes = [
         name: routerConsts.ourTeamPage.name,
         component: OurTeamPage,
       },
+      {
+        path: routerConsts.settings.path,
+        name: routerConsts.settings.name,
+        component: SettingPage,
+      },
     ],
   },
   {
     path: routerConsts.loginPage.path,
     name: routerConsts.loginPage.name,
-    component: LoginPage,
-  },
-  {
-    path: routerConsts.welcomePage.path,
-    name: routerConsts.welcomePage.name,
-    component: LoginPage,
-  },
-  {
-    path: routerConsts.signUpPage.path,
-    name: routerConsts.signUpPage.name,
     component: LoginPage,
   },
   { path: '*', redirect: '/' },
