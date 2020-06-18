@@ -1,0 +1,46 @@
+@mixin font($size, $height: $size, $weight: bold, $style: normal) {
+  font-size: $size;
+  font-style: $style;
+  font-weight: $weight;
+  line-height: $height;
+}
+
+@mixin media-laptop {
+  @media (max-width: $content-width) {
+    @content;
+  }
+}
+
+@mixin media-tablet {
+  @media (max-width: $tablet-width) {
+    @content;
+  }
+}
+
+@mixin media-mobile {
+  @media (max-width: $mobile-big-width) {
+    @content;
+  }
+}
+
+@mixin media-mobile-small {
+  @media (max-width: $mobile-small-width) {
+    @content;
+  }
+}
+
+@mixin spinner($size) {
+  width: $size;
+  height: $size;
+
+  div {
+    transform-origin: $size / 2 $size / 2;
+
+    &::after {
+      top: $size * 0.5 - $size * 0.35 - $size * 0.22 * 0.5;
+      left: $size * 0.5 - $size * 0.08 * 0.5;
+      width: $size * 0.08;
+      height: $size * 0.22;
+    }
+  }
+}

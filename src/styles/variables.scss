@@ -1,3 +1,5 @@
+$color-prussian-blue: #001f4b;
+$color-nile-blue: #182f51;
 $color-dodger-blue: #407df4;
 $color-cornflower-blue: #709ef7;
 $color-malibu: #a0befa;
@@ -13,6 +15,11 @@ $color-shuttle-gray: #5e6978;
 $color-manatee: #939ba5;
 $color-ghost: #c9cdd2;
 
+$color-silver: #b9b9b9;
+$color-mine-shaft-dark: #292929;
+$color-mine-shaft: #3a3a3a;
+
+$color-red-orange: #fd2727;
 $color-wild-watermelon: #ff5267;
 $color-geraldine: #ff7d8c;
 $color-sundown: #ffa7b2;
@@ -26,11 +33,18 @@ $color-chablis: #fff5f5;
 $color-apple: #53b54a;
 $color-sugar-cane: #f6fff5;
 
+$color-onahau: #cceeff;
+$color-rose-white: #fffefe;
 $color-white: #ffffff;
 $color-black: #000000;
 
 $overlay-color: hsla(0, 0%, 0%, 0.7);
 $tap-highlight-color: hsla(0, 0%, 0%, 0);
+
+$content-width: 1197px;
+$tablet-width: 768px;
+$mobile-big-width: 414px;
+$mobile-small-width: 320px;
 
 $fonts: '~@/assets/fonts/';
 $images: '~@/assets/images/';
