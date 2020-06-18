@@ -19,7 +19,7 @@ export default {
     path: '/learning',
     name: 'learning',
   },
-  dictionary: {
+  dictionaryPage: {
     path: '/dictionary',
     name: 'dictionary',
   },

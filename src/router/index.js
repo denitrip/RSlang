@@ -5,6 +5,7 @@ import HomePage from '@/views/HomePage.vue';
 import LoginPage from '@/views/LoginPage.vue';
 import MiniGamesPage from '@/views/MiniGamesPage.vue';
 import OurTeamPage from '@/views/OurTeamPage.vue';
+import DictionaryPage from '@/views/DictionaryPage.vue';
 
 Vue.use(VueRouter);
 
@@ -23,6 +24,11 @@ const routes = [
         path: routerConsts.ourTeamPage.path,
         name: routerConsts.ourTeamPage.name,
         component: OurTeamPage,
+      },
+      {
+        path: routerConsts.dictionaryPage.path,
+        name: routerConsts.dictionaryPage.name,
+        component: DictionaryPage,
       },
     ],
   },
