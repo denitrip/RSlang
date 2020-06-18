@@ -102,13 +102,13 @@
     </button>
     <div class="signup wrap" v-if="isRegisterPage">
       <label for="signup">Already have an account?</label>
-      <router-link :to="getRouterConsts.loginPage.path">
+      <router-link :to="routerConsts.loginPage.path">
         Log In
       </router-link>
     </div>
     <div class="signup wrap" v-else>
       <label for="signup">Don't have account?</label>
-      <router-link :to="{ path: getRouterConsts.loginPage.path, query: { signUp: true } }">
+      <router-link :to="{ path: routerConsts.loginPage.path, query: { signUp: true } }">
         Sign Up
       </router-link>
     </div>
@@ -133,6 +133,7 @@ export default {
   },
   data() {
     return {
+      routerConsts,
       isAuthLoading: false,
       isPasswordShow: false,
       isRepeatPasswordShow: false,
@@ -144,9 +145,6 @@ export default {
     };
   },
   computed: {
-    getRouterConsts() {
-      return routerConsts;
-    },
     isRegisterPage() {
       return !!this.$route.query.signUp;
     },
@@ -225,7 +223,7 @@ export default {
             password: this.password.title,
           };
           await this.loginUser(user).then(() => {
-            this.$router.push(this.getRouterConsts.homePage.path);
+            this.$router.push(this.routerConsts.homePage.path);
           });
         } catch (error) {
           this.setError(error.message);
@@ -243,7 +241,7 @@ export default {
             password: this.password.title,
           };
           await this.registerUser(user).then(() => {
-            this.$router.push(this.getRouterConsts.loginPage.path);
+            this.$router.push(this.routerConsts.loginPage.path);
           });
         } catch (error) {
           this.setError(error.message);
