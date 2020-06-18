@@ -108,12 +108,15 @@ $mobile-small-width: 320px;
 
 .wrapper {
   @extend %flex-column;
+
   width: 80vw;
-  margin: 0 auto;
   height: 100vh;
+  margin: 0 auto;
+
   @media screen and (max-width: $content-width) {
     width: 90vw;
   }
+
   @media screen and (max-width: $tablet-width) {
     width: 95vw;
   }
@@ -121,20 +124,25 @@ $mobile-small-width: 320px;
 
 main {
   @extend %flex-row;
-  justify-content: space-between;
-  align-items: center;
+
   flex-grow: 20;
+  align-items: center;
+  justify-content: space-between;
+
   @media screen and (max-width: $tablet-width) {
     flex-direction: column;
     justify-content: center;
   }
 }
+
 .main-image {
   width: 45vw;
+
   @media screen and (max-width: $tablet-width) {
     width: 78vw;
     margin-top: 10px;
   }
+
   @media screen and (max-width: $mobile-big-width) {
     width: 70vw;
   }
@@ -143,70 +151,82 @@ main {
 h1 {
   margin: 0;
 }
+
 .logo {
   margin-right: 20px;
+
   @media screen and (max-width: $mobile-big-width) {
-    transform: scale(0.7);
     margin-right: 10px;
     margin-left: -17px;
+    transform: scale(0.7);
   }
 }
 
 header {
   @extend %flex-row;
+
   flex-grow: 1;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .button {
+  box-sizing: border-box;
   font-size: 20px;
   line-height: 54px;
-  border-radius: 20px;
-  cursor: pointer;
-  box-sizing: border-box;
-  white-space: nowrap;
   text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  border-radius: 20px;
+
   @media screen and (max-width: $tablet-width) {
     font-size: 18px;
   }
+
   @media screen and (max-width: $mobile-big-width) {
     font-size: 14px;
   }
 }
+
 .button:first-child {
   margin-right: 16px;
 }
+
 .button--bordered {
-  border: 1px solid $color-primary;
   color: $color-primary;
+  border: 1px solid $color-dodger-blue;
 }
+
 .button--bordered:hover {
-  border: 1px solid $color-primary-hover;
-  color: $color-primary-hover;
+  color: $color-cornflower-blue;
+  border: 1px solid $color-cornflower-blue;
 }
 
 .button--filled {
-  background-color: $color-primary;
-  color: #ffffff;
+  color: $color-white;
+  background-color: $color-dodger-blue;
 }
+
 .button--filled:hover {
-  background-color: $color-primary-hover;
+  background-color: $color-cornflower-blue;
 }
 
 .header_buttons,
 .main_buttons {
   @extend %flex-row;
-  list-style-type: none;
+
   padding: 0;
+  list-style-type: none;
 }
 
 .header_buttons-button {
   width: 175px;
   height: 59px;
+
   @media screen and (max-width: $tablet-width) {
     width: 100px;
   }
+
   @media screen and (max-width: $mobile-big-width) {
     width: 85px;
     height: 50px;
@@ -223,62 +243,75 @@ header {
 .main-descr {
   z-index: 2;
 }
+
 .title {
-  font-weight: 900;
-  font-size: 56px;
   margin: 8px 0;
+  font-size: 56px;
+  font-weight: 900;
+
   @media screen and (max-width: $tablet-width) {
     font-size: 38px;
   }
+
   @media screen and (max-width: $mobile-big-width) {
     font-size: 30px;
   }
 }
+
 .subtitle {
-  line-height: 30px;
   margin-bottom: 32px;
+  line-height: 30px;
 }
+
 .footer {
   flex-grow: 1;
 }
 
 .footer_features {
   @extend %flex-row;
-  list-style-type: none;
-  padding: 0;
-  justify-content: space-between;
+
   align-items: center;
+  justify-content: space-between;
+  padding: 0;
   margin: 30px 0;
+  list-style-type: none;
 }
+
 .footer_features-feature {
   @extend %flex-row;
+
   align-items: center;
 }
+
 .footer_features-feature p {
   position: relative;
   display: inline-block;
+
   @media screen and (max-width: $mobile-big-width) {
     font-size: 14px;
   }
+
   @media screen and (max-width: $mobile-big-width) {
     font-size: 11px;
   }
 }
 
 .feature-before {
-  display: inline-block;
-  height: 11px;
-  width: 11px;
-  background-color: $color-secondary;
   top: 36%;
-  margin-right: 16px;
-  border-radius: 5px;
+  display: inline-block;
   flex-shrink: 0;
+  width: 11px;
+  height: 11px;
+  margin-right: 16px;
+  background-color: $color-golden-dream;
+  border-radius: 5px;
+
   @media screen and (max-width: $mobile-big-width) {
     margin-right: 8px;
   }
 }
+
 .text-colored {
-  color: $color-secondary;
+  color: $color-golden-dream;
 }
 </style>
