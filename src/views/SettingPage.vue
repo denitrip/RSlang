@@ -32,7 +32,7 @@
           </div>
         </div>
         <div class="setting__submenu">
-          <h3 style="opacity: 0;">opacity</h3>
+          <h3 class="align_opacity">opacity</h3>
           <div>Maximum number of cards to learn per day</div>
           <div class="setting__counter">
             <b-button
@@ -228,6 +228,10 @@ export default {
     font-size: 16px;
     color: $color-manatee;
     text-transform: uppercase;
+  }
+
+  .align_opacity {
+    opacity: 0;
   }
 
   &__submenu {
