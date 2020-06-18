@@ -92,19 +92,31 @@ export default {
   display: flex;
   flex-direction: column;
 }
+
 %flex-row {
   display: flex;
   flex-direction: row;
 }
+
 $color-primary: #407df4;
 $color-primary-hover: #709ef7;
 $color-secondary: #f1e134;
+$content-width: 1197px;
+$tablet-width: 768px;
+$mobile-big-width: 514px;
+$mobile-small-width: 320px;
 
 .wrapper {
   @extend %flex-column;
   width: 80vw;
   margin: 0 auto;
   height: 100vh;
+  @media screen and (max-width: $content-width) {
+    width: 90vw;
+  }
+  @media screen and (max-width: $tablet-width) {
+    width: 95vw;
+  }
 }
 
 main {
@@ -112,9 +124,20 @@ main {
   justify-content: space-between;
   align-items: center;
   flex-grow: 20;
+  @media screen and (max-width: $tablet-width) {
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 .main-image {
   width: 45vw;
+  @media screen and (max-width: $tablet-width) {
+    width: 78vw;
+    margin-top: 10px;
+  }
+  @media screen and (max-width: $mobile-big-width) {
+    width: 70vw;
+  }
 }
 
 h1 {
@@ -122,6 +145,11 @@ h1 {
 }
 .logo {
   margin-right: 20px;
+  @media screen and (max-width: $mobile-big-width) {
+    transform: scale(0.7);
+    margin-right: 10px;
+    margin-left: -17px;
+  }
 }
 
 header {
@@ -137,6 +165,14 @@ header {
   border-radius: 20px;
   cursor: pointer;
   box-sizing: border-box;
+  white-space: nowrap;
+  text-align: center;
+  @media screen and (max-width: $tablet-width) {
+    font-size: 18px;
+  }
+  @media screen and (max-width: $mobile-big-width) {
+    font-size: 14px;
+  }
 }
 .button:first-child {
   margin-right: 16px;
@@ -168,26 +204,37 @@ header {
 .header_buttons-button {
   width: 175px;
   height: 59px;
-  text-align: center;
+  @media screen and (max-width: $tablet-width) {
+    width: 100px;
+  }
+  @media screen and (max-width: $mobile-big-width) {
+    width: 85px;
+    height: 50px;
+    line-height: 46px;
+  }
 }
 
 .main_buttons-button {
-  width: 244px;
+  width: 45%;
   height: 59px;
-  text-align: center;
+  line-height: 56px;
 }
 
 .main-descr {
-  width: 30vw;
   z-index: 2;
 }
 .title {
   font-weight: 900;
   font-size: 56px;
   margin: 8px 0;
+  @media screen and (max-width: $tablet-width) {
+    font-size: 38px;
+  }
+  @media screen and (max-width: $mobile-big-width) {
+    font-size: 30px;
+  }
 }
 .subtitle {
-  width: 429px;
   line-height: 30px;
   margin-bottom: 32px;
 }
@@ -210,6 +257,12 @@ header {
 .footer_features-feature p {
   position: relative;
   display: inline-block;
+  @media screen and (max-width: $mobile-big-width) {
+    font-size: 14px;
+  }
+  @media screen and (max-width: $mobile-big-width) {
+    font-size: 11px;
+  }
 }
 
 .feature-before {
@@ -220,6 +273,10 @@ header {
   top: 36%;
   margin-right: 16px;
   border-radius: 5px;
+  flex-shrink: 0;
+  @media screen and (max-width: $mobile-big-width) {
+    margin-right: 8px;
+  }
 }
 .text-colored {
   color: $color-secondary;
