@@ -1,5 +1,5 @@
 <template>
-  <form class="login" novalidate>
+  <form class="login" @submit.prevent="onSubmit" novalidate>
     <h4 class="h4 wrap">Log in</h4>
     <div class="wrap">
       <label for="login" :class="{ email__wrong_color: isValidErrorEmail }">Email or login</label>
@@ -25,39 +25,117 @@
       </span>
     </div>
     <div class="wrap">
-      <label for="password">Password</label>
-      <input class="input" :type="isPasswordShow ? 'text' : 'password'" id="password" />
+      <label for="password" :class="{ email__wrong_color: isValidErrorPassword }">Password</label>
+      <input
+        class="input"
+        :class="{ email__wrong_border: isValidErrorPassword }"
+        :type="isPasswordShow ? 'text' : 'password'"
+        id="password"
+        v-model="password.title"
+        @blur="password.touch()"
+      />
       <span
         class="eye"
-        :class="{ password__eye: !isPasswordShow, password__eye_close: isPasswordShow }"
+        :class="isPasswordShow ? 'password__eye_close' : 'password__eye'"
         @click="showPassword"
+        :title="isPasswordShow ? 'hide password' : 'show password'"
       ></span>
+      <span v-if="isValidErrorPassword" class="email__wrong email__wrong_color">
+        <template v-if="!isRequiredPassword">
+          Required
+        </template>
+        <template v-else-if="!isMinLength">
+          Password must be equal or more than 8 characters
+        </template>
+        <template v-else-if="!isPassword">
+          Password must contain at least one uppercase letter, one lowercase letter, one number and
+          one special character
+        </template>
+      </span>
     </div>
-    <button type="submit" class="btn btn-login wrap btn-error">
+    <div class="wrap" v-if="isRegisterPage">
+      <label for="repeatPassword">
+        Repeat password
+      </label>
+      <input
+        class="input"
+        :class="{ email__wrong_border: isValidErrorRepeatPassword }"
+        :type="isRepeatPasswordShow ? 'text' : 'password'"
+        id="repeatPassword"
+        v-model="repeatPassword.title"
+        @blur="repeatPassword.touch()"
+      />
+      <span
+        class="eye"
+        :class="isRepeatPasswordShow ? 'password__eye_close' : 'password__eye'"
+        @click="showRepeatPassword"
+        :title="isRepeatPasswordShow ? 'hide password' : 'show password'"
+      ></span>
+      <span v-if="isValidErrorRepeatPassword" class="email__wrong email__wrong_color">
+        <template v-if="!isRequiredRepeatPassword">
+          Required
+        </template>
+        <template v-else-if="!isSameAs">
+          Passwords must be identical
+        </template>
+      </span>
+    </div>
+    <button
+      v-if="isRegisterPage"
+      type="submit"
+      class="btn btn-login wrap"
+      :disabled="isRegistrationValid || isAuthLoading"
+    >
+      Sign Up
+      <AppSpinner v-if="isAuthLoading"></AppSpinner>
+      <span v-else class="btn-arrow"></span>
+    </button>
+    <button
+      v-else
+      type="submit"
+      class="btn btn-login wrap"
+      :disabled="isLoginValid || isAuthLoading"
+    >
       Log in
       <AppSpinner v-if="isAuthLoading"></AppSpinner>
       <span v-else class="btn-arrow"></span>
     </button>
-    <div class="signup wrap">
+    <div class="signup wrap" v-if="isRegisterPage">
+      <label for="signup">Already have an account?</label>
+      <router-link :to="getRouterConsts.loginPage.path">
+        Log In
+      </router-link>
+    </div>
+    <div class="signup wrap" v-else>
       <label for="signup">Don't have account?</label>
-      <a href="#" id="signup"> Sign Up</a>
+      <router-link :to="{ path: getRouterConsts.loginPage.path, query: { signUp: true } }">
+        Sign Up
+      </router-link>
     </div>
   </form>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import AppSpinner from '@/components/AppSpinner.vue';
-import ValidField from '@/helpers/auth.helper';
+import ValidField from '@/helpers/validation.helper';
+import routerConsts from '@/router/routerConsts';
 
 export default {
   name: 'LoginForm',
   components: {
     AppSpinner,
   },
+  created() {
+    if (this.$route.query.loginError) {
+      this.setError('Please log in to access this page.');
+    }
+  },
   data() {
     return {
       isAuthLoading: false,
       isPasswordShow: false,
+      isRepeatPasswordShow: false,
       email: new ValidField(null),
       password: new ValidField(null),
       repeatPassword: new ValidField(null),
@@ -66,6 +144,12 @@ export default {
     };
   },
   computed: {
+    getRouterConsts() {
+      return routerConsts;
+    },
+    isRegisterPage() {
+      return !!this.$route.query.signUp;
+    },
     isRequiredEmail() {
       return this.isRequired(this.email.title);
     },
@@ -113,11 +197,60 @@ export default {
     },
   },
   methods: {
+    ...mapActions('Auth', ['loginUser', 'registerUser']),
+    ...mapActions('Error', ['setError']),
+
     showPassword() {
       this.isPasswordShow = !this.isPasswordShow;
     },
+    showRepeatPassword() {
+      this.isRepeatPasswordShow = !this.isRepeatPasswordShow;
+    },
     isRequired(field) {
       return !!field;
+    },
+    onSubmit() {
+      if (this.isRegisterPage) {
+        this.onRegister();
+      } else {
+        this.onLogin();
+      }
+    },
+    async onLogin() {
+      if (!this.isLoginValid) {
+        this.isAuthLoading = true;
+        try {
+          const user = {
+            email: this.email.title,
+            password: this.password.title,
+          };
+          await this.loginUser(user).then(() => {
+            this.$router.push(this.getRouterConsts.homePage.path);
+          });
+        } catch (error) {
+          this.setError(error.message);
+        } finally {
+          this.isAuthLoading = false;
+        }
+      }
+    },
+    async onRegister() {
+      if (!this.isRegistrationValid) {
+        this.isAuthLoading = true;
+        try {
+          const user = {
+            email: this.email.title,
+            password: this.password.title,
+          };
+          await this.registerUser(user).then(() => {
+            this.$router.push(this.getRouterConsts.loginPage.path);
+          });
+        } catch (error) {
+          this.setError(error.message);
+        } finally {
+          this.isAuthLoading = false;
+        }
+      }
     },
   },
 };
@@ -129,6 +262,7 @@ export default {
   flex-direction: column;
   max-width: 429px;
   padding: 60px 57px;
+  line-height: 1;
   background: $color-rose-white;
   border-radius: 20px;
   box-shadow: 1px 5px 14px $box-shadow-one-color;
@@ -152,7 +286,8 @@ export default {
   .input {
     display: block;
     width: 100%;
-    margin-top: 9px;
+    padding: 9px 0;
+    margin: 8px 0;
     font-size: 14px;
     line-height: 16px;
     color: $color-mine-shaft;
@@ -160,6 +295,7 @@ export default {
     border: none;
     border-bottom: 1px solid $color-dodger-blue;
     outline: none;
+    transition: color 0.3s, border-color 0.3s;
   }
 
   .email__correct {
@@ -170,11 +306,11 @@ export default {
   }
 
   .email__wrong_color {
-    color: $color-wild-watermelon;
+    color: $color-red-orange;
   }
 
   .email__wrong_border {
-    border-bottom: 1px solid $color-wild-watermelon;
+    border-bottom: 1px solid $color-red-orange;
   }
 
   .email__wrong {
@@ -185,25 +321,26 @@ export default {
 
   .eye {
     position: absolute;
+    top: 32px;
     right: 5px;
-    bottom: -2px;
     width: 18px;
     height: 18px;
   }
 
-  .password__eye {
+  .password__eye,
+  .password__eye_close {
     cursor: pointer;
-    background-image: url('~@/assets/img/password-eye-open.png');
     background-repeat: no-repeat;
     background-size: 18px;
   }
 
+  .password__eye {
+    top: 35px;
+    background-image: url('~@/assets/img/password-eye-open.png');
+  }
+
   .password__eye_close {
-    bottom: 1px;
-    cursor: pointer;
     background-image: url('~@/assets/img/password-eye-close.png');
-    background-repeat: no-repeat;
-    background-size: 18px;
   }
 
   a {
@@ -222,6 +359,12 @@ export default {
     border: none;
     border-radius: 20px;
     outline: none;
+    transition: background-color 0.3s;
+
+    &:disabled {
+      cursor: default;
+      background-color: $color-malibu;
+    }
   }
 
   .btn-login {
@@ -237,11 +380,6 @@ export default {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 18px 14px;
-  }
-
-  .btn-error {
-    cursor: default;
-    background-color: $color-malibu;
   }
 }
 

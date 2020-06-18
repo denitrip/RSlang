@@ -22,6 +22,10 @@ export default {
 </script>
 
 <style lang="scss">
+.lds-spinner_small {
+  @include spinner(23px);
+}
+
 .lds-spinner {
   position: relative;
   display: inline-block;
@@ -38,10 +42,6 @@ export default {
       border-radius: 20%;
     }
   }
-}
-
-.lds-spinner_small {
-  @include spinner(23px);
 }
 
 .lds-spinner div:nth-child(1) {
