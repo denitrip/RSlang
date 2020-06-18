@@ -1,5 +1,8 @@
 <template>
   <div>
+    <transition name="fade">
+      <app-error v-if="error" />
+    </transition>
     <transition name="fade" mode="out-in">
       <router-view />
     </transition>
@@ -7,9 +10,16 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'App',
-  components: {},
+  components: {
+    AppError: () => import(/* webpackChunkName: "error" */ '@/components/AppError.vue'),
+  },
+  computed: {
+    ...mapState('Error', ['error']),
+  },
 };
 </script>
 
