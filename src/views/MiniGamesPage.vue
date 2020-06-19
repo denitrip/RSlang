@@ -48,8 +48,12 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
-  height: 100%;
+  // width: calc(100% - 60px);
+  // height: 100%;
+  height: calc(100vh - 86px);
   padding-top: 24px;
+  overflow-y: auto;
+  background-color: $color-ghost;
 
   &__title {
     font-size: 36px;
@@ -73,7 +77,7 @@ export default {
   justify-content: center;
   width: 358px;
   height: 358px;
-  margin: 16px;
+  margin: 24px;
   color: $color-white;
   border-radius: 24px;
   box-shadow: 1px 5px 14px $box-shadow-one-color;

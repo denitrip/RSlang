@@ -1,10 +1,18 @@
 <template>
-  <div class="">
-    Home Page <main-header />
-    <SideMenu />
-    <transition name="component-fade" mode="out-in">
-      <router-view />
-    </transition>
+  <div class="homePage">
+    <div class="homePage__sideMenu">
+      <SideMenu />
+    </div>
+    <div class="homePage__content">
+      <div class="homePage__header">
+        <main-header />
+      </div>
+      <div class="homePage__routerView">
+        <transition name="component-fade" mode="out-in">
+          <router-view />
+        </transition>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -15,5 +23,28 @@ import SideMenu from '../components/SideMenu.vue';
 export default {
   name: 'HomePage',
   components: { SideMenu, MainHeader },
+  computed: {
+    currentRoute() {
+      return this.$router.currentRoute.name;
+    },
+  },
 };
 </script>
+
+<style lang="scss" scoped>
+.homePage {
+  display: flex;
+  overflow: auto;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &__routerView {
+    height: calc(100vh - 86px);
+    overflow-y: auto;
+  }
+}
+</style>
