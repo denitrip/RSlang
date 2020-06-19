@@ -35,7 +35,7 @@ export default {
 
 <style lang="scss" scoped>
 .notify {
-  position: absolute;
+  position: fixed;
   top: 10px;
   right: 0;
   z-index: 999;

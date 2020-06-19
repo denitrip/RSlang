@@ -1,6 +1,6 @@
 <template>
   <form class="login" @submit.prevent="onSubmit" novalidate>
-    <h4 class="h4 wrap">Log in</h4>
+    <h4 class="h4 wrap">{{ isRegisterPage ? 'Sign up' : 'Log in' }}</h4>
     <div class="wrap">
       <label for="login" :class="{ email__wrong_color: isValidErrorEmail }">Email or login</label>
       <input
@@ -141,7 +141,7 @@ export default {
       password: new ValidField(null),
       repeatPassword: new ValidField(null),
       emailRegex: /(^$|^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$)/,
-      passwordRegex: /(?=.*[0-9])(?=.*[-+_@$!%*?&#.,;:[\]{}])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z-+_@$!%*?&#.,;:[\]{}]{8,}/g,
+      passwordRegex: /(?=.*[0-9])(?=.*[-+_@$!%*?&#.,;:[\]{}])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z-+_@$!%*?&#.,;:[\]{}]{8,}/,
     };
   },
   computed: {
