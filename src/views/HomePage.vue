@@ -8,7 +8,7 @@
         <main-header />
       </div>
       <div class="homePage__routerView">
-        <transition name="component-fade" mode="out-in">
+        <transition name="fade" mode="out-in">
           <router-view />
         </transition>
       </div>
