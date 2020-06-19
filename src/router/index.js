@@ -5,6 +5,7 @@ import HomePage from '@/views/HomePage.vue';
 import LoginPage from '@/views/LoginPage.vue';
 import MiniGamesPage from '@/views/MiniGamesPage.vue';
 import OurTeamPage from '@/views/OurTeamPage.vue';
+import DictionaryPage from '@/views/DictionaryPage.vue';
 import SettingPage from '@/views/SettingPage.vue';
 import EnglishPuzzlePage from '@/views/EnglishPuzzle/EnglishPuzzlePage.vue';
 import EnglishPuzzleStatisticPage from '@/views/EnglishPuzzle/EnglishPuzzleStatisticPage.vue';
@@ -28,6 +29,11 @@ const routes = [
         path: routerConsts.ourTeamPage.path,
         name: routerConsts.ourTeamPage.name,
         component: OurTeamPage,
+      },
+      {
+        path: routerConsts.dictionaryPage.path,
+        name: routerConsts.dictionaryPage.name,
+        component: DictionaryPage,
       },
       {
         path: routerConsts.settings.path,
