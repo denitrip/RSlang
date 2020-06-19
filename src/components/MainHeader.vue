@@ -64,7 +64,7 @@ img {
   padding: 0;
   margin: 0;
   font-weight: 900;
-  color: $color-Gigas;
+  color: $color-gigas;
 }
 
 .user-section {
