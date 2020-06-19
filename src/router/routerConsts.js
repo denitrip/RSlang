@@ -39,4 +39,20 @@ export default {
     path: '/settings',
     name: 'Settings',
   },
+  englishPuzzlePage: {
+    path: '/english-puzzle',
+    name: 'englishPuzzle',
+  },
+  EnglishPuzzleStatisticPage: {
+    path: '/english-puzzle-statistic',
+    name: 'englishPuzzleStatistic',
+  },
+  englishPuzzleStats: {
+    path: '',
+    name: 'englishPuzzleStats',
+  },
+  englishPuzzleStatsDetailed: {
+    path: '/english-puzzle-statistic/detail',
+    name: 'englishPuzzleStatsDetail',
+  },
 };

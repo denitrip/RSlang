@@ -7,6 +7,10 @@ import MiniGamesPage from '@/views/MiniGamesPage.vue';
 import OurTeamPage from '@/views/OurTeamPage.vue';
 import DictionaryPage from '@/views/DictionaryPage.vue';
 import SettingPage from '@/views/SettingPage.vue';
+import EnglishPuzzlePage from '@/views/EnglishPuzzle/EnglishPuzzlePage.vue';
+import EnglishPuzzleStatisticPage from '@/views/EnglishPuzzle/EnglishPuzzleStatisticPage.vue';
+import EnglishPuzzleStats from '@/components/EnglishPuzzle/EnglishPuzzleStatistic.vue';
+import EnglishPuzzleStatsDetail from '@/components/EnglishPuzzle/EnglishPuzzleStatisticDetail.vue';
 
 Vue.use(VueRouter);
 
@@ -35,6 +39,27 @@ const routes = [
         path: routerConsts.settings.path,
         name: routerConsts.settings.name,
         component: SettingPage,
+      },
+      {
+        path: routerConsts.englishPuzzlePage.path,
+        name: routerConsts.englishPuzzlePage.name,
+        component: EnglishPuzzlePage,
+      },
+      {
+        path: routerConsts.EnglishPuzzleStatisticPage.path,
+        component: EnglishPuzzleStatisticPage,
+        children: [
+          {
+            path: routerConsts.englishPuzzleStats.path,
+            name: routerConsts.englishPuzzleStats.name,
+            component: EnglishPuzzleStats,
+          },
+          {
+            path: routerConsts.englishPuzzleStatsDetailed.path,
+            name: routerConsts.englishPuzzleStatsDetailed.name,
+            component: EnglishPuzzleStatsDetail,
+          },
+        ],
       },
     ],
   },

@@ -44,3 +44,37 @@
     }
   }
 }
+
+@mixin english-puzzle-button($width) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $width;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-white;
+  cursor: pointer;
+  background-color: $color-dodger-blue;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  transition: background 0.8s;
+
+  &:hover {
+    background: $color-cornflower-blue
+      radial-gradient(circle, transparent 1%, $color-cornflower-blue 1%) center/15000%;
+  }
+
+  &:active {
+    background-color: $color-malibu;
+    background-size: 100%;
+    transition: background 0s;
+  }
+
+  &:disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.4;
+  }
+}
