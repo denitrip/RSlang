@@ -1,5 +1,5 @@
 <template functional>
-  <div class="game wrapper">
+  <div class="game__wrapper">
     <component :is="props.components.EnglishPuzzleGameMenu"></component>
     <component :is="props.components.EnglishPuzzleGameTooltips"></component>
     <component :is="props.components.EnglishPuzzleGameMain"></component>
@@ -30,3 +30,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.game__wrapper {
+  padding: 40px 0;
+}
+</style>

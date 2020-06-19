@@ -182,7 +182,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 40px;
+  padding: 0 40px;
 }
 
 .level__label,

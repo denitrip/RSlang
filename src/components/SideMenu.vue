@@ -77,8 +77,8 @@ export default {
           },
         },
         {
-          name: routerConsts.dictionary.name,
-          route: routerConsts.dictionary.path,
+          name: routerConsts.dictionaryPage.name,
+          route: routerConsts.dictionaryPage.path,
           icon: {
             name: 'Dictionary',
             viewbox: '0 0 512 512',
@@ -143,7 +143,7 @@ export default {
   color: $color-white;
   text-align: center;
   background: $color-nile-blue;
-  transition: 0.5s;
+  transition: width 0.5s;
 
   &__logo {
     display: flex;
@@ -185,7 +185,7 @@ export default {
     text-decoration: none;
     cursor: pointer;
     border-radius: 50px 0 0 50px;
-    transition: 0.25s;
+    transition: all 0.25s;
 
     p {
       margin-left: 10px;
@@ -211,7 +211,7 @@ export default {
     cursor: pointer;
     background: $color-prussian-blue no-repeat center;
     border-radius: 50px 0 0 50px;
-    transition: 0.5s;
+    transition: background-color 0.5s;
 
     &:hover {
       background-color: $color-rhino;
@@ -229,6 +229,7 @@ export default {
     color: $color-white;
     cursor: pointer;
     background: $color-prussian-blue;
+    transition: color 0.5s;
 
     p {
       margin-left: 8px;

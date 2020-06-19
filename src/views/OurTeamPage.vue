@@ -118,6 +118,7 @@ export default {
 <style scoped lang="scss">
 .our-team {
   background-color: $color-ghost;
+  padding-top: 35px;
 
   &__wrapper {
     display: flex;

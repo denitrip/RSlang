@@ -2,7 +2,7 @@
   <form class="login" @submit.prevent="onSubmit" novalidate>
     <h4 class="h4 wrap">{{ isRegisterPage ? 'Sign up' : 'Log in' }}</h4>
     <div class="wrap">
-      <label for="login" :class="{ email__wrong_color: isValidErrorEmail }">Email or login</label>
+      <label for="login" :class="{ email__wrong_color: isValidErrorEmail }">Email</label>
       <input
         class="input"
         :class="{
