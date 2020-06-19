@@ -7,6 +7,7 @@ import MiniGamesPage from '@/views/MiniGamesPage.vue';
 import OurTeamPage from '@/views/OurTeamPage.vue';
 import DictionaryPage from '@/views/DictionaryPage.vue';
 import SettingPage from '@/views/SettingPage.vue';
+import LearningPage from '@/views/LearningPage.vue';
 import EnglishPuzzlePage from '@/views/EnglishPuzzle/EnglishPuzzlePage.vue';
 import EnglishPuzzleStatisticPage from '@/views/EnglishPuzzle/EnglishPuzzleStatisticPage.vue';
 import EnglishPuzzleStats from '@/components/EnglishPuzzle/EnglishPuzzleStatistic.vue';
@@ -34,6 +35,11 @@ const routes = [
         path: routerConsts.dictionaryPage.path,
         name: routerConsts.dictionaryPage.name,
         component: DictionaryPage,
+      },
+      {
+        path: routerConsts.learningPage.path,
+        name: routerConsts.learningPage.name,
+        component: LearningPage,
       },
       {
         path: routerConsts.settings.path,
