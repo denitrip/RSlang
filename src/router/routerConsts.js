@@ -9,26 +9,26 @@ export default {
   },
   miniGamesPage: {
     path: '/miniGames',
-    name: 'miniGames',
+    name: 'Mini games',
   },
   ourTeamPage: {
     path: '/ourTeam',
-    name: 'ourTeam',
+    name: 'Our team',
   },
   learning: {
     path: '/learning',
-    name: 'learning',
+    name: 'Learning',
   },
   dictionary: {
     path: '/dictionary',
-    name: 'dictionary',
+    name: 'Dictionary',
   },
   statistic: {
     path: '/statistic',
-    name: 'statistic',
+    name: 'Statistic',
   },
   settings: {
     path: '/settings',
-    name: 'settings',
+    name: 'Settings',
   },
 };

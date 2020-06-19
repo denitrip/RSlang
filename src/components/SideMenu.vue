@@ -69,7 +69,7 @@ export default {
       isOpen: true,
       menuItems: [
         {
-          name: 'Learning',
+          name: routerConsts.learning.name,
           route: routerConsts.learning.path,
           icon: {
             name: 'Audiobook',
@@ -77,7 +77,7 @@ export default {
           },
         },
         {
-          name: 'Dictionary',
+          name: routerConsts.dictionary.name,
           route: routerConsts.dictionary.path,
           icon: {
             name: 'Dictionary',
@@ -85,7 +85,7 @@ export default {
           },
         },
         {
-          name: 'Mini games',
+          name: routerConsts.miniGamesPage.name,
           route: routerConsts.miniGamesPage.path,
           icon: {
             name: 'Joystick',
@@ -93,7 +93,7 @@ export default {
           },
         },
         {
-          name: 'Statistic',
+          name: routerConsts.statistic.name,
           route: routerConsts.statistic.path,
           icon: {
             name: 'BarChart',
@@ -101,7 +101,7 @@ export default {
           },
         },
         {
-          name: 'Our team',
+          name: routerConsts.ourTeamPage.name,
           route: routerConsts.ourTeamPage.path,
           icon: {
             name: 'GroupOfMen',
@@ -109,7 +109,7 @@ export default {
           },
         },
         {
-          name: 'Settings',
+          name: routerConsts.settings.name,
           route: routerConsts.settings.path,
           icon: {
             name: 'Settings',
@@ -149,7 +149,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 80px;
+    min-height: 86px;
     font-size: 36px;
     font-weight: 800;
     background: $color-prussian-blue;
@@ -159,7 +159,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 80px;
+    min-height: 86px;
     color: $color-white;
     cursor: pointer;
     background: $color-prussian-blue;
@@ -170,6 +170,7 @@ export default {
   }
 
   &__navigation {
+    margin-top: 40px;
     font-size: 20px;
     font-weight: normal;
   }
@@ -177,9 +178,9 @@ export default {
   &__link {
     display: flex;
     align-items: center;
-    justify-content: center;
     padding: 15px;
-    margin-top: 15px;
+    margin-bottom: 32px;
+    margin-left: 60px;
     color: $color-white;
     text-decoration: none;
     cursor: pointer;
@@ -191,8 +192,11 @@ export default {
     }
 
     &:hover {
-      margin-left: 15px;
-      color: $color-golden-dream;
+      g {
+        color: $color-golden-dream;
+      }
+
+      margin-left: 90px;
       background: $color-prussian-blue;
     }
   }
@@ -205,31 +209,30 @@ export default {
     width: 25px;
     height: 50px;
     cursor: pointer;
-    background: $color-prussian-blue no-repeat center; // url('../assets/img/sideMenu/arrowHide.svg')
-    border: 1px solid $color-white;
+    background: $color-prussian-blue no-repeat center;
     border-radius: 50px 0 0 50px;
     transition: 0.5s;
 
     &:hover {
-      background-color: $color-portica;
-
-      .menu__arrowHide {
-        filter: invert(1);
-      }
+      background-color: $color-rhino;
     }
   }
 
   &__logout {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
     width: 100%;
-    height: 86px;
+    min-height: 86px;
     font-size: 24px;
     font-weight: 500;
     color: $color-white;
     cursor: pointer;
     background: $color-prussian-blue;
+
+    p {
+      margin-left: 8px;
+    }
 
     &:hover {
       color: $color-golden-dream;
@@ -243,10 +246,54 @@ export default {
 
 .menu-close {
   width: 60px;
+
+  .menu__link {
+    margin-left: 0;
+  }
 }
 
 .active-link {
-  color: $color-golden-dream;
+  g {
+    color: $color-golden-dream;
+  }
+
   background: $color-prussian-blue;
+}
+
+@media (max-width: 1680px) {
+  .menu__navigation {
+    margin-top: 12;
+  }
+
+  .menu__link {
+    margin-bottom: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .menu__navigation {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 414px) {
+  .menu__navigation {
+    margin-top: 10px;
+  }
+
+  .menu__link {
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 320px) {
+  .menu__navigation {
+    margin-top: 0;
+  }
+
+  .menu__link {
+    padding: 12px;
+    margin-bottom: 0;
+  }
 }
 </style>
