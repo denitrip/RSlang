@@ -77,8 +77,8 @@ export default {
           },
         },
         {
-          name: routerConsts.dictionary.name,
-          route: routerConsts.dictionary.path,
+          name: routerConsts.dictionaryPage.name,
+          route: routerConsts.dictionaryPage.path,
           icon: {
             name: 'Dictionary',
             viewbox: '0 0 512 512',

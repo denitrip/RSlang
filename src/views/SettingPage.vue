@@ -205,7 +205,7 @@ export default {
   background-color: $color-catskill-white;
 
   &__wrap {
-    padding: 55px 47px 70px;
+    padding: 55px 47px 0 70px;
   }
 
   &__main {
