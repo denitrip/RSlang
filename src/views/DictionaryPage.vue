@@ -1,7 +1,7 @@
 <template>
   <div class="">
     Dictionary Page
-    <dictionary-card></dictionary-card>
+    <dictionary-card  englishWord="strawberry" russianWord="клубника"></dictionary-card>
   </div>
 </template>
 
