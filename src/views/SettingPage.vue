@@ -53,7 +53,7 @@
       </div>
     </div>
 
-    <div class="setting__wrap setting__card">
+    <div class="setting__wrap--checkboxes setting__card">
       <h1 class="setting__h1">Cards view settings</h1>
       <div class="setting__menu">
         <div class="setting__submenu setting__display">
@@ -129,7 +129,11 @@
         </div>
       </div>
     </div>
-    <b-button class="setting__save" variant="primary" @click="saveSettings">Save Setting</b-button>
+    <div class="footer">
+      <b-button class="setting__save footer__btn" variant="primary" @click="saveSettings"
+        >Save Setting</b-button
+      >
+    </div>
   </div>
 </template>
 
@@ -201,11 +205,16 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  height: fit-content;
+  min-height: 100%;
   background-color: $color-catskill-white;
 
   &__wrap {
     padding: 55px 47px 70px;
+
+    &--checkboxes {
+      padding: 55px 47px 0 47px;
+    }
   }
 
   &__main {
@@ -283,11 +292,14 @@ export default {
   &__checkbox {
     margin-bottom: 12px;
   }
+}
 
-  &__save {
-    position: fixed;
-    right: 5vw;
-    bottom: 8vh;
+.footer {
+  display: flex;
+  justify-content: flex-end;
+
+  &__btn {
+    margin: 5px 60px 5px 0;
   }
 }
 </style>
