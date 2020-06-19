@@ -5,7 +5,11 @@ import HomePage from '@/views/HomePage.vue';
 import LoginPage from '@/views/LoginPage.vue';
 import MiniGamesPage from '@/views/MiniGamesPage.vue';
 import OurTeamPage from '@/views/OurTeamPage.vue';
+<<<<<<< HEAD
 import DictionaryPage from '@/views/DictionaryPage.vue';
+=======
+import SettingPage from '@/views/SettingPage.vue';
+>>>>>>> 5a70e2f2ea97dbb2d6db60f7bb3807f1d59429c7
 
 Vue.use(VueRouter);
 
@@ -25,10 +29,15 @@ const routes = [
         name: routerConsts.ourTeamPage.name,
         component: OurTeamPage,
       },
-      {
+      {        
         path: routerConsts.dictionaryPage.path,
         name: routerConsts.dictionaryPage.name,
         component: DictionaryPage,
+      },
+      {
+        path: routerConsts.settings.path,
+        name: routerConsts.settings.name,
+        component: SettingPage,
       },
     ],
   },

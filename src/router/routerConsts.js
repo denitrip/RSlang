@@ -7,6 +7,14 @@ export default {
     path: '/login',
     name: 'login',
   },
+  welcomePage: {
+    path: '/welcome',
+    name: 'welcome',
+  },
+  signUpPage: {
+    path: '/signUp',
+    name: 'signUp',
+  },
   miniGamesPage: {
     path: '/miniGames',
     name: 'miniGames',
