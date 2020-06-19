@@ -23,7 +23,7 @@ export default {
     path: '/ourTeam',
     name: 'Our team',
   },
-  learning: {
+  learningPage: {
     path: '/learning',
     name: 'Learning',
   },
