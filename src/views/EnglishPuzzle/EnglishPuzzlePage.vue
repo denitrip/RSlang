@@ -56,7 +56,7 @@ export default {
       'setIsStartScreen',
       'setIsPictureOff',
       'setIsImage',
-      'setSentencePerRound',
+      'setIsMobile',
     ]),
 
     async onStartGame() {
@@ -80,19 +80,18 @@ export default {
       }
     },
     updateWidth() {
-      if (document.documentElement.clientWidth < 551) {
+      if (document.documentElement.clientWidth < 611) {
         this.setIsPictureOff(true);
         this.setIsImage(false);
-        this.setSentencePerRound(1);
+        this.setIsMobile(true);
       } else if (document.documentElement.clientWidth < 945) {
         this.setIsPictureOff(true);
         this.setIsImage(false);
-        this.setSentencePerRound(10);
+        this.setIsMobile(false);
       } else {
         this.setIsPictureOff(false);
-        this.setSentencePerRound(10);
+        this.setIsMobile(false);
       }
-      this.setIsStartScreen(true);
     },
   },
 };
