@@ -32,12 +32,12 @@ export function getPicture(level, round) {
   return { imageSrc, description, cutSrc };
 }
 
-export async function getWordsByLevelAndRound({ level, round, sentencePerRound }) {
+export async function getWordsByLevelAndRound({ level, round }) {
   const group = level - 1;
   const page = round - 1;
   let words;
   const response = await fetch(
-    `${apiAddress}words?group=${group}&page=${page}&wordsPerExampleSentenceLTE=10&wordsPerPage=${sentencePerRound}`,
+    `${apiAddress}words?group=${group}&page=${page}&wordsPerExampleSentenceLTE=10&wordsPerPage=10`,
     {
       method: 'GET',
       withCredentials: true,

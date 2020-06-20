@@ -36,7 +36,6 @@ export default {
         const words = await getWordsByLevelAndRound({
           level: round.lvl,
           round: round.page,
-          sentencePerRound: round.arr.length,
         });
         this.setWordsStats(words);
         this.setCurrentRoundStats(round);
