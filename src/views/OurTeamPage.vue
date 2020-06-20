@@ -12,18 +12,22 @@
           </p>
           <div class="our-team__contacts">
             <span class="icon-circle icon-circle_blue">
-              <IconBase width="19" height="16" viewBox="0 0 19 16" icon-color="white">
-                <IconTelegram />
-              </IconBase>
+              <span class="icon">
+                <IconBase width="19" height="16" viewBox="0 0 19 16" icon-color="white">
+                  <IconTelegram />
+                </IconBase>
+              </span>
             </span>
             <span class="icon-circle icon-circle_blue">
-              <IconBase width="15" height="16" viewBox="0 0 15 17" icon-color="white">
-                <IconLinkedin />
-              </IconBase>
+              <span class="icon icon_linkedin">
+                <IconBase width="15" height="14" viewBox="0 0 15 14" icon-color="white">
+                  <IconLinkedin />
+                </IconBase>
+              </span>
             </span>
             <span class="icon-circle icon-circle_blue">
               <span class="icon">
-                <IconBase width="20" height="19" viewBox="0 0 20 15" icon-color="white">
+                <IconBase width="20" height="19" viewBox="0 0 20 19" icon-color="white">
                   <IconDiscord />
                 </IconBase>
               </span>
@@ -117,8 +121,12 @@ export default {
 
 <style scoped lang="scss">
 .our-team {
+  padding: 35px 0 45px 0;
   background-color: $color-ghost;
-  padding-top: 35px;
+
+  @include media-mobile {
+    padding: 10px 0 15px 0;
+  }
 
   &__wrapper {
     display: flex;
@@ -135,11 +143,23 @@ export default {
     margin: 6px 0;
     background-color: $color-white;
     border-radius: 25px;
+
+    @include media-mobile {
+      display: flex;
+      flex-direction: column;
+      width: 250px;
+      height: 380px;
+    }
   }
 
   &__img {
     width: 187px;
     height: 275px;
+
+    @include media-mobile {
+      width: 250px;
+      height: 151px;
+    }
   }
 
   &__information {
@@ -147,12 +167,24 @@ export default {
     height: 199px;
     margin-top: 35px;
     margin-left: 24px;
+
+    @include media-mobile {
+      width: auto;
+      height: 199px;
+      margin: 16px 17px 8px 17px;
+    }
   }
 
   &__name {
     margin-bottom: 5px;
 
     @include font($size: 18px, $height: 22px);
+
+    @include media-mobile {
+      margin-bottom: 4px;
+
+      @include font($size: 18px, $height: 22px);
+    }
   }
 
   &__major {
@@ -161,11 +193,33 @@ export default {
     @include font($size: 16px, $height: 18px, $weight: 300);
 
     color: $color-ghost;
+
+    @include media-mobile {
+      margin-bottom: 8px;
+
+      @include font($size: 16px, $height: 18px, $weight: 300);
+    }
   }
 
   &__my-work {
     margin-bottom: 17px;
+
+    @include media-mobile {
+      margin-bottom: 8px;
+
+      @include font($size: 14px, $height: 16px, $weight: normal);
+    }
   }
+
+  &_contacts {
+    @include media-mobile {
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.icon {
+  display: inline-block;
 }
 
 .icon-circle {
@@ -177,6 +231,11 @@ export default {
   margin-right: 8px;
   cursor: pointer;
   border-radius: 25px;
+
+  @include media-mobile {
+    width: 30px;
+    height: 30px;
+  }
 
   &_blue {
     background-color: $color-cornflower-blue;

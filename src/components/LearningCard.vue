@@ -63,14 +63,24 @@ export default {
   align-items: center;
   width: 358px;
   height: 511px;
+  margin: 6px 0;
   background-color: $color-shuttle-gray;
   border-radius: 25px;
+
+  @include media-mobile {
+    width: 250px;
+    height: 411px;
+  }
 }
 
 .img {
   width: 90px;
   height: 90px;
   margin-top: 43px;
+
+  @include media-mobile {
+    margin-top: 23px;
+  }
 }
 
 .word-with-speak-it {
@@ -78,6 +88,10 @@ export default {
   justify-content: center;
   height: 20px;
   margin-top: 16px;
+
+  @include media-mobile {
+    margin-top: 10px;
+  }
 }
 
 .word {
@@ -100,6 +114,11 @@ export default {
     border-bottom: 1.5px solid $color-dodger-blue;
 
     @include font($size: 36px, $height: 20px, $weight: normal);
+
+    @include media-mobile {
+      padding-bottom: 10px;
+      margin-top: 15px;
+    }
   }
 }
 
@@ -122,6 +141,10 @@ export default {
   margin-top: 16px;
 
   @include font($size: 16px, $height: 20px, $weight: normal);
+
+  @include media-mobile {
+    margin-top: 8px;
+  }
 }
 
 .sentance-with-word {
@@ -129,6 +152,10 @@ export default {
   color: $color-dodger-blue;
 
   @include font($size: 18px, $height: 21px, $weight: 500);
+
+  @include media-mobile {
+    margin-top: 10px;
+  }
 }
 
 .show-answer {
@@ -137,6 +164,10 @@ export default {
   text-decoration-line: underline;
 
   @include font($size: 16px, $height: 20px, $weight: 600);
+
+  @include media-mobile {
+    margin-top: 18px;
+  }
 }
 
 .wrap {
@@ -160,6 +191,10 @@ export default {
   transition: background-color 0.3s;
 
   @include font($size: 14px, $height: 16px, $weight: normal);
+
+  @include media-mobile {
+    margin-top: 20px;
+  }
 }
 
 .btn-arrow {
