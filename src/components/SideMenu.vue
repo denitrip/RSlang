@@ -69,8 +69,8 @@ export default {
       isOpen: true,
       menuItems: [
         {
-          name: routerConsts.learning.name,
-          route: routerConsts.learning.path,
+          name: routerConsts.learningPage.name,
+          route: routerConsts.learningPage.path,
           icon: {
             name: 'Audiobook',
             viewbox: '0 0 64 64',
