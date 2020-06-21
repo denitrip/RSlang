@@ -148,6 +148,8 @@ export default {
 $line-top-position: 70px;
 
 .dictionary {
+  width: 100%;
+  height: 100%;
   padding: 0 16px;
   background-color: $color-catskill-white;
 
