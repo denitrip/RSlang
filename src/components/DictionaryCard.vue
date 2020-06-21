@@ -1,5 +1,4 @@
 <template>
-  <div>
     <div class="dictionary-card">
       <div class="dictionary-card__wrapper">
         <div class="layout-2-column">
@@ -47,7 +46,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -127,39 +125,19 @@ export default {
 }
 
 .dictionary-card {
-  width: 1107px;
+  width: 95%;
   height: 106px;
   margin: 8px 0;
   background-color: $color-shuttle-gray;
   border-radius: 25px;
 
-  @include media-laptop {
-    width: 920px;
-  }
-
-  @include media-tablet {
-    width: 670px;
-  }
-
-  @include media-mobile {
-    width: 250px;
-  }
-
   &__wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 1027px;
+    width: 90%;
     height: 106px;
     margin: auto;
-
-    @include media-laptop {
-      width: 840px;
-    }
-
-    @include media-tablet {
-      width: 600px;
-    }
   }
 }
 

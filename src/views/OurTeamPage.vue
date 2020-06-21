@@ -3,6 +3,7 @@
     <div class="our-team__wrapper">
       <div class="our-team__card" v-for="man in people" :key="man.name">
         <img :src="man.image" alt="img" class="our-team__img" />
+        <img :src="man.imageSmall" alt="img" class="our-team__img-small" />
         <div class="our-team__information">
           <h3 class="our-team__name">{{ man.name }}</h3>
           <h5 class="our-team__major">{{ man.major }}</h5>
@@ -52,56 +53,64 @@ export default {
     return {
       people: [
         {
-          image: require('../assets/img/Oleg.png'),
+          image: require('../assets/img/ourTeamImages/bigPhoto/Oleg.png'),
+          imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Oleg.png'),
           name: 'Oleg Rashinskiy',
           major: SOFTWARE_ENGINEER,
           myWork:
             'Тут мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения. Тут мы рассказывае какие мы молодцы и какой вклад внесли в разработку приложения',
         },
         {
-          image: require('../assets/img/Andrey.png'),
+          image: require('../assets/img/ourTeamImages/bigPhoto/Andrey.png'),
+          imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Andrei.png'),
           name: 'Andrei Karol',
           major: SOFTWARE_ENGINEER,
           myWork:
             'Тут мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения. Тут мы расскаваем, какие мы молодцы и какой вклад внесли в разработку приложения',
         },
         {
-          image: require('../assets/img/Yaroslav.png'),
+          image: require('../assets/img/ourTeamImages/bigPhoto/Yaroslav.png'),
+          imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Yaroslav.png'),
           name: 'Yaroslav Denisyuk',
           major: SOFTWARE_ENGINEER,
           myWork:
             'Тут мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения. Т мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения',
         },
         {
-          image: require('../assets/img/Dzianis.png'),
+          image: require('../assets/img/ourTeamImages/bigPhoto/Dzianis.png'),
+          imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Denis.png'),
           name: 'Dzianis Puchko',
           major: 'Team Lead',
           myWork:
             'Тут мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения. Тут мы рассказываем, кие мы молодцы и какой вклад внесли в разработку приложения',
         },
         {
-          image: require('../assets/img/Vasiliy.png'),
+          image: require('../assets/img/ourTeamImages/bigPhoto/Vasiliy.png'),
+          imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Vasiliy.png'),
           name: 'Vasiliy Sukhavenka',
           major: SOFTWARE_ENGINEER,
           myWork:
             'Тут мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения. Тут мы рссказываем, какие мы молодцы и какой вклад внесли в разработку приложения',
         },
         {
-          image: require('../assets/img/Dzhangar.png'),
+          image: require('../assets/img/ourTeamImages/bigPhoto/Dzhangar.png'),
+          imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Dzhangar.png'),
           name: 'Dzhangar Zolvanov',
           major: SOFTWARE_ENGINEER,
           myWork:
             'Тут мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения. Тут м рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения',
         },
         {
-          image: require('../assets/img/Ruslan.png'),
+          image: require('../assets/img/ourTeamImages/bigPhoto/Ruslan.png'),
+          imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Ruslan.png'),
           name: 'Ruslan Bobreshov',
           major: SOFTWARE_ENGINEER,
           myWork:
             'Тут мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения. Ту мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения',
         },
         {
-          image: require('../assets/img/Anastasiya.png'),
+          image: require('../assets/img/ourTeamImages/bigPhoto/Anastasiya.png'),
+          imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Anastasiya.png'),
           name: 'Anastasiya Homanava',
           major: 'Experience Designer',
           myWork:
@@ -152,13 +161,22 @@ export default {
     }
   }
 
+  &__img-small {
+    display: none;
+
+    @include media-mobile {
+      display: block;
+      width: 250px;
+      height: 151px;
+    }
+  }
+
   &__img {
     width: 187px;
     height: 275px;
 
     @include media-mobile {
-      width: 250px;
-      height: 151px;
+      display: none;
     }
   }
 
