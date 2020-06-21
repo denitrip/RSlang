@@ -1,11 +1,11 @@
 <template>
   <div class="wrapper">
     <header>
-      <router-link to="welcome">
+      <router-link :to="routerConsts.welcomePage.path">
         <img src="~@/assets/images/Logo.png" alt="logo" class="logo" width="118" height="72" />
       </router-link>
       <ul class="header_buttons">
-        <router-link to="login">
+        <router-link :to="routerConsts.loginPage.path">
           <li
             v-if="isWelcomePage || isSignUp"
             class="header_buttons-button button button--bordered"
@@ -13,7 +13,7 @@
             Log In
           </li>
         </router-link>
-        <router-link to="signup">
+        <router-link :to="routerConsts.signUpPage.path">
           <li v-if="isWelcomePage || isLogIn" class="header_buttons-button button button--filled">
             Sign Up
           </li>
@@ -84,6 +84,7 @@ export default {
   data() {
     return {
       currentRoute: this.$router.currentRoute.name,
+      routerConsts,
     };
   },
   computed: {
