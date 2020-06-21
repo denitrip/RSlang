@@ -1,4 +1,4 @@
-import { application, apiAddress, audioSrc } from '@/helpers/constants.helper';
+import { application, apiAddress, dataSrc } from '@/helpers/constants.helper';
 import {
   shuffle,
   checkIsSentenceInArray,
@@ -415,7 +415,7 @@ export default {
     },
     getAudioExampleSrc(state) {
       const file = state.words[state.sentenceNumber].audioExample;
-      return `${audioSrc}${file}`;
+      return `${dataSrc}${file}`;
     },
   },
 };
