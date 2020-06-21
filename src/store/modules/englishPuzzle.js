@@ -12,7 +12,6 @@ export default {
     selectedLevel: 1,
     selectedRound: 1,
     roundCount: 25,
-    sentencePerRound: 10,
     completeRounds: [],
     isAutoSpeech: true,
     isTranslate: true,
@@ -38,6 +37,7 @@ export default {
     sentenceArray: [],
     isPictureOff: false,
     isStartScreen: true,
+    isMobile: false,
   },
   mutations: {
     setSelectedLevel(state, payload) {
@@ -112,11 +112,11 @@ export default {
     setIsPictureOff(state, payload) {
       state.isPictureOff = payload;
     },
-    setSentencePerRound(state, payload) {
-      state.sentencePerRound = payload;
-    },
     setIsStartScreen(state, payload) {
       state.isStartScreen = payload;
+    },
+    setIsMobile(state, payload) {
+      state.isMobile = payload;
     },
     setStartState(state) {
       state.isSentenceError = true;
@@ -168,7 +168,6 @@ export default {
       state.selectedLevel = 1;
       state.selectedRound = 1;
       state.roundCount = 25;
-      state.sentencePerRound = 10;
       state.completeRounds = [];
       state.isAutoSpeech = true;
       state.isTranslate = true;
@@ -194,23 +193,23 @@ export default {
       state.sentenceArray = [];
       state.isPictureOff = false;
       state.isStartScreen = true;
+      state.isMobile = false;
     },
   },
   actions: {
     async getWords({ state, commit }) {
-      const { selectedLevel, selectedRound, sentencePerRound } = state;
+      const { selectedLevel, selectedRound } = state;
       const words = await getWordsByLevelAndRound({
         level: selectedLevel,
         round: selectedRound,
-        sentencePerRound,
       });
       commit('setWords', words);
     },
     async getRoundsCount({ state, commit }) {
-      const { selectedLevel, sentencePerRound } = state;
+      const { selectedLevel } = state;
       const group = selectedLevel - 1;
       const response = await fetch(
-        `${apiAddress}words/count?group=${group}&wordsPerExampleSentenceLTE=10&wordsPerPage=${sentencePerRound}`,
+        `${apiAddress}words/count?group=${group}&wordsPerExampleSentenceLTE=10&wordsPerPage=10`,
         {
           method: 'GET',
           withCredentials: true,

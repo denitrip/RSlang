@@ -55,6 +55,12 @@ export default {
   &_playing {
     color: $color-dodger-blue;
   }
+
+  &:disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.4;
+  }
 }
 
 @media (hover: hover) {
