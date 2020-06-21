@@ -1,17 +1,23 @@
 <template>
   <div class="wrapper">
     <header>
-      <!-- TODO links -->
-      <!-- <router-link to="/welcome"> -->
-      <img src="~@/assets/images/Logo.png" alt="logo" class="logo" width="118" height="72" />
-      <!-- </router-link> -->
+      <router-link :to="routerConsts.welcomePage.path">
+        <img src="~@/assets/images/Logo.png" alt="logo" class="logo" width="118" height="72" />
+      </router-link>
       <ul class="header_buttons">
-        <li v-if="isWelcomePage || isSignUp" class="header_buttons-button button button--bordered">
-          Log In
-        </li>
-        <li v-if="isWelcomePage || isLogIn" class="header_buttons-button button button--filled">
-          Sign Up
-        </li>
+        <router-link :to="routerConsts.loginPage.path">
+          <li
+            v-if="isWelcomePage || isSignUp"
+            class="header_buttons-button button button--bordered"
+          >
+            Log In
+          </li>
+        </router-link>
+        <router-link :to="routerConsts.signUpPage.path">
+          <li v-if="isWelcomePage || isLogIn" class="header_buttons-button button button--filled">
+            Sign Up
+          </li>
+        </router-link>
       </ul>
     </header>
     <main v-if="isWelcomePage" class="main-welcome">
@@ -32,14 +38,18 @@
       <p class="title">
         <span class="text-colored">We miss you,</span> are you ready to continue training?
       </p>
-      <img src="~@/assets/images/login-bg.png" alt class="main-image" />
+      <div class="form-wrapper form-wrapper--login">
+        <loginForm />
+      </div>
     </main>
     <main v-if="isSignUp" class="main-signup">
       <p class="title">
         Let’s start our jorney with
         <span class="text-colored">RSlang!</span>
       </p>
-      <img src="~@/assets/images/signin-bg.png" alt class="main-image" />
+      <div class="form-wrapper form-wrapper--signup">
+        <loginForm />
+      </div>
     </main>
     <footer>
       <ul class="footer_features">
@@ -66,22 +76,31 @@
 
 <script>
 import routerConsts from '../router/routerConsts';
+import loginForm from '../components/LoginForm.vue';
 
 export default {
   name: 'LoginPage',
-  components: {},
+  components: { loginForm },
   data() {
-    return {};
+    return {
+      currentRoute: this.$router.currentRoute.name,
+      routerConsts,
+    };
   },
   computed: {
     isLogIn() {
-      return this.$router.currentRoute.name === routerConsts.loginPage.name;
+      return this.currentRoute === routerConsts.loginPage.name;
     },
     isSignUp() {
-      return this.$router.currentRoute.name === routerConsts.signUpPage.name;
+      return this.currentRoute === routerConsts.signUpPage.name;
     },
     isWelcomePage() {
-      return this.$router.currentRoute.name === routerConsts.welcomePage.name;
+      return this.currentRoute === routerConsts.welcomePage.name;
+    },
+  },
+  watch: {
+    $route(to) {
+      this.currentRoute = to.name;
     },
   },
 };
@@ -122,6 +141,10 @@ $mobile-small-width: 320px;
   }
 }
 
+a:hover {
+  text-decoration: none;
+}
+
 main {
   @extend %flex-row;
 
@@ -135,17 +158,35 @@ main {
   }
 }
 
-.main-image {
-  width: 45vw;
+.form-wrapper {
+  @extend %flex-row;
+
+  flex-grow: 20;
+  align-items: center;
+  align-self: stretch;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 
   @media screen and (max-width: $tablet-width) {
+    align-self: auto;
     width: 78vw;
+    padding: 10px;
     margin-top: 10px;
   }
 
   @media screen and (max-width: $mobile-big-width) {
-    width: 70vw;
+    width: 96vw;
   }
+}
+
+.form-wrapper--login {
+  background-image: url('~@/assets/images/login-bg.png');
+}
+
+.form-wrapper--signup {
+  background-image: url('~@/assets/images/signup-bg.png');
 }
 
 h1 {
@@ -165,9 +206,9 @@ h1 {
 header {
   @extend %flex-row;
 
-  flex-grow: 1;
   align-items: center;
   justify-content: space-between;
+  margin-top: 10px;
 }
 
 .button {
@@ -211,6 +252,15 @@ header {
   background-color: $color-cornflower-blue;
 }
 
+.main-image {
+  width: 45vw;
+  margin-top: 20px;
+
+  @media screen and (max-width: $mobile-big-width) {
+    display: none;
+  }
+}
+
 .header_buttons,
 .main_buttons {
   @extend %flex-row;
@@ -245,11 +295,13 @@ header {
 }
 
 .title {
+  width: 35vw;
   margin: 8px 0;
   font-size: 56px;
   font-weight: 900;
 
   @media screen and (max-width: $tablet-width) {
+    width: 94vw;
     font-size: 38px;
   }
 
@@ -275,6 +327,10 @@ header {
   padding: 0;
   margin: 30px 0;
   list-style-type: none;
+
+  @media screen and (max-width: $mobile-big-width) {
+    display: none;
+  }
 }
 
 .footer_features-feature {
