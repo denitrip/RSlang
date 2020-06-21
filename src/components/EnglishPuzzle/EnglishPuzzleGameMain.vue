@@ -1,7 +1,8 @@
 <template>
   <div class="game__main">
+    <p class="sentence-count" v-if="isMobile">{{ sentenceNumber + 1 }} sentence</p>
     <div class="game__board">
-      <div class="board__numbers" v-if="sentencePerRound === 10">
+      <div class="board__numbers" v-if="!isMobile">
         <div class="number" v-for="i in 10" :key="`${i}number`">
           {{ i }}
         </div>
@@ -13,6 +14,42 @@
           key="board__picture_img"
         >
           <img class="board__picture_img" :src="picture.imageSrc" :alt="picture.description" />
+        </div>
+        <div class="board__picture" v-else-if="isMobile" key="board__picture_mobile">
+          <div class="attempt__sentence">
+            <div
+              class="attempt__word"
+              :class="[
+                {
+                  attempt__word_error:
+                    correctAnswer[sentenceNumber][i] &&
+                    item.word !== correctAnswer[sentenceNumber][i].word &&
+                    isCheck,
+                },
+                {
+                  attempt__word_success:
+                    (correctAnswer[sentenceNumber][i] &&
+                      item.word === correctAnswer[sentenceNumber][i].word &&
+                      isCheck) ||
+                    isSentenceComplete,
+                },
+                {
+                  attempt__word_puzzle: !isPictureOff,
+                },
+              ]"
+              v-for="(item, i) in attemptWordsArray[sentenceNumber]"
+              :key="`${i}-${sentenceNumber}word-attempt_mobile`"
+              :draggable="!!item.word"
+              :data-index="i"
+              :data-row="sentenceNumber"
+              @click="onClickAttemptWord"
+              @dragstart="dragStart"
+              @drop="drop"
+              @dragover="allowDrop"
+            >
+              {{ item.word }}
+            </div>
+          </div>
         </div>
         <div v-else class="board__picture" key="board__picture">
           <div class="attempt__sentence" v-for="num in getSentenceNumber" :key="num">
@@ -132,7 +169,7 @@ export default {
       'isSentenceComplete',
       'isImage',
       'isPictureOff',
-      'sentencePerRound',
+      'isMobile',
     ]),
     ...mapGetters('EnglishPuzzle', ['isEndRound']),
 
@@ -348,6 +385,10 @@ export default {
   }
 }
 
+.sentence-count {
+  font-size: 26px;
+}
+
 .attempt__word,
 .word {
   position: relative;
@@ -414,6 +455,7 @@ export default {
   .word {
     width: 100%;
     height: 50px;
+    font-size: 36px;
   }
 
   .attempt__sentence {

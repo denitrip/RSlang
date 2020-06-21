@@ -35,4 +35,10 @@ export default {
 .game__wrapper {
   padding: 40px 0;
 }
+
+@media screen and (max-width: $puzzle-mobile-size) {
+  .game__wrapper {
+    padding: 40px 10px;
+  }
+}
 </style>
