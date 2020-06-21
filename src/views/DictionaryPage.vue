@@ -124,12 +124,21 @@ export default {
   },
   methods: {
     toogleTab(tab) {
-      // eslint-disable-next-line no-unused-expressions
-      tab === 'lern' ? (this.isLernTab = true) : (this.isLernTab = false);
-      // eslint-disable-next-line no-unused-expressions
-      tab === 'difficult' ? (this.isDifficultTab = true) : (this.isDifficultTab = false);
-      // eslint-disable-next-line no-unused-expressions
-      tab === 'deleted' ? (this.isDeletedTab = true) : (this.isDeletedTab = false);
+      if (tab === 'lern') {
+        this.isLernTab = true;
+      } else {
+        this.isLernTab = false;
+      }
+      if (tab === 'difficult') {
+        this.isDifficultTab = true;
+      } else {
+        this.isDifficultTab = false;
+      }
+      if (tab === 'deleted') {
+        this.isDeletedTab = true;
+      } else {
+        this.isDeletedTab = false;
+      }
     },
   },
 };
