@@ -133,7 +133,7 @@ export default {
   padding: 35px 0 45px 0;
   background-color: $color-ghost;
 
-  @include media-mobile {
+  @include media-tablet {
     padding: 10px 0 15px 0;
   }
 
@@ -153,7 +153,7 @@ export default {
     background-color: $color-white;
     border-radius: 25px;
 
-    @include media-mobile {
+    @include media-tablet {
       display: flex;
       flex-direction: column;
       width: 250px;
@@ -164,7 +164,7 @@ export default {
   &__img-small {
     display: none;
 
-    @include media-mobile {
+    @include media-tablet {
       display: block;
       width: 250px;
       height: 151px;
@@ -175,7 +175,7 @@ export default {
     width: 187px;
     height: 275px;
 
-    @include media-mobile {
+    @include media-tablet {
       display: none;
     }
   }
@@ -186,7 +186,7 @@ export default {
     margin-top: 35px;
     margin-left: 24px;
 
-    @include media-mobile {
+    @include media-tablet {
       width: auto;
       height: 199px;
       margin: 16px 17px 8px 17px;
@@ -198,7 +198,7 @@ export default {
 
     @include font($size: 18px, $height: 22px);
 
-    @include media-mobile {
+    @include media-tablet {
       margin-bottom: 4px;
 
       @include font($size: 18px, $height: 22px);
@@ -212,7 +212,7 @@ export default {
 
     color: $color-ghost;
 
-    @include media-mobile {
+    @include media-tablet {
       margin-bottom: 8px;
 
       @include font($size: 16px, $height: 18px, $weight: 300);
@@ -222,7 +222,7 @@ export default {
   &__my-work {
     margin-bottom: 17px;
 
-    @include media-mobile {
+    @include media-tablet {
       margin-bottom: 8px;
 
       @include font($size: 14px, $height: 16px, $weight: normal);
@@ -230,7 +230,7 @@ export default {
   }
 
   &_contacts {
-    @include media-mobile {
+    @include media-tablet {
       margin-bottom: 5px;
     }
   }
@@ -250,7 +250,7 @@ export default {
   cursor: pointer;
   border-radius: 25px;
 
-  @include media-mobile {
+  @include media-tablet {
     width: 30px;
     height: 30px;
   }
