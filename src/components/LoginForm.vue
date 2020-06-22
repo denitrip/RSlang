@@ -108,7 +108,7 @@
     </div>
     <div class="signup wrap" v-else>
       <label for="signup">Don't have account?</label>
-      <router-link :to="{ path: routerConsts.loginPage.path, query: { signUp: true } }">
+      <router-link :to="routerConsts.signUpPage.path">
         Sign Up
       </router-link>
     </div>
@@ -142,11 +142,12 @@ export default {
       repeatPassword: new ValidField(null),
       emailRegex: /(^$|^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$)/,
       passwordRegex: /(?=.*[0-9])(?=.*[-+_@$!%*?&#.,;:[\]{}])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z-+_@$!%*?&#.,;:[\]{}]{8,}/,
+      currentRoute: this.$router.currentRoute.name,
     };
   },
   computed: {
     isRegisterPage() {
-      return !!this.$route.query.signUp;
+      return this.currentRoute === routerConsts.signUpPage.name;
     },
     isRequiredEmail() {
       return this.isRequired(this.email.title);
@@ -249,6 +250,11 @@ export default {
           this.isAuthLoading = false;
         }
       }
+    },
+  },
+  watch: {
+    $route(to) {
+      this.currentRoute = to.name;
     },
   },
 };
