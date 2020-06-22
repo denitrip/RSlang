@@ -8,6 +8,7 @@ import OurTeamPage from '@/views/OurTeamPage.vue';
 import DictionaryPage from '@/views/DictionaryPage.vue';
 import SettingPage from '@/views/SettingPage.vue';
 import LearningPage from '@/views/LearningPage.vue';
+import Statistic from '@/views/Statistic.vue';
 import EnglishPuzzlePage from '@/views/EnglishPuzzle/EnglishPuzzlePage.vue';
 import EnglishPuzzleStatisticPage from '@/views/EnglishPuzzle/EnglishPuzzleStatisticPage.vue';
 import EnglishPuzzleStats from '@/components/EnglishPuzzle/EnglishPuzzleStatistic.vue';
@@ -50,6 +51,11 @@ const routes = [
         path: routerConsts.englishPuzzlePage.path,
         name: routerConsts.englishPuzzlePage.name,
         component: EnglishPuzzlePage,
+      },
+      {
+        path: routerConsts.statistic.path,
+        name: routerConsts.statistic.name,
+        component: Statistic,
       },
       {
         path: routerConsts.EnglishPuzzleStatisticPage.path,
