@@ -275,6 +275,13 @@ export default {
   .menu__navigation {
     margin-top: 10px;
   }
+
+  .menu-open {
+    position: fixed;
+    left: 0;
+    z-index: 2;
+    width: 100vw;
+  }
 }
 
 @media (max-width: 414px) {
