@@ -49,7 +49,8 @@ export default {
   color: $color-white;
   text-align: center;
   text-shadow: 3px 3px 2px $color-black;
-  background-image: url('~@/assets/img/savannah/start-screen.jpg');
+  background-image: linear-gradient($overlay-color, $overlay-color),
+    url('~@/assets/img/savannah/start-screen.jpg');
   background-repeat: no-repeat;
   background-size: cover;
 }

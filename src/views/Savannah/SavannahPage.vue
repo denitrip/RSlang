@@ -24,6 +24,9 @@ export default {
     SavannahStartScreen,
     SavannahGame,
   },
+  destroyed() {
+    this.resetGame();
+  },
   data() {
     return {
       isStartLoading: false,
@@ -34,12 +37,13 @@ export default {
   },
   methods: {
     ...mapActions('Error', ['setError']),
-    ...mapMutations('Savannah', ['setIsStartScreen']),
+    ...mapActions('Savannah', ['startGame']),
+    ...mapMutations('Savannah', ['setIsStartScreen', 'resetGame']),
 
     async onStartGame() {
       this.isStartLoading = true;
       try {
-        console.log('start');
+        await this.startGame();
         this.setIsStartScreen(false);
       } catch (error) {
         this.setError(error.message);
