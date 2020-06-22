@@ -48,8 +48,6 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
-  // width: calc(100% - 60px);
-  // height: 100%;
   height: calc(100vh - 86px);
   padding-top: 24px;
   overflow-y: auto;

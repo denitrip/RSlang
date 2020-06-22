@@ -93,8 +93,8 @@ export default {
           },
         },
         {
-          name: routerConsts.statistic.name,
-          route: routerConsts.statistic.path,
+          name: routerConsts.statisticPage.name,
+          route: routerConsts.statisticPage.path,
           icon: {
             name: 'BarChart',
             viewbox: '0 0 480 480',
