@@ -144,7 +144,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 $line-top-position: 70px;
 
 .dictionary {
