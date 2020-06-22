@@ -1,6 +1,6 @@
 <template>
-  <div class="wrapper-statistic">
-    <div class="statistic">
+  <div class="statistic">
+    <div class="statistic__wrapper">
       <canvas ref="canvas"></canvas>
     </div>
   </div>
@@ -11,7 +11,7 @@ import { Line } from 'vue-chartjs';
 import { mapState } from 'vuex';
 
 export default {
-  name: 'statistic',
+  name: 'statisticPage',
   computed: {
     ...mapState('LongTermStatistic', ['longTermStatistic']),
   },
@@ -42,29 +42,24 @@ export default {
       },
     );
   },
-  methods: {
-    countWord() {
-      console.log(this.longTermStatistic.reduce((sum, el) => sum + el.value, 0));
-    },
-  },
 };
 </script>
 
 <style lang="scss" scoped>
-.wrapper-statistic {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  background-color: $color-ghost;
-}
-
 .statistic {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80%;
-  height: 50%;
-  margin: 0;
+  height: 100%;
+  margin: auto 0;
+  background-color: $color-ghost;
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80%;
+    height: 50%;
+  }
 }
 </style>
