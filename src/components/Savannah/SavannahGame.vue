@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <div class="game__wrapper">
     <component :is="props.components.SavannahGameMenu"></component>
     <component :is="props.components.SavannahGameMain"></component>
