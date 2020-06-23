@@ -3,7 +3,7 @@
     <div class="menu__logo" v-if="isOpen">RSlang</div>
     <div class="menu__burger" v-if="!isOpen">
       <div class="menu__burger-wrapper" @click="openMenu">
-        <IconBase iconName="burger" width="34px" height="34px" viewBox="0 0 32 28">
+        <IconBase iconName="Open menu" width="34px" height="34px" viewBox="0 0 32 28">
           <IconBurger />
         </IconBase>
       </div>
@@ -16,22 +16,17 @@
         :to="item.route"
         active-class="active-link"
       >
-        <IconBase
-          :iconName="item.icon.name"
-          width="34px"
-          height="34px"
-          :viewBox="item.icon.viewbox"
-        >
+        <IconBase :iconName="item.name" width="34px" height="34px" :viewBox="item.icon.viewbox">
           <component :is="`Icon${item.icon.name}`" />
         </IconBase>
         <p v-if="isOpen">{{ item.name }}</p>
       </router-link>
     </nav>
-    <div class="menu__switch" @click="closeMenu" v-if="isOpen">
+    <div class="menu__switch" @click="closeMenu" v-if="isOpen" title="Hide menu">
       <img class="menu__arrowHide" src="../assets/img/sideMenu/arrowHide.svg" alt="" />
     </div>
-    <div class="menu__logout">
-      <IconBase iconName="log out" width="34px" height="34px" viewBox="0 0 36 26">
+    <div class="menu__logout" @click="onLogout">
+      <IconBase iconName="Log Out" width="34px" height="34px" viewBox="0 0 36 26">
         <IconLogOut />
       </IconBase>
       <p v-if="isOpen">Log Out</p>
@@ -50,6 +45,7 @@ import IconGroupOfMen from '@/components/icons/IconGroupOfMen.vue';
 import IconSettings from '@/components/icons/IconSettings.vue';
 import IconAudiobook from '@/components/icons/IconAudiobook.vue';
 import routerConsts from '@/router/routerConsts';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'SideMenu',
@@ -120,11 +116,17 @@ export default {
     };
   },
   methods: {
+    ...mapActions('Auth', ['logoutUser']),
+
     closeMenu() {
       this.isOpen = false;
     },
     openMenu() {
       this.isOpen = true;
+    },
+    onLogout() {
+      this.logoutUser();
+      this.$router.push('/welcome');
     },
   },
 };
@@ -133,6 +135,14 @@ export default {
 <style scoped lang="scss">
 .menu__arrowHide {
   transition: 0.5s;
+}
+
+.active-link {
+  g {
+    color: $color-golden-dream;
+  }
+
+  background: $color-prussian-blue;
 }
 
 .menu {
@@ -251,14 +261,6 @@ export default {
   .menu__link {
     margin-left: 0;
   }
-}
-
-.active-link {
-  g {
-    color: $color-golden-dream;
-  }
-
-  background: $color-prussian-blue;
 }
 
 @media (max-width: 1680px) {
