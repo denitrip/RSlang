@@ -138,10 +138,7 @@
 </template>
 
 <script>
-// eslint-disable-next-line import/no-duplicates
-import { mapMutations } from 'vuex';
-// eslint-disable-next-line import/no-duplicates
-import { mapActions } from 'vuex';
+import { mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'SettingPage',
@@ -201,12 +198,6 @@ export default {
       this.setSettings({
         settings,
       });
-      // eslint-disable-next-line no-underscore-dangle
-      // this._data.forEach((element) => {
-      //   console.log(element);
-      // });
-      // eslint-disable-next-line no-underscore-dangle
-      // console.log(settings);
       this.sendSettings();
     },
   },
