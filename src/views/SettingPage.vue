@@ -244,7 +244,7 @@ export default {
   }
 
   &__submenu {
-    margin-right: 112px;
+    margin-right: 6vw;
     color: $color-pickled-bluewood;
   }
 
@@ -256,7 +256,6 @@ export default {
 
     button {
       padding: 0;
-      padding-bottom: 4px;
     }
 
     .counter__control {
@@ -286,7 +285,7 @@ export default {
   }
 
   &__display {
-    margin-right: 227px;
+    margin-right: 10vw;
   }
 
   &__checkbox {
