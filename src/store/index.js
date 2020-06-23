@@ -5,6 +5,9 @@ import Data from '@/store/modules/data';
 import Error from '@/store/modules/error';
 import Settings from '@/store/modules/settings';
 import EnglishPuzzle from '@/store/modules/englishPuzzle';
+import Savannah from '@/store/modules/savannah';
+import LongTermStatistic from '@/store/modules/longTermStatistic';
+import Learning from '@/store/modules/learning';
 
 Vue.use(Vuex);
 
@@ -15,5 +18,8 @@ export default new Vuex.Store({
     Error,
     Settings,
     EnglishPuzzle,
+    Savannah,
+    LongTermStatistic,
+    Learning,
   },
 });

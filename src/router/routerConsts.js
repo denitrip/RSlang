@@ -31,7 +31,7 @@ export default {
     path: '/dictionary',
     name: 'Dictionary',
   },
-  statistic: {
+  statisticPage: {
     path: '/statistic',
     name: 'Statistic',
   },
@@ -54,5 +54,9 @@ export default {
   englishPuzzleStatsDetailed: {
     path: '/english-puzzle-statistic/detail',
     name: 'englishPuzzleStatsDetail',
+  },
+  savannahPage: {
+    path: '/savannah',
+    name: 'savannah',
   },
 };

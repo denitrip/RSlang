@@ -1,5 +1,5 @@
 <template>
-  <div class="learning">
+  <div class="learning" v-if="isMainPage">
     <div class="learning__header">
       <h1><span>Hello.</span> Let’s start learning!</h1>
       <p>
@@ -21,7 +21,9 @@
       <div class="learning__category__card card-wrap">
         <h4>New words</h4>
         <p>Click here to learn new words for today.</p>
-        <button class="btn btn-primary btn-rs">Let’s train!</button>
+        <button class="btn btn-primary btn-rs" @click="trainNewWords" :disabled="isNewWordsLoading">
+          Let’s train! <AppSpinner v-if="isNewWordsLoading"></AppSpinner>
+        </button>
       </div>
 
       <div class="learning__category__card card-wrap">
@@ -37,10 +39,13 @@
       </div>
     </div>
   </div>
+  <learning-words v-else></learning-words>
 </template>
 
 <script>
-import LearningCard from '../components/LearningCard.vue';
+import AppSpinner from '@/components/AppSpinner.vue';
+import LearningWords from '@/components/LearningWords.vue';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'LearningPage',
@@ -48,11 +53,28 @@ export default {
     return {
       learnedCards: 32,
       maxCards: 100,
+      isMainPage: true,
+      isNewWordsLoading: false,
     };
   },
   components: {
-    // eslint-disable-next-line vue/no-unused-components
-    LearningCard,
+    LearningWords,
+    AppSpinner,
+  },
+  methods: {
+    ...mapActions('Learning', ['getNewWords']),
+    ...mapActions('Error', ['setError']),
+    async trainNewWords() {
+      this.isNewWordsLoading = true;
+      try {
+        await this.getNewWords();
+        this.isMainPage = false;
+      } catch (error) {
+        this.setError(error.message);
+      } finally {
+        this.isNewWordsLoading = false;
+      }
+    },
   },
 };
 </script>

@@ -126,11 +126,6 @@ export default {
   components: {
     AppSpinner,
   },
-  created() {
-    if (this.$route.query.loginError) {
-      this.setError('Please log in to access this page.');
-    }
-  },
   data() {
     return {
       routerConsts,
@@ -264,6 +259,7 @@ export default {
 .login {
   display: flex;
   flex-direction: column;
+  width: 100%;
   max-width: 429px;
   padding: 60px 57px;
   line-height: 1;
