@@ -22,7 +22,7 @@
               @click="minusWordCount"
               >-</b-button
             >
-            <div class="counter__input">{{ wordCountDay }}</div>
+            <div class="counter__input">{{ wordsPerDay }}</div>
             <b-button
               class="counter__control counter__plus"
               variant="primary"
@@ -138,14 +138,17 @@
 </template>
 
 <script>
+// eslint-disable-next-line import/no-duplicates
 import { mapMutations } from 'vuex';
+// eslint-disable-next-line import/no-duplicates
+import { mapActions } from 'vuex';
 
 export default {
   name: 'SettingPage',
   data() {
     return {
       isAutoVoice: true,
-      wordCountDay: 5,
+      wordsPerDay: 5,
       maxCardDay: 5,
       isSayVisible: true,
       isDificultVisible: true,
@@ -162,25 +165,26 @@ export default {
   },
   methods: {
     ...mapMutations('Settings', ['setSettings']),
+    ...mapActions('Settings', ['sendSettings']),
 
     plusWordCount() {
-      this.wordCountDay += 1;
+      this.wordsPerDay += 1;
     },
     plusCardCount() {
       this.maxCardDay += 1;
     },
     minusWordCount() {
-      if (this.wordCountDay === 0) return;
-      this.wordCountDay -= 1;
+      if (this.wordsPerDay === 0) return;
+      this.wordsPerDay -= 1;
     },
     minusCardCount() {
       if (this.maxCardDay === 0) return;
       this.maxCardDay -= 1;
     },
     saveSettings() {
-      this.setSettings({
+      const settings = {
         isAutoVoice: this.isAutoVoice,
-        wordCountDay: this.wordCountDay,
+        wordsPerDay: this.wordsPerDay,
         maxCardDay: this.maxCardDay,
         isSayVisible: this.isSayVisible,
         isDificultVisible: this.isDificultVisible,
@@ -193,7 +197,17 @@ export default {
         isExampleVisible: this.isExampleVisible,
         isTranscriptionVisible: this.isTranscriptionVisible,
         isAssociationVisible: this.isAssociationVisible,
+      };
+      this.setSettings({
+        settings,
       });
+      // eslint-disable-next-line no-underscore-dangle
+      // this._data.forEach((element) => {
+      //   console.log(element);
+      // });
+      // eslint-disable-next-line no-underscore-dangle
+      // console.log(settings);
+      this.sendSettings();
     },
   },
 };
