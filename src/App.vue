@@ -11,6 +11,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import getLocalStorageData from '@/helpers/localStorage.helper';
 
 export default {
   name: 'App',
@@ -21,8 +22,7 @@ export default {
     ...mapState('Error', ['error']),
   },
   created() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    const email = JSON.parse(localStorage.getItem('email'));
+    const { user, email } = getLocalStorageData();
     if (user) {
       this.setUser(user);
     }

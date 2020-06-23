@@ -1,5 +1,6 @@
 import User from '@/helpers/auth.helper';
 import { application, apiAddress } from '@/helpers/constants.helper';
+import { setLocalStorageUserData, clearStorage } from '@/helpers/localStorage.helper';
 
 export default {
   namespaced: true,
@@ -39,8 +40,7 @@ export default {
         const newUser = new User(user.userId, user.token);
         commit('setUser', newUser);
         commit('setEmail', email);
-        localStorage.setItem('user', JSON.stringify(newUser));
-        localStorage.setItem('email', JSON.stringify(email));
+        setLocalStorageUserData(newUser, email);
       } else {
         throw new Error('Incorrect e-mail or password');
       }
@@ -66,7 +66,7 @@ export default {
     logoutUser({ commit }) {
       commit('setUser', null);
       commit('setEmail', '');
-      localStorage.clear();
+      clearStorage();
     },
   },
   getters: {
