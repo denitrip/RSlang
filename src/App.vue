@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: 'App',
@@ -19,6 +19,19 @@ export default {
   },
   computed: {
     ...mapState('Error', ['error']),
+  },
+  created() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const email = JSON.parse(localStorage.getItem('email'));
+    if (user) {
+      this.setUser(user);
+    }
+    if (email) {
+      this.setEmail(email);
+    }
+  },
+  methods: {
+    ...mapMutations('Auth', ['setUser', 'setEmail']),
   },
 };
 </script>

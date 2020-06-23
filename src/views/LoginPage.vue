@@ -75,8 +75,9 @@
 </template>
 
 <script>
-import routerConsts from '../router/routerConsts';
-import loginForm from '../components/LoginForm.vue';
+import { mapActions } from 'vuex';
+import routerConsts from '@/router/routerConsts';
+import loginForm from '@/components/LoginForm.vue';
 
 export default {
   name: 'LoginPage',
@@ -103,6 +104,14 @@ export default {
       this.currentRoute = to.name;
     },
   },
+  created() {
+    if (this.$route.query.loginError) {
+      this.setError('Please log in to access this page.');
+    }
+  },
+  methods: {
+    ...mapActions('Error', ['setError']),
+  },
 };
 </script>
 
@@ -117,9 +126,6 @@ export default {
   flex-direction: row;
 }
 
-$color-primary: #407df4;
-$color-primary-hover: #709ef7;
-$color-secondary: #f1e134;
 $content-width: 1197px;
 $tablet-width: 768px;
 $mobile-big-width: 514px;
@@ -164,7 +170,7 @@ main {
   flex-grow: 20;
   align-items: center;
   align-self: stretch;
-  justify-content: center;
+  justify-content: flex-end;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -234,7 +240,7 @@ header {
 }
 
 .button--bordered {
-  color: $color-primary;
+  color: $color-dodger-blue;
   border: 1px solid $color-dodger-blue;
 }
 

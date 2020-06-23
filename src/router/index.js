@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import AuthGuard from '@/router/auth-guard';
 import routerConsts from '@/router/routerConsts';
 import HomePage from '@/views/HomePage.vue';
 import LoginPage from '@/views/LoginPage.vue';
@@ -20,55 +21,66 @@ const routes = [
   {
     path: routerConsts.homePage.path,
     name: routerConsts.homePage.name,
+    beforeEnter: AuthGuard,
     component: HomePage,
     children: [
       {
         path: routerConsts.miniGamesPage.path,
         name: routerConsts.miniGamesPage.name,
+        beforeEnter: AuthGuard,
         component: MiniGamesPage,
       },
       {
         path: routerConsts.ourTeamPage.path,
         name: routerConsts.ourTeamPage.name,
+        beforeEnter: AuthGuard,
         component: OurTeamPage,
       },
       {
         path: routerConsts.dictionaryPage.path,
         name: routerConsts.dictionaryPage.name,
+        beforeEnter: AuthGuard,
         component: DictionaryPage,
       },
       {
         path: routerConsts.learningPage.path,
         name: routerConsts.learningPage.name,
+        beforeEnter: AuthGuard,
         component: LearningPage,
       },
       {
         path: routerConsts.settings.path,
         name: routerConsts.settings.name,
+        beforeEnter: AuthGuard,
         component: SettingPage,
       },
       {
         path: routerConsts.englishPuzzlePage.path,
         name: routerConsts.englishPuzzlePage.name,
+        beforeEnter: AuthGuard,
         component: EnglishPuzzlePage,
       },
       {
         path: routerConsts.statisticPage.path,
         name: routerConsts.statisticPage.name,
+        beforeEnter: AuthGuard,
         component: StatisticPage,
       },
       {
         path: routerConsts.EnglishPuzzleStatisticPage.path,
         component: EnglishPuzzleStatisticPage,
+        beforeEnter: AuthGuard,
         children: [
           {
             path: routerConsts.englishPuzzleStats.path,
             name: routerConsts.englishPuzzleStats.name,
+            beforeEnter: AuthGuard,
             component: EnglishPuzzleStats,
           },
           {
             path: routerConsts.englishPuzzleStatsDetailed.path,
             name: routerConsts.englishPuzzleStatsDetailed.name,
+            beforeEnter: AuthGuard,
             component: EnglishPuzzleStatsDetail,
           },
         ],

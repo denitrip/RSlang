@@ -36,8 +36,11 @@ export default {
       });
       if (response.ok) {
         const user = await response.json();
-        commit('setUser', new User(user.userId, user.token));
+        const newUser = new User(user.userId, user.token);
+        commit('setUser', newUser);
         commit('setEmail', email);
+        localStorage.setItem('user', JSON.stringify(newUser));
+        localStorage.setItem('email', JSON.stringify(email));
       } else {
         throw new Error('Incorrect e-mail or password');
       }
@@ -63,6 +66,7 @@ export default {
     logoutUser({ commit }) {
       commit('setUser', null);
       commit('setEmail', '');
+      localStorage.clear();
     },
   },
   getters: {
