@@ -14,6 +14,7 @@ import EnglishPuzzlePage from '@/views/EnglishPuzzle/EnglishPuzzlePage.vue';
 import EnglishPuzzleStatisticPage from '@/views/EnglishPuzzle/EnglishPuzzleStatisticPage.vue';
 import EnglishPuzzleStats from '@/components/EnglishPuzzle/EnglishPuzzleStatistic.vue';
 import EnglishPuzzleStatsDetail from '@/components/EnglishPuzzle/EnglishPuzzleStatisticDetail.vue';
+import SavannahPage from '@/views/Savannah/SavannahPage.vue';
 
 Vue.use(VueRouter);
 
@@ -84,6 +85,11 @@ const routes = [
             component: EnglishPuzzleStatsDetail,
           },
         ],
+      },
+      {
+        path: routerConsts.savannahPage.path,
+        name: routerConsts.savannahPage.name,
+        component: SavannahPage,
       },
     ],
   },

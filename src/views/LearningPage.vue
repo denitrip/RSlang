@@ -1,6 +1,12 @@
 <template>
   <div class="learning__wrapper">
-    <learning-card  englishWord="water" russianWord="вода" transcription="[ˈˈwɔtər]" leadingQuestion="Drink to quench your thirst" sentanceWithWord="I like to drink water"></learning-card>
+    <learning-card
+      englishWord="water"
+      russianWord="вода"
+      transcription="[ˈˈwɔtər]"
+      leadingQuestion="Drink to quench your thirst"
+      sentanceWithWord="I like to drink water"
+    ></learning-card>
   </div>
 </template>
 

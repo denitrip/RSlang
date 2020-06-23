@@ -45,7 +45,7 @@
 <script>
 import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
 import { getPicture } from '@/helpers/englishPuzzle.helper';
-import { audioSrc } from '@/helpers/constants.helper';
+import { dataSrc } from '@/helpers/constants.helper';
 import AppSpinner from '@/components/AppSpinner.vue';
 import IconBase from '@/components/IconBase.vue';
 import IconVolume from '@/components/icons/IconVolume.vue';
@@ -89,7 +89,7 @@ export default {
     ...mapActions('Error', ['setError']),
 
     onPlayAudio(src) {
-      const audio = new Audio(`${audioSrc}${src}`);
+      const audio = new Audio(`${dataSrc}${src}`);
       audio.play();
     },
     onStatistic() {
