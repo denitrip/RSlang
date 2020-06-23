@@ -93,8 +93,8 @@ export default {
           },
         },
         {
-          name: routerConsts.statistic.name,
-          route: routerConsts.statistic.path,
+          name: routerConsts.statisticPage.name,
+          route: routerConsts.statisticPage.path,
           icon: {
             name: 'BarChart',
             viewbox: '0 0 480 480',
@@ -274,6 +274,13 @@ export default {
 @media (max-width: 768px) {
   .menu__navigation {
     margin-top: 10px;
+  }
+
+  .menu-open {
+    position: fixed;
+    left: 0;
+    z-index: 2;
+    width: 100vw;
   }
 }
 

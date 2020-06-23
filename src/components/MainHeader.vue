@@ -1,7 +1,7 @@
 <template>
   <header class="header-container">
     <div class="container-label">
-      <h2>{{ currentRoute }}</h2>
+      {{ currentRoute }}
     </div>
     <div class="user-section">
       <img src="../assets/img/header/notifications_image.png" alt="#" />
@@ -47,6 +47,11 @@ export default {
   justify-content: space-between;
   height: 86px;
   margin: 0 60px 0 75px;
+
+  @include media-tablet {
+    justify-content: center;
+    margin: 0;
+  }
 }
 
 img {
@@ -59,12 +64,22 @@ img {
   margin-left: 0;
 }
 
-.container-label h2 {
+.container-label {
   display: inline-block;
   padding: 0;
   margin: 0;
   font-weight: 900;
   color: $color-gigas;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 44px;
+
+  @include media-tablet {
+    justify-content: center;
+    margin: 0;
+    font-size: 24px;
+    line-height: 44px;
+  }
 }
 
 .user-section {
@@ -79,6 +94,10 @@ img {
   align-items: center;
   width: max-content;
   margin-left: 16px;
+
+  @include media-mobile {
+    display: none;
+  }
 }
 
 .user-level {
