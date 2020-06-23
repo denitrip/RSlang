@@ -7,8 +7,35 @@
         for example, <b>“New words”</b>, <b>“Repetition”</b> or <b>“All words”</b>. Good luck!
       </p>
     </div>
-    <div class="learning__today"></div>
-    <div class="learning__category"></div>
+    <div class="learning__today card-wrap">
+      <h3>Today learning</h3>
+      <div class="learning__today__lerned">
+        <div class="learning__today__lerned-text">
+          Today lerned: <span>{{ learnedCards }}</span> from <span>{{ maxCards }}</span>
+        </div>
+        <b-progress height="10px" :value="learnedCards" :max="maxCards" class="mb-3"></b-progress>
+      </div>
+      <button class="btn btn-primary btn-rs">Start learning</button>
+    </div>
+    <div class="learning__category">
+      <div class="learning__category__card card-wrap">
+        <h4>New words</h4>
+        <p>Click here to learn new words for today.</p>
+        <button class="btn btn-primary btn-rs">Let’s train!</button>
+      </div>
+
+      <div class="learning__category__card card-wrap">
+        <h4>Repeat</h4>
+        <p>Click here to repeat the learned words.</p>
+        <button class="btn btn-primary btn-rs">Let’s train!</button>
+      </div>
+
+      <div class="learning__category__card card-wrap">
+        <h4>All words</h4>
+        <p>Here are all the words for today learning.</p>
+        <button class="btn btn-primary btn-rs">Let’s train!</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -17,6 +44,12 @@ import LearningCard from '../components/LearningCard.vue';
 
 export default {
   name: 'LearningPage',
+  data() {
+    return {
+      learnedCards: 32,
+      maxCards: 100,
+    };
+  },
   components: {
     // eslint-disable-next-line vue/no-unused-components
     LearningCard,
@@ -31,16 +64,17 @@ export default {
   flex-wrap: wrap;
   width: 100%;
   height: 100%;
+  padding: 25px 16px 0;
+  color: $color-pickled-bluewood;
   background-color: $color-catskill-white;
 
   &__header {
-    padding: 25px 69px 48px;
+    padding: 25px 53px 48px;
 
     h1 {
       font-size: 56px;
       font-weight: 900;
       line-height: 63px;
-      color: $color-pickled-bluewood;
 
       span {
         color: $color-golden-dream;
@@ -51,6 +85,73 @@ export default {
       margin-top: 15px;
       font-size: 20px;
       color: $color-shuttle-gray;
+    }
+  }
+
+  .card-wrap {
+    background-color: white;
+    border-radius: 24px;
+    box-shadow: 1px 5px 14px rgba(55, 114, 227, 0.1);
+  }
+
+  .btn-rs {
+    padding: 18px 60px;
+    font-size: 20px;
+    line-height: 24px;
+    background: $color-dodger-blue;
+    border: none;
+    border-radius: 20px;
+  }
+
+  &__today {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 72px 77px;
+
+    h3 {
+      font-size: 32px;
+      font-weight: bold;
+      line-height: 39px;
+    }
+
+    &__lerned {
+      font-size: 18px;
+      line-height: 21px;
+
+      .learning__today__lerned-text {
+        margin-bottom: 16px;
+      }
+
+      .learning__today__lerned-text span {
+        color: $color-dodger-blue;
+      }
+    }
+  }
+
+  &__category {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 48px;
+
+    &__card {
+      padding: 27px 60px 30px;
+      text-align: center;
+
+      h4 {
+        margin-bottom: 14px;
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 29px;
+      }
+
+      p {
+        max-width: 239px;
+      }
+
+      .btn-rs {
+        margin-top: 30px;
+      }
     }
   }
 }
