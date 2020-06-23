@@ -1,8 +1,8 @@
 <template>
   <div class="dictionary-card">
     <div class="dictionary-card__wrapper">
-      <div class="layout-2-column">
-        <b-form-checkbox size="lg" id="checkbox-1" v-model="status" name="checkbox-1">
+      <div class="left-column">
+        <b-form-checkbox size="lg" :id="englishWord" v-model="status" name="checkbox-1">
         </b-form-checkbox>
         <img :src="image" class="picture" />
         <span
@@ -43,6 +43,53 @@
             <IconBackup />
           </IconBase>
         </span>
+      </div>
+    </div>
+    <div class="dictionary-card-for-mobile">
+      <div class="dictionary-card-for-mobile__wrapper">
+        <b-form-checkbox size="lg" :id="englishWord" v-model="status" name="checkbox-1">
+        </b-form-checkbox>
+        <div class="dictionary-card-for-mobile__colomn">
+          <img :src="image" class="picture" />
+          <div class="word">
+            <div class="word_english">{{ englishWord }}</div>
+            <div class="word_russian">{{ russianWord }}</div>
+          </div>
+          <div class="icons">
+            <span
+              @click="changeSpeakItStatus"
+              class="icon icon__speak-it "
+              :class="{ 'icon__speak-it_selected': isSpeakItSelected }"
+            >
+              <IconBase width="36" height="30" viewBox="0 0 36 30">
+                <IconSpeakIt />
+              </IconBase>
+            </span>
+            <span
+              @click="changeDoYouKnowSelected"
+              class="icon icon__do-you-know "
+              :class="{ 'icon__do-you-know_selected': isDoYouKnowSelected }"
+            >
+              <IconBase width="26" height="30" viewBox="0 0 26 30">
+                <IconDoYouKnow />
+              </IconBase>
+            </span>
+            <span
+              @click="changeBucketSelected"
+              class="icon icon__bucket "
+              :class="{ icon__bucket_selected: isBucketSelected }"
+            >
+              <IconBase width="24" height="30" viewBox="0 0 24 30">
+                <IconBucket />
+              </IconBase>
+            </span>
+            <span v-show="isBackUp" class="icon icon__backup">
+              <IconBase width="29" height="29" viewBox="0 0 29 29">
+                <IconBackup />
+              </IconBase>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -96,6 +143,11 @@ export default {
     margin-left: 25px;
     cursor: pointer;
 
+    @include media-mobile {
+      margin-left: 0;
+      color: $color-dodger-blue;
+    }
+
     &_selected {
       color: $color-cornflower-blue;
     }
@@ -104,6 +156,10 @@ export default {
   &__bucket {
     margin-left: 16px;
     cursor: pointer;
+
+    @include media-mobile {
+      color: $color-wild-watermelon;
+    }
 
     &_selected {
       color: $color-sundown;
@@ -114,6 +170,10 @@ export default {
     margin-left: 16px;
     cursor: pointer;
 
+    @include media-mobile {
+      color: $color-golden-dream;
+    }
+
     &_selected {
       color: $color-golden-dream;
     }
@@ -121,6 +181,19 @@ export default {
 
   &__backup {
     margin-left: 16px;
+
+    @include media-mobile {
+      color: $color-shuttle-gray;
+    }
+  }
+}
+
+.custom-checkbox.b-custom-control-lg,
+.input-group-lg .custom-checkbox {
+  @include media-mobile {
+    position: absolute;
+    top: 16px;
+    left: 16px;
   }
 }
 
@@ -131,6 +204,10 @@ export default {
   background-color: $color-white;
   border-radius: 25px;
 
+  @include media-mobile {
+    height: 171px;
+  }
+
   &__wrapper {
     display: flex;
     align-items: center;
@@ -138,10 +215,40 @@ export default {
     width: 90%;
     height: 106px;
     margin: auto;
+
+    @include media-mobile {
+      display: none;
+    }
   }
 }
 
-.layout-2-column {
+.dictionary-card-for-mobile {
+  display: none;
+  height: 171px;
+
+  &__colomn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @include media-mobile {
+    display: block;
+  }
+
+  &__wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    height: 171px;
+    margin: auto;
+  }
+}
+
+.left-column {
   display: flex;
   align-items: center;
 }
@@ -150,10 +257,22 @@ export default {
   width: 60px;
   height: 60px;
   margin-left: 24px;
+
+  @include media-mobile {
+    margin-left: 0;
+  }
 }
 
 .word {
   margin-left: 26px;
+
+  @include media-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0;
+  }
 
   &_english {
     color: $color-dodger-blue;
