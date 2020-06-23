@@ -2,8 +2,14 @@
   <div class="start-screen">
     <h1 class="start-screen__title">savannah</h1>
     <h3 class="start-screen__description">
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum, nemo.
+      The “Savannah” mini-game is a simulator for translating your passive learned dictionary into
+      the active stage.
     </h3>
+    <p>
+      You can choose the right answer in two ways:
+    </p>
+    <p>1. Click on it with the mouse;</p>
+    <p>2. Use the keys 1, 2, 3, 4.</p>
     <button
       class="start-screen__button"
       @click="listeners.startGame"
@@ -61,7 +67,7 @@ export default {
 }
 
 .start-screen__description {
-  margin-top: 10px;
+  margin: 10px 0;
   font-size: 26px;
 }
 

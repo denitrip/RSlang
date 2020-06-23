@@ -24,9 +24,6 @@ export default {
     SavannahStartScreen,
     SavannahGame,
   },
-  destroyed() {
-    this.resetGame();
-  },
   data() {
     return {
       isStartLoading: false,
@@ -34,6 +31,9 @@ export default {
   },
   computed: {
     ...mapState('Savannah', ['isStartScreen']),
+  },
+  destroyed() {
+    this.resetGame();
   },
   methods: {
     ...mapActions('Error', ['setError']),

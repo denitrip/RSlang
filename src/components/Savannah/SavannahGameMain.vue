@@ -25,7 +25,7 @@
         </span>
       </div>
     </div>
-    <div class="" v-else>The End</div>
+    <SavannahStatistic v-else />
     <IconBase iconName="Savannah sun" :width="sunSize" :height="sunSize" viewBox="0 0 220 220">
       <IconSun />
     </IconBase>
@@ -36,12 +36,15 @@
 import { mapState, mapMutations } from 'vuex';
 import IconBase from '@/components/IconBase.vue';
 import IconSun from '@/components/icons/IconSun.vue';
+import SavannahStatistic from '@/components/Savannah/SavannahStatistic.vue';
+import { correctSound, errorSound, keys } from '@/helpers/constants.helper';
 
 export default {
   name: 'SavannahGameMain',
   components: {
     IconBase,
     IconSun,
+    SavannahStatistic,
   },
   data() {
     return {
@@ -58,6 +61,7 @@ export default {
       'statsArray',
       'lives',
       'lost',
+      'isSound',
     ]),
     wordsLength() {
       return this.words.length;
@@ -78,6 +82,12 @@ export default {
       return `${50 + this.correctAnswersCount * this.sunStep}px`;
     },
   },
+  created() {
+    window.addEventListener('keydown', this.onKeyDown);
+  },
+  destroyed() {
+    window.removeEventListener('keydown', this.onKeyDown);
+  },
   methods: {
     ...mapMutations('Savannah', [
       'setWordNumber',
@@ -97,6 +107,7 @@ export default {
       }
     },
     onCorrectAnswer() {
+      this.onPlaySound(correctSound);
       this.setStatsArray([...this.statsArray, { ...this.words[this.wordNumber], correct: true }]);
       this.isCheck = true;
       this.isCorrect = true;
@@ -107,6 +118,7 @@ export default {
       }, 1500);
     },
     onIncorrectAnswer() {
+      this.onPlaySound(errorSound);
       this.setStatsArray([...this.statsArray, { ...this.words[this.wordNumber], correct: false }]);
       this.setLost([...this.lost, this.lives.pop()]);
       this.setLives(this.lives);
@@ -126,6 +138,32 @@ export default {
     onAnimationEnd() {
       if (!this.isCheck) {
         this.onIncorrectAnswer();
+      }
+    },
+    onPlaySound(src) {
+      if (this.isSound) {
+        const audio = new Audio(src);
+        audio.play();
+      }
+    },
+    onKeyDown(event) {
+      if (!event.repeat) {
+        switch (event.key) {
+          case keys.one:
+            this.checkAnswer(0);
+            break;
+          case keys.two:
+            this.checkAnswer(1);
+            break;
+          case keys.three:
+            this.checkAnswer(2);
+            break;
+          case keys.four:
+            this.checkAnswer(3);
+            break;
+          default:
+            break;
+        }
       }
     },
   },

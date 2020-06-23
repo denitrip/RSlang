@@ -1,7 +1,7 @@
 <template>
   <div class="game__wrapper">
-    <SavannahGameMenu />
-    <SavannahGameMain />
+    <component :is="props.components.SavannahGameMenu"></component>
+    <component :is="props.components.SavannahGameMain"></component>
   </div>
 </template>
 
@@ -11,9 +11,16 @@ import SavannahGameMain from '@/components/Savannah/SavannahGameMain.vue';
 
 export default {
   name: 'SavannahGame',
-  components: {
-    SavannahGameMenu,
-    SavannahGameMain,
+  props: {
+    components: {
+      type: Object,
+      default() {
+        return {
+          SavannahGameMenu,
+          SavannahGameMain,
+        };
+      },
+    },
   },
 };
 </script>
