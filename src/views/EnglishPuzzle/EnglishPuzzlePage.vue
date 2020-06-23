@@ -24,6 +24,15 @@ export default {
     EnglishPuzzleStartScreen,
     EnglishPuzzleGame,
   },
+  data() {
+    return {
+      isStartLoading: false,
+    };
+  },
+  computed: {
+    ...mapState('EnglishPuzzle', ['isStartScreen']),
+    ...mapState('Auth', ['user']),
+  },
   created() {
     this.updateWidth();
     window.addEventListener('resize', this.updateWidth);
@@ -33,15 +42,6 @@ export default {
   },
   destroyed() {
     window.removeEventListener('resize', this.updateWidth);
-  },
-  data() {
-    return {
-      isStartLoading: false,
-    };
-  },
-  computed: {
-    ...mapState('EnglishPuzzle', ['isStartScreen']),
-    ...mapState('Auth', ['user']),
   },
   methods: {
     ...mapActions('Error', ['setError']),

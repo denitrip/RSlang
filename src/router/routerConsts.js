@@ -55,4 +55,8 @@ export default {
     path: '/english-puzzle-statistic/detail',
     name: 'englishPuzzleStatsDetail',
   },
+  savannahPage: {
+    path: '/savannah',
+    name: 'savannah',
+  },
 };
