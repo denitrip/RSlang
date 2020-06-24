@@ -50,7 +50,8 @@ export default {
       if (response.ok) {
         dispatch('Error/setInfo', 'Settings saved!', { root: true });
       } else {
-        throw new Error('Incorrect e-mail or password');
+        dispatch('Error/setError', 'Something went wrong, sorry :C', { root: true });
+        throw new Error('Unable to set settings');
       }
     },
   },
