@@ -72,10 +72,11 @@ export default {
 @media screen and (max-width: $puzzle-mobile-size) {
   .start-screen {
     justify-content: flex-start;
+    padding: 10px;
   }
 
   .start-screen__title {
-    font-size: 60px;
+    font-size: 40px;
   }
 }
 </style>

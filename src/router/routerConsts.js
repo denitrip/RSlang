@@ -59,4 +59,8 @@ export default {
     path: '/savannah',
     name: 'savannah',
   },
+  audiocallPage: {
+    path: '/audiocall',
+    name: 'audiocall',
+  },
 };
