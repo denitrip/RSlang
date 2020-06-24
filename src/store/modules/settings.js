@@ -1,4 +1,4 @@
-import { application } from '@/helpers/constants.helper';
+import { application, apiAddress } from '@/helpers/constants.helper';
 
 export default {
   namespaced: true,
@@ -26,18 +26,16 @@ export default {
     },
   },
   actions: {
-    async sendSettings({ dispatch }) {
-      const settingsGetter = 'Settings/getSettings';
-      // testing userID and token this will be changed next
-      const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZjEwMTI4YWEyNDVlMDAxN2E1NmYyMyIsImlhdCI6MTU5Mjk0MzY3NSwiZXhwIjoxNTkyOTU4MDc1fQ.hw4Z955__-r5pqQQThGRNp9P9tAI8ZF3G_iSuSPoz48';
-      const userId = '5ef10128aa245e0017a56f23';
-      const settingsURL = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`;
-      const settings = { ...this.getters[settingsGetter] };
+    async sendSettings({ state, dispatch, rootState }) {
+      const { token } = rootState.Auth.user;
+      const { userId } = rootState.Auth.user;
+      const URL = `${apiAddress}users/${userId}/settings`;
+      const { settings } = state.settings;
       const payload = JSON.stringify({
-        wordsPerDay: { ...this.getters[settingsGetter] }.wordsPerDay,
+        wordsPerDay: settings.wordsPerDay,
         optional: settings,
       });
-      const response = await fetch(settingsURL, {
+      const response = await fetch(URL, {
         method: 'PUT',
         withCredentials: true,
         headers: {
