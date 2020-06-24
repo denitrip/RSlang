@@ -115,10 +115,10 @@ export default {
 
     &--mobile {
       display: none;
+
       @include media-mobile {
         display: inline-block;
         margin-left: 0;
-        color: $color-dodger-blue;
 
         &_selected {
           color: $color-cornflower-blue;
@@ -131,10 +131,6 @@ export default {
     margin-left: 16px;
     cursor: pointer;
 
-    @include media-mobile {
-      color: $color-wild-watermelon;
-    }
-
     &_selected {
       color: $color-sundown;
     }
@@ -144,10 +140,6 @@ export default {
     margin-left: 16px;
     cursor: pointer;
 
-    @include media-mobile {
-      color: $color-golden-dream;
-    }
-
     &_selected {
       color: $color-golden-dream;
     }
@@ -156,16 +148,22 @@ export default {
   &__backup {
     margin-left: 16px;
 
-    @include media-mobile {
-      color: $color-shuttle-gray;
+    &_selected {
+      color: $color-golden-dream;
     }
   }
 }
 
+.icons {
+  @include media-mobile {
+    margin-left: 26px;
+  }
+}
+
 .dictionary-card {
-  width: 95%;
+  width: 100%;
   height: 106px;
-  margin: 8px 0;
+  margin-top: 8px;
   background-color: $color-white;
   border-radius: 25px;
 
@@ -174,16 +172,17 @@ export default {
   }
 
   &__wrapper {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: relative;
     width: 90%;
     height: 106px;
     margin: auto;
 
     @include media-mobile {
       flex-wrap: wrap;
+      align-items: center;
       justify-content: center;
     }
   }
@@ -205,7 +204,7 @@ export default {
   margin-left: 24px;
 
   @include media-mobile {
-    flex-basis: 100%;
+    margin-top: 16px;
   }
 }
 
