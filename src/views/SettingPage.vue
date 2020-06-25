@@ -138,7 +138,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex';
+import { mapMutations, mapActions, mapState } from 'vuex';
 
 export default {
   name: 'SettingPage',
@@ -160,9 +160,28 @@ export default {
       isAssociationVisible: false,
     };
   },
+  computed: {
+    ...mapState('Settings', ['settings']),
+  },
+  created() {
+    this.isAutoVoice = this.settings.isAutoVoice;
+    this.wordsPerDay = this.settings.wordsPerDay;
+    this.maxCardDay = this.settings.maxCardDay;
+    this.isSayVisible = this.settings.isSayVisible;
+    this.isDificultVisible = this.settings.isDificultVisible;
+    this.isRepeatVisible = this.settings.isRepeatVisible;
+    this.isEasyVisible = this.settings.isEasyVisible;
+    this.isDeleteVisible = this.settings.isDeleteVisible;
+    this.isGoodVisible = this.settings.isGoodVisible;
+    this.isWordVisible = this.settings.isWordVisible;
+    this.isMeaningVisible = this.settings.isMeaningVisible;
+    this.isExampleVisible = this.settings.isExampleVisible;
+    this.isTranscriptionVisible = this.settings.isTranscriptionVisible;
+    this.isAssociationVisible = this.settings.isAssociationVisible;
+  },
   methods: {
     ...mapMutations('Settings', ['setSettings']),
-    ...mapActions('Settings', ['sendSettings']),
+    ...mapActions('Settings', ['sendSettings', 'receiveSettings']),
 
     plusWordCount() {
       this.wordsPerDay += 1;
@@ -179,7 +198,8 @@ export default {
       this.maxCardDay -= 1;
     },
     saveSettings() {
-      const settings = {
+      console.log(this.wordsPerDay);
+      this.setSettings({
         isAutoVoice: this.isAutoVoice,
         wordsPerDay: this.wordsPerDay,
         maxCardDay: this.maxCardDay,
@@ -194,11 +214,9 @@ export default {
         isExampleVisible: this.isExampleVisible,
         isTranscriptionVisible: this.isTranscriptionVisible,
         isAssociationVisible: this.isAssociationVisible,
-      };
-      this.setSettings({
-        settings,
       });
       this.sendSettings();
+      this.receiveSettings();
     },
   },
 };
