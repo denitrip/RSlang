@@ -149,8 +149,8 @@ $line-top-position: 70px;
 
 .dictionary {
   width: 100%;
-  height: 100%;
-  padding: 0 16px;
+  min-height: 100vh;
+  padding: 0 10px 8px 10px;
   background-color: $color-catskill-white;
 
   &__tabs {
@@ -169,6 +169,10 @@ $line-top-position: 70px;
     .tab-name {
       color: $color-manatee;
       cursor: pointer;
+
+      @include media-mobile {
+        @include font(1.18rem);
+      }
     }
 
     .tab-line {
@@ -177,13 +181,33 @@ $line-top-position: 70px;
       width: 358px;
       border-bottom: 4px solid $color-manatee;
       border-radius: 4px;
+
+      @include media-laptop {
+        width: 200px;
+      }
+
+      @include media-tablet {
+        width: 180px;
+      }
+
+      @include media-mobile {
+        width: 100%;
+      }
     }
   }
 
   .checked {
+    @include media-mobile {
+      @include font($size: 10px, $height: 13px);
+    }
+
     .tab-name {
       color: $color-dodger-blue;
       cursor: pointer;
+
+      @include media-mobile {
+        width: 60px;
+      }
     }
 
     .tab-line {
@@ -199,7 +223,24 @@ $line-top-position: 70px;
   padding: 0 40px;
   margin-bottom: 16px;
 
+  @include media-laptop {
+    padding: 0 20px;
+    margin-bottom: 8px;
+  }
+
+  @include media-tablet {
+    padding: 0 8px;
+    margin-bottom: 8px;
+  }
+
+  @include media-mobile {
+    padding: 0 0;
+    margin-bottom: 8px;
+  }
+
   &__buttons {
+    margin-left: 5px;
+
     button {
       padding: 16px 60px;
       margin-right: 8px;
@@ -209,6 +250,19 @@ $line-top-position: 70px;
       border: none;
       border-radius: 20px;
       outline: none;
+
+      @include media-laptop {
+        padding: 16px 42px;
+        margin: 4px 4px 4px 4px;
+      }
+
+      @include media-mobile {
+        width: 100%;
+        padding: 16px 30px;
+        margin: 4px 0 4px 2px;
+
+        @include font($size: 15px, $height: 17px);
+      }
     }
 
     .lern-btn {

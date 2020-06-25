@@ -38,6 +38,8 @@
         <button class="btn btn-primary btn-rs">Let’s train!</button>
       </div>
     </div>
+    <Notification v-if="isNotificationShow" />
+    <button @click="open">NotificationShow</button>
   </div>
   <learning-words v-else></learning-words>
 </template>
@@ -45,7 +47,8 @@
 <script>
 import AppSpinner from '@/components/AppSpinner.vue';
 import LearningWords from '@/components/LearningWords.vue';
-import { mapActions } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
+import Notification from '../components/Notification.vue';
 
 export default {
   name: 'LearningPage',
@@ -60,10 +63,15 @@ export default {
   components: {
     LearningWords,
     AppSpinner,
+    Notification,
   },
   methods: {
     ...mapActions('Learning', ['getNewWords']),
     ...mapActions('Error', ['setError']),
+    ...mapMutations('Notification', ['setIsNotificationShow']),
+    open() {
+      this.setIsNotificationShow(true);
+    },
     async trainNewWords() {
       this.isNewWordsLoading = true;
       try {
@@ -75,6 +83,12 @@ export default {
         this.isNewWordsLoading = false;
       }
     },
+  },
+  computed: {
+    ...mapState('Notification', ['isNotificationShow']),
+  },
+  destroyed() {
+    this.setIsNotificationShow(false);
   },
 };
 </script>

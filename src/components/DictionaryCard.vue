@@ -1,8 +1,8 @@
 <template>
   <div class="dictionary-card">
     <div class="dictionary-card__wrapper">
-      <div class="layout-2-column">
-        <b-form-checkbox size="lg" id="checkbox-1" v-model="status" name="checkbox-1">
+      <div class="left-column">
+        <b-form-checkbox size="lg" :id="englishWord" v-model="status" name="checkbox-1">
         </b-form-checkbox>
         <img :src="image" class="picture" />
         <span
@@ -20,6 +20,15 @@
         </div>
       </div>
       <div class="icons">
+        <span
+          @click="changeSpeakItStatus"
+          class="icon icon__speak-it--mobile"
+          :class="{ 'icon__speak-it_selected': isSpeakItSelected }"
+        >
+          <IconBase width="36" height="30" viewBox="0 0 36 30">
+            <IconSpeakIt />
+          </IconBase>
+        </span>
         <span
           @click="changeDoYouKnowSelected"
           class="icon icon__do-you-know "
@@ -96,8 +105,25 @@ export default {
     margin-left: 25px;
     cursor: pointer;
 
+    @include media-mobile {
+      display: none;
+    }
+
     &_selected {
       color: $color-cornflower-blue;
+    }
+
+    &--mobile {
+      display: none;
+
+      @include media-mobile {
+        display: inline-block;
+        margin-left: 0;
+
+        &_selected {
+          color: $color-cornflower-blue;
+        }
+      }
     }
   }
 
@@ -121,44 +147,88 @@ export default {
 
   &__backup {
     margin-left: 16px;
+
+    &_selected {
+      color: $color-golden-dream;
+    }
+  }
+}
+
+.icons {
+  @include media-mobile {
+    margin-left: 26px;
   }
 }
 
 .dictionary-card {
-  width: 95%;
+  width: 100%;
   height: 106px;
-  margin: 8px 0;
+  margin-top: 8px;
   background-color: $color-white;
   border-radius: 25px;
 
+  @include media-mobile {
+    height: 171px;
+  }
+
   &__wrapper {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 90%;
     height: 106px;
     margin: auto;
+
+    @include media-mobile {
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
   }
 }
 
-.layout-2-column {
+.left-column {
   display: flex;
   align-items: center;
+
+  @include media-mobile {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 
 .picture {
   width: 60px;
   height: 60px;
   margin-left: 24px;
+
+  @include media-mobile {
+    margin-top: 16px;
+  }
 }
 
 .word {
   margin-left: 26px;
 
+  @include media-mobile {
+    flex-basis: 100%;
+    text-align: center;
+  }
+
   &_english {
     color: $color-dodger-blue;
 
     @include font($size: 18px, $height: 22px, $weight: bold);
+  }
+}
+
+.custom-checkbox.b-custom-control-lg,
+.input-group-lg .custom-checkbox {
+  @include media-mobile {
+    position: absolute;
+    top: 16px;
+    left: 16px;
   }
 }
 </style>
