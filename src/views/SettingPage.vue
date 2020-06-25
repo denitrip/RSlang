@@ -201,7 +201,6 @@ export default {
     saveSettings() {
       this.setSettings(this.settingsData);
       this.sendSettings();
-      this.receiveSettings();
     },
   },
 };
