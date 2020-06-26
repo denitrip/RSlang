@@ -4,15 +4,17 @@
       {{ currentRoute }}
     </div>
     <div class="user-section">
-      <img src="../assets/img/header/notifications_image.png" alt="#" />
-      <img src="../assets/img/header/settings_image.png" alt="#" />
+      <!-- <img src="../assets/img/header/notifications_image.png" alt="#" /> -->
+      <router-link :to="routerConsts.settings.path"
+        ><img src="../assets/img/header/settings_image.png" alt="#"
+      /></router-link>
       <div class="user-details">
-        <div class="user-name">
-          Ivan Ivanov
+        <div class="user-name" :title="email">
+          {{ email }}
         </div>
-        <div class="user-level">
+        <!--<div class="user-level">
           Level 3
-        </div>
+        </div>-->
       </div>
       <div class="user-avatar">
         <img src="../assets/img/header/user_image.png" alt="#" />
@@ -22,15 +24,21 @@
 </template>
 
 <script>
+import routerConsts from '@/router/routerConsts';
+import { mapState } from 'vuex';
+
 export default {
   name: 'MainHeader',
   components: {},
   data() {
     return {
       currentRoute: this.$router.currentRoute.name,
+      routerConsts,
     };
   },
-
+  computed: {
+    ...mapState('Auth', ['email']),
+  },
   watch: {
     $route(to) {
       this.currentRoute = to.name;
@@ -60,19 +68,20 @@ img {
   margin-left: 16px;
 }
 
-.container-label {
-  margin-left: 0;
+img:hover {
+  background-color: $color-dodger-blue;
 }
 
 .container-label {
   display: inline-block;
   padding: 0;
   margin: 0;
-  font-weight: 900;
-  color: $color-gigas;
-  font-weight: bold;
+  margin-left: 0;
   font-size: 36px;
+  font-weight: 900;
+  font-weight: bold;
   line-height: 44px;
+  color: $color-gigas;
 
   @include media-tablet {
     justify-content: center;
@@ -103,6 +112,13 @@ img {
 .user-level {
   font-size: 12px;
   opacity: 50%;
+}
+
+.user-name {
+  width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .user-avatar img {
