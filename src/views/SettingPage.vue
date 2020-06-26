@@ -142,18 +142,24 @@
       </div>
     </div>
     <div class="footer">
-      <b-button class="setting__save footer__btn" variant="primary" @click="saveSettings"
-        >Save Setting</b-button
-      >
+      <b-button
+        class="setting__save footer__btn"
+        variant="primary"
+        @click="saveSettings"
+        :disabled="isSaveLoading"
+        >Save Setting <AppSpinner v-if="isSaveLoading"></AppSpinner
+      ></b-button>
     </div>
   </div>
 </template>
 
 <script>
 import { mapMutations, mapActions, mapState } from 'vuex';
+import AppSpinner from '@/components/AppSpinner.vue';
 
 export default {
   name: 'SettingPage',
+  components: { AppSpinner },
   data() {
     return {
       settingsData: {
@@ -172,6 +178,7 @@ export default {
         isTranscriptionVisible: true,
         isAssociationVisible: false,
       },
+      isSaveLoading: false,
     };
   },
   computed: {
@@ -191,16 +198,25 @@ export default {
       this.settingsData.maxCardDay += 1;
     },
     minusWordCount() {
-      if (this.wordsPerDay === 0) return;
-      this.settingsData.wordsPerDay -= 1;
+      if (this.settingsData.wordsPerDay > 1) {
+        this.settingsData.wordsPerDay -= 1;
+      }
     },
     minusCardCount() {
-      if (this.maxCardDay === 0) return;
-      this.settingsData.maxCardDay -= 1;
+      if (this.settingsData.maxCardDay > 0) {
+        this.settingsData.maxCardDay -= 1;
+      }
     },
-    saveSettings() {
-      this.setSettings(this.settingsData);
-      this.sendSettings();
+    async saveSettings() {
+      this.isSaveLoading = true;
+      try {
+        this.setSettings(this.settingsData);
+        await this.sendSettings();
+      } catch (error) {
+        this.setError(error.message);
+      } finally {
+        this.isSaveLoading = false;
+      }
     },
   },
 };

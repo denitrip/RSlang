@@ -28,7 +28,7 @@ export default {
     },
   },
   actions: {
-    async receiveSettings({ rootState, commit }) {
+    async receiveSettings({ rootState, commit, dispatch }) {
       const { token } = rootState.Auth.user;
       const { userId } = rootState.Auth.user;
       const URL = `${apiAddress}users/${userId}/settings`;
@@ -41,9 +41,19 @@ export default {
           'Content-Type': application,
         },
       });
-      const answer = await response.json();
-      console.log(answer.optional);
-      commit('setSettings', answer.optional);
+      if (response.ok) {
+        const answer = await response.json();
+        commit('setSettings', answer.optional);
+      } else if (response.status === 404) {
+        dispatch('Error/setInfo', 'Unable to receive your settings, setting to default', {
+          root: true,
+        });
+      } else {
+        dispatch('Error/setError', 'Something went wrong, setting your local settings to default', {
+          root: true,
+        });
+        throw new Error('Unable to set settings');
+      }
     },
     async sendSettings({ state, dispatch, rootState }) {
       const { token } = rootState.Auth.user;
@@ -65,8 +75,6 @@ export default {
         body: payload,
       });
       if (response.ok) {
-        // commit.setSettings(state);
-        // commit('setSettings', state.settings);
         dispatch('Error/setInfo', 'Settings saved!', { root: true });
       } else {
         dispatch('Error/setError', 'Something went wrong, sorry :C', { root: true });

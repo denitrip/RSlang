@@ -29,7 +29,7 @@ export default {
         throw new Error('Incorrect e-mail or password');
       }
     },
-    async loginUser({ commit }, { email, password }) {
+    async loginUser({ commit, dispatch }, { email, password }) {
       const response = await fetch(`${apiAddress}signin`, {
         method: 'POST',
         headers: { Accept: application, 'Content-Type': application },
@@ -41,6 +41,11 @@ export default {
         commit('setUser', newUser);
         commit('setEmail', email);
         setLocalStorageUserData(newUser, email);
+        try {
+          dispatch('Settings/receiveSettings', null, { root: true });
+        } catch (error) {
+          this.setError(error.message);
+        }
       } else {
         throw new Error('Incorrect e-mail or password');
       }
