@@ -1,6 +1,6 @@
 <template>
   <div class="game__main">
-    <div class="game__image" :style="[{ backgroundPositionY }]"></div>
+    <div class="game__image" :style="[{ backgroundImage, backgroundPositionY }]"></div>
     <div class="game__words" v-if="!isGameEnd">
       <div
         class="question"
@@ -8,7 +8,7 @@
         :key="words[wordNumber].word"
         @animationend="onAnimationEnd"
       >
-        {{ words[wordNumber].word }}
+        {{ isModeEnRu ? words[wordNumber].word : words[wordNumber].wordTranslate }}
       </div>
       <div class="attempt-words">
         <span class="attempt-words__word" v-for="(item, i) in wordsArray[wordNumber]" :key="i">
@@ -18,9 +18,10 @@
               { answer_correct: item && isCheck && item.word === words[wordNumber].word },
               { answer_incorrect: item && isCheck && item.word !== words[wordNumber].word },
             ]"
+            :disabled="isCheck"
             @click="checkAnswer(i)"
           >
-            {{ i + 1 }}. {{ item && item.wordTranslate }}
+            {{ i + 1 }}. {{ isModeEnRu ? item && item.wordTranslate : item && item.word }}
           </button>
         </span>
       </div>
@@ -62,6 +63,8 @@ export default {
       'lives',
       'lost',
       'isSound',
+      'wallpaperSrc',
+      'isModeEnRu',
     ]),
     wordsLength() {
       return this.words.length;
@@ -74,6 +77,9 @@ export default {
     },
     backgroundPositionY() {
       return `${100 - this.correctAnswersCount * this.backgroundStep}%`;
+    },
+    backgroundImage() {
+      return `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${this.wallpaperSrc}')`;
     },
     sunStep() {
       return 200 / this.wordsLength;
@@ -177,8 +183,6 @@ export default {
   z-index: -1;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient($overlay-color, $overlay-color),
-    url('~@/assets/img/savannah/start-screen.jpg');
   background-repeat: no-repeat;
   background-position-x: left;
   background-position-y: 100%;
@@ -191,7 +195,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: calc(100% - 64px);
+  height: calc(100% - 80px);
   padding: 20px;
 }
 
@@ -271,6 +275,12 @@ export default {
 @media (hover: hover) {
   .answer:hover {
     border-color: $color-ghost;
+  }
+}
+
+@media screen and (max-width: $mobile-big-width) {
+  .game__main {
+    height: calc(100% - 114px);
   }
 }
 </style>

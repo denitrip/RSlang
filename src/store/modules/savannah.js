@@ -12,6 +12,10 @@ export default {
     wordsArray: [],
     statsArray: [],
     isGameEnd: false,
+    wallpaperIndex: 0,
+    wallpaperSrc:
+      'https://raw.githubusercontent.com/arcanar7/rslang-data/master/savannah/savannah-0.jpg',
+    isModeEnRu: true,
     words: [
       {
         word: 'agree',
@@ -100,11 +104,19 @@ export default {
     setIsGameEnd(state, payload) {
       state.isGameEnd = payload;
     },
+    setWallpaperIndex(state, payload) {
+      state.wallpaperIndex = payload;
+    },
+    setWallpaperSrc(state, payload) {
+      state.wallpaperSrc = payload;
+    },
+    setIsModeEnRu(state, payload) {
+      state.isModeEnRu = payload;
+    },
     resetGame(state) {
       state.isStartScreen = true;
       state.lives = new Array(5);
       state.lost = [];
-      state.isSound = true;
       state.wordNumber = 0;
       state.wordsArray = [];
       state.statsArray = [];
