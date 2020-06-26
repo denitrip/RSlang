@@ -19,7 +19,7 @@ import EnglishPuzzleStartScreen from '@/components/EnglishPuzzle/EnglishPuzzleSt
 import EnglishPuzzleGame from '@/components/EnglishPuzzle/EnglishPuzzleGame.vue';
 
 export default {
-  name: 'HomePage',
+  name: 'EnglishPuzzleHomePage',
   components: {
     EnglishPuzzleStartScreen,
     EnglishPuzzleGame,

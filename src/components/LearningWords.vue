@@ -38,11 +38,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .learning {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-  }
+.learning {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
 </style>

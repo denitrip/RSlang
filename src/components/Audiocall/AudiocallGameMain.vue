@@ -1,14 +1,24 @@
 <template>
   <div class="game__main">
-    <div class="game__image" :style="[{ backgroundPositionY }]"></div>
+    <div class="game__background"></div>
     <div class="game__words" v-if="!isGameEnd">
-      <div
-        class="question"
-        :class="[{ question_correct: isCheck && isCorrect }]"
-        :key="words[wordNumber].word"
-        @animationend="onAnimationEnd"
-      >
-        {{ words[wordNumber].word }}
+      <img class="game__image" :src="getImageSrc" :alt="words[wordNumber].word" v-if="isCheck" />
+      <div class="question-wrapper">
+        <div
+          class="question"
+          :class="[{ question_playing: isAudioPlay }, { question_check: isCheck }]"
+          title="Play sound"
+          @click="onPlayQuestion"
+        >
+          <IconBase
+            iconName="Play sound"
+            :width="isCheck ? '30px' : '120px'"
+            :height="isCheck ? '24px' : '96px'"
+          >
+            <IconVolume />
+          </IconBase>
+        </div>
+        <p class="game__word-text" v-if="isCheck">{{ words[wordNumber].word }}</p>
       </div>
       <div class="attempt-words">
         <span class="attempt-words__word" v-for="(item, i) in wordsArray[wordNumber]" :key="i">
@@ -18,126 +28,96 @@
               { answer_correct: item && isCheck && item.word === words[wordNumber].word },
               { answer_incorrect: item && isCheck && item.word !== words[wordNumber].word },
             ]"
+            :disabled="isCheck"
             @click="checkAnswer(i)"
           >
             {{ i + 1 }}. {{ item && item.wordTranslate }}
           </button>
         </span>
       </div>
+      <div class="game__controls">
+        <button class="controls__button" v-if="isCheck" title="Next" @click="onCheckGameOver">
+          <span class="btn-arrow"></span>
+        </button>
+        <button class="controls__button" v-else @click="onIncorrectAnswer">Don't know</button>
+      </div>
     </div>
-    <SavannahStatistic v-else />
-    <IconBase iconName="Savannah sun" :width="sunSize" :height="sunSize" viewBox="0 0 220 220">
-      <IconSun />
-    </IconBase>
+    <AudiocallStatistic v-else />
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import AudiocallStatistic from '@/components/Audiocall/AudiocallStatistic.vue';
+import { dataSrc, correctSound, errorSound, keys } from '@/helpers/constants.helper';
 import IconBase from '@/components/IconBase.vue';
-import IconSun from '@/components/icons/IconSun.vue';
-import SavannahStatistic from '@/components/Savannah/SavannahStatistic.vue';
-import { correctSound, errorSound, keys } from '@/helpers/constants.helper';
+import IconVolume from '@/components/icons/IconVolume.vue';
 
 export default {
-  name: 'SavannahGameMain',
+  name: 'AudiocallGameMain',
   components: {
+    AudiocallStatistic,
     IconBase,
-    IconSun,
-    SavannahStatistic,
+    IconVolume,
   },
   data() {
     return {
       isCheck: false,
-      isCorrect: false,
+      isAudioPlay: false,
     };
   },
   computed: {
-    ...mapState('Savannah', [
+    ...mapState('Audiocall', [
       'wordNumber',
       'wordsArray',
       'words',
       'isGameEnd',
       'statsArray',
-      'lives',
-      'lost',
       'isSound',
     ]),
     wordsLength() {
       return this.words.length;
     },
-    correctAnswersCount() {
-      return this.statsArray.filter((item) => item.correct).length || 0;
-    },
-    backgroundStep() {
-      return 100 / this.wordsLength;
-    },
-    backgroundPositionY() {
-      return `${100 - this.correctAnswersCount * this.backgroundStep}%`;
-    },
-    sunStep() {
-      return 200 / this.wordsLength;
-    },
-    sunSize() {
-      return `${50 + this.correctAnswersCount * this.sunStep}px`;
+    getImageSrc() {
+      return `${dataSrc}${this.words[this.wordNumber].image}`;
     },
   },
   created() {
+    this.onPlayQuestion();
     window.addEventListener('keydown', this.onKeyDown);
   },
   destroyed() {
     window.removeEventListener('keydown', this.onKeyDown);
   },
   methods: {
-    ...mapMutations('Savannah', [
-      'setWordNumber',
-      'setStatsArray',
-      'setLost',
-      'setLives',
-      'setIsGameEnd',
-    ]),
+    ...mapMutations('Audiocall', ['setWordNumber', 'setStatsArray', 'setIsGameEnd']),
 
     checkAnswer(index) {
       const question = this.words[this.wordNumber].word;
       const answer = this.wordsArray[this.wordNumber][index].word;
       if (answer === question) {
+        this.onPlaySound(correctSound);
         this.onCorrectAnswer();
       } else {
+        this.onPlaySound(errorSound);
         this.onIncorrectAnswer();
       }
     },
     onCorrectAnswer() {
-      this.onPlaySound(correctSound);
       this.setStatsArray([...this.statsArray, { ...this.words[this.wordNumber], correct: true }]);
       this.isCheck = true;
-      this.isCorrect = true;
-      setTimeout(() => {
-        this.isCorrect = false;
-        this.isCheck = false;
-        this.onCheckGameOver();
-      }, 1500);
     },
     onIncorrectAnswer() {
-      this.onPlaySound(errorSound);
       this.setStatsArray([...this.statsArray, { ...this.words[this.wordNumber], correct: false }]);
-      this.setLost([...this.lost, this.lives.pop()]);
-      this.setLives(this.lives);
       this.isCheck = true;
-      setTimeout(() => {
-        this.isCheck = false;
-        this.onCheckGameOver();
-      }, 1500);
     },
     onCheckGameOver() {
-      if (this.lives.length === 0 || this.wordNumber === this.wordsLength - 1) {
+      this.isCheck = false;
+      if (this.wordNumber === this.wordsLength - 1) {
         this.setIsGameEnd(true);
       } else {
         this.setWordNumber(this.wordNumber + 1);
-      }
-    },
-    onAnimationEnd() {
-      if (!this.isCheck) {
-        this.onIncorrectAnswer();
+        this.onPlayQuestion();
       }
     },
     onPlaySound(src) {
@@ -146,8 +126,16 @@ export default {
         audio.play();
       }
     },
+    onPlayQuestion() {
+      const audio = new Audio(`${dataSrc}${this.words[this.wordNumber].audio}`);
+      this.isAudioPlay = true;
+      audio.onended = () => {
+        this.isAudioPlay = false;
+      };
+      audio.play();
+    },
     onKeyDown(event) {
-      if (!event.repeat) {
+      if (!event.repeat && !this.isCheck) {
         switch (event.key) {
           case keys.one:
             this.checkAnswer(0);
@@ -161,9 +149,14 @@ export default {
           case keys.four:
             this.checkAnswer(3);
             break;
+          case keys.five:
+            this.checkAnswer(4);
+            break;
           default:
             break;
         }
+      } else if (!event.repeat && this.isCheck && keys.enter) {
+        this.onCheckGameOver();
       }
     },
   },
@@ -171,18 +164,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.game__image {
+.game__background {
   position: absolute;
   top: 0;
   z-index: -1;
   width: 100%;
   height: 100%;
   background-image: linear-gradient($overlay-color, $overlay-color),
-    url('~@/assets/img/savannah/start-screen.jpg');
+    url('~@/assets/img/audiocall/start-screen.jpg');
   background-repeat: no-repeat;
-  background-position-x: left;
-  background-position-y: 100%;
-  transition: background 1.5s;
+  background-size: cover;
 }
 
 .game__main {
@@ -199,9 +190,29 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   width: 100%;
   height: 100%;
+}
+
+.question-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.game__word-text {
+  margin-left: 20px;
+  font-size: 30px;
+}
+
+.game__image {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 20px;
+  border: 3px solid $color-white;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .attempt-words {
@@ -240,37 +251,48 @@ export default {
 }
 
 .question {
-  position: absolute;
-  top: 0;
-  z-index: 5;
-  font-size: 20px;
-  transition: width 0.3s;
-  animation: fall 5s linear;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background-color 0.5s, color 0.3s;
 
-  &_correct {
-    animation: fallEnd 1s linear;
+  &_playing {
+    color: $color-dodger-blue;
+    background-color: $color-manatee;
+  }
+
+  &_check {
+    width: 50px;
+    height: 50px;
   }
 }
 
-@keyframes fall {
-  from {
-    transform: translateY(-100%);
-  }
+.controls__button {
+  @include english-puzzle-button(150px);
 
-  to {
-    transform: translateY(1000%);
-  }
+  margin-top: 20px;
 }
 
-@keyframes fallEnd {
-  to {
-    transform: translateY(2500%);
-  }
+.btn-arrow {
+  width: 18px;
+  height: 24px;
+  background-image: url('~@/assets/img/btn-arrow.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 18px 14px;
 }
 
 @media (hover: hover) {
   .answer:hover {
     border-color: $color-ghost;
+  }
+
+  .question:hover {
+    background-color: $color-shuttle-gray;
   }
 }
 </style>

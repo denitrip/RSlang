@@ -1,15 +1,14 @@
 <template functional>
   <div class="start-screen">
-    <h1 class="start-screen__title">savannah</h1>
+    <h1 class="start-screen__title">audiocall</h1>
     <h3 class="start-screen__description">
-      The “Savannah” mini-game is a simulator for translating your passive learned dictionary into
-      the active stage.
+      The “Audiocall” mini-game is a training that develops speech and translation skills.
     </h3>
     <p>
-      You can choose the right answer in two ways:
+      You hear the word and see 5 translation options. You can choose the right answer in two ways:
     </p>
     <p>1. Click on it with the mouse;</p>
-    <p>2. Use the keys 1, 2, 3, 4.</p>
+    <p>2. Use the keys 1, 2, 3, 4, 5.</p>
     <button
       class="start-screen__button"
       @click="listeners.startGame"
@@ -25,7 +24,7 @@
 import AppSpinner from '@/components/AppSpinner.vue';
 
 export default {
-  name: 'SavannahStartScreen',
+  name: 'AudiocallStartScreen',
   props: {
     isStartLoading: {
       type: Boolean,
@@ -56,7 +55,7 @@ export default {
   text-align: center;
   text-shadow: 3px 3px 2px $color-black;
   background-image: linear-gradient($overlay-color, $overlay-color),
-    url('~@/assets/img/savannah/start-screen.jpg');
+    url('~@/assets/img/audiocall/start-screen.jpg');
   background-repeat: no-repeat;
   background-size: cover;
 }
