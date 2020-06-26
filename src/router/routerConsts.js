@@ -59,4 +59,8 @@ export default {
     path: '/savannah',
     name: 'savannah',
   },
+  speakItPage: {
+    path: '/speak-It',
+    name: 'speakIt',
+  },
 };

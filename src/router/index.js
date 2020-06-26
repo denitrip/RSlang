@@ -15,6 +15,7 @@ import EnglishPuzzleStatisticPage from '@/views/EnglishPuzzle/EnglishPuzzleStati
 import EnglishPuzzleStats from '@/components/EnglishPuzzle/EnglishPuzzleStatistic.vue';
 import EnglishPuzzleStatsDetail from '@/components/EnglishPuzzle/EnglishPuzzleStatisticDetail.vue';
 import SavannahPage from '@/views/Savannah/SavannahPage.vue';
+import SpeakItPage from '@/views/SpeakIt/SpeakItPage.vue';
 
 Vue.use(VueRouter);
 
@@ -66,6 +67,11 @@ const routes = [
         name: routerConsts.statisticPage.name,
         beforeEnter: AuthGuard,
         component: StatisticPage,
+      },
+      {
+        path: routerConsts.speakItPage.path,
+        name: routerConsts.speakItPage.name,
+        component: SpeakItPage,
       },
       {
         path: routerConsts.EnglishPuzzleStatisticPage.path,
