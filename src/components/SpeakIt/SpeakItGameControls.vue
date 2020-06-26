@@ -27,7 +27,7 @@
   font-size: 1.5em;
   color: white;
   cursor: pointer;
-  background: linear-gradient(#00efd1, #00acea);
+  background: $color-dodger-blue;
   border: 0.5px solid black;
   border-radius: 10px;
 
@@ -39,8 +39,11 @@
 
 .restart-button,
 .finish-button {
-  width: 200px;
+  flex-grow: 1;
+  width: 100%;
+  max-width: 300px;
   height: 50px;
+  margin: 0 10px;
 
   @include media-tablet {
     width: 200px;
@@ -49,11 +52,14 @@
 }
 
 .speak-button {
-  width: 400px;
+  flex-grow: 8;
+  width: 100%;
+  max-width: 350px;
   height: 50px;
 
   @include media-tablet {
-    width: 200px;
+    width: 100%;
+    max-width: 200px;
     height: 50px;
   }
 }

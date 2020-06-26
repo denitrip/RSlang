@@ -59,14 +59,14 @@ import IconVolume from '@/components/icons/IconVolume.vue';
 import IconBucket from '@/components/icons/IconBucket.vue';
 
 export default {
-  name: 'SavannahStatistic',
+  name: 'AudiocallStatistic',
   components: {
     IconBase,
     IconVolume,
     IconBucket,
   },
   computed: {
-    ...mapState('Savannah', ['statsArray']),
+    ...mapState('Audiocall', ['statsArray']),
 
     knowArray() {
       return this.statsArray.filter((item) => item.correct);
@@ -77,7 +77,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('Savannah', ['resetGame']),
+    ...mapMutations('Audiocall', ['resetGame']),
 
     onPlayAudio(src) {
       const audio = new Audio(`${dataSrc}${src}`);
