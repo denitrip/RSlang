@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
 import { application, apiAddress } from '@/helpers/constants.helper';
 
 export default {
