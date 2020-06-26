@@ -41,11 +41,7 @@ export default {
         commit('setUser', newUser);
         commit('setEmail', email);
         setLocalStorageUserData(newUser, email);
-        try {
-          dispatch('Settings/receiveSettings', null, { root: true });
-        } catch (error) {
-          this.setError(error.message);
-        }
+        dispatch('Settings/receiveSettings', null, { root: true });
       } else {
         throw new Error('Incorrect e-mail or password');
       }
