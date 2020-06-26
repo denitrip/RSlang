@@ -6,7 +6,8 @@
       the active stage.
     </h3>
     <p>
-      You can choose the right answer in two ways:
+      After the start of the game, you will see a falling word in English (or Russian, if the game
+      mode is RU->EN) and four translation options. You can choose the right answer in two ways:
     </p>
     <p>1. Click on it with the mouse;</p>
     <p>2. Use the keys 1, 2, 3, 4.</p>
@@ -56,7 +57,7 @@ export default {
   text-align: center;
   text-shadow: 3px 3px 2px $color-black;
   background-image: linear-gradient($overlay-color, $overlay-color),
-    url('~@/assets/img/savannah/start-screen.jpg');
+    url('~@/assets/img/savannah/savannah-0.jpg');
   background-repeat: no-repeat;
   background-size: cover;
 }
