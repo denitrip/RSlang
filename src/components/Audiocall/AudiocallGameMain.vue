@@ -12,13 +12,27 @@
         >
           <IconBase
             iconName="Play sound"
-            :width="isCheck ? '30px' : '120px'"
+            :width="isCheck ? '32px' : '120px'"
             :height="isCheck ? '24px' : '96px'"
           >
             <IconVolume />
           </IconBase>
         </div>
-        <p class="game__word-text" v-if="isCheck">{{ words[wordNumber].word }}</p>
+        <p class="game__words-text" v-if="isCheck">{{ words[wordNumber].word }}</p>
+        <p class="game__words-text" v-if="isCheck">{{ words[wordNumber].transcription }}</p>
+      </div>
+      <div class="game__words-text-example" v-if="isCheck">
+        <div
+          class="question question_check"
+          :class="[{ question_playing: isTextAudioPlay }]"
+          title="Play sound"
+          @click="onPlayText"
+        >
+          <IconBase iconName="Play sound" width="32px" height="24px">
+            <IconVolume />
+          </IconBase>
+        </div>
+        {{ words[wordNumber].textExample }}
       </div>
       <div class="attempt-words">
         <span class="attempt-words__word" v-for="(item, i) in wordsArray[wordNumber]" :key="i">
@@ -36,11 +50,38 @@
         </span>
       </div>
       <div class="game__controls">
-        <button class="controls__button" v-if="isCheck" title="Next" @click="onCheckGameOver">
+        <button
+          class="controls__button"
+          v-if="isCheck"
+          title="Next"
+          @click="onCheckGameOver"
+          @keydown.enter.prevent=""
+        >
           <span class="btn-arrow"></span>
         </button>
-        <button class="controls__button" v-else @click="onIncorrectAnswer">Don't know</button>
+        <button
+          class="controls__button"
+          v-else
+          @click="onIncorrectAnswer"
+          @keydown.enter.prevent=""
+        >
+          Don't know
+        </button>
       </div>
+      <b-progress height="16px" :max="wordsLength" class="game__progress-bar mb-3">
+        <b-progress-bar
+          height="16px"
+          show-value
+          variant="success"
+          :value="getCorrectAnswerCount"
+        ></b-progress-bar>
+        <b-progress-bar
+          height="16px"
+          show-value
+          variant="danger"
+          :value="getIncorrectAnswerCount"
+        ></b-progress-bar>
+      </b-progress>
     </div>
     <AudiocallStatistic v-else />
   </div>
@@ -64,6 +105,7 @@ export default {
     return {
       isCheck: false,
       isAudioPlay: false,
+      isTextAudioPlay: false,
     };
   },
   computed: {
@@ -80,6 +122,12 @@ export default {
     },
     getImageSrc() {
       return `${dataSrc}${this.words[this.wordNumber].image}`;
+    },
+    getCorrectAnswerCount() {
+      return this.statsArray.filter((item) => item.correct).length;
+    },
+    getIncorrectAnswerCount() {
+      return this.statsArray.filter((item) => !item.correct).length;
     },
   },
   created() {
@@ -134,6 +182,14 @@ export default {
       };
       audio.play();
     },
+    onPlayText() {
+      const audio = new Audio(`${dataSrc}${this.words[this.wordNumber].audioExample}`);
+      this.isTextAudioPlay = true;
+      audio.onended = () => {
+        this.isTextAudioPlay = false;
+      };
+      audio.play();
+    },
     onKeyDown(event) {
       if (!event.repeat && !this.isCheck) {
         switch (event.key) {
@@ -155,7 +211,7 @@ export default {
           default:
             break;
         }
-      } else if (!event.repeat && this.isCheck && keys.enter) {
+      } else if (!event.repeat && this.isCheck && event.key === keys.enter) {
         this.onCheckGameOver();
       }
     },
@@ -201,9 +257,17 @@ export default {
   justify-content: center;
 }
 
-.game__word-text {
+.game__words-text {
   margin-left: 20px;
   font-size: 30px;
+}
+
+.game__words-text-example {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  text-align: center;
 }
 
 .game__image {
@@ -284,6 +348,12 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 18px 14px;
+}
+
+.game__progress-bar {
+  width: 100%;
+  max-width: 320px;
+  margin-top: 40px;
 }
 
 @media (hover: hover) {
