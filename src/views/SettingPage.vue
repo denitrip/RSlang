@@ -5,7 +5,7 @@
       <div class="setting__menu">
         <div class="setting__submenu">
           <h3>Voice Setting</h3>
-          <b-form-checkbox name="check-button" switch v-model="isAutoVoice" size="lg">
+          <b-form-checkbox name="check-button" switch v-model="settingsData.isAutoVoice" size="lg">
             Automatic voice preview
           </b-form-checkbox>
         </div>
@@ -22,7 +22,7 @@
               @click="minusWordCount"
               >-</b-button
             >
-            <div class="counter__input">{{ wordsPerDay }}</div>
+            <div class="counter__input">{{ settingsData.wordsPerDay }}</div>
             <b-button
               class="counter__control counter__plus"
               variant="primary"
@@ -41,7 +41,7 @@
               @click="minusCardCount"
               >-</b-button
             >
-            <div class="counter__input">{{ maxCardDay }}</div>
+            <div class="counter__input">{{ settingsData.maxCardDay }}</div>
             <b-button
               class="counter__control counter__plus"
               variant="primary"
@@ -58,34 +58,46 @@
       <div class="setting__menu">
         <div class="setting__submenu setting__display">
           <h3>Button display settings</h3>
-          <b-form-checkbox class="setting__checkbox" name="checkbox-say" v-model="isSayVisible">
+          <b-form-checkbox
+            class="setting__checkbox"
+            name="checkbox-say"
+            v-model="settingsData.isSayVisible"
+          >
             «Say out loud» button
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-difficult"
-            v-model="isDificultVisible"
+            v-model="settingsData.isDificultVisible"
           >
             «Difficult» button
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-repeat"
-            v-model="isRepeatVisible"
+            v-model="settingsData.isRepeatVisible"
           >
             «Repeat» button
           </b-form-checkbox>
-          <b-form-checkbox class="setting__checkbox" name="checkbox-easy" v-model="isEasyVisible">
+          <b-form-checkbox
+            class="setting__checkbox"
+            name="checkbox-easy"
+            v-model="settingsData.isEasyVisible"
+          >
             «Easy» button
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-delete"
-            v-model="isDeleteVisible"
+            v-model="settingsData.isDeleteVisible"
           >
             «Delete» button
           </b-form-checkbox>
-          <b-form-checkbox class="setting__checkbox" name="checkbox-good" v-model="isGoodVisible">
+          <b-form-checkbox
+            class="setting__checkbox"
+            name="checkbox-good"
+            v-model="settingsData.isGoodVisible"
+          >
             «Good» button
           </b-form-checkbox>
         </div>
@@ -94,35 +106,35 @@
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-translation"
-            v-model="isWordVisible"
+            v-model="settingsData.isWordVisible"
           >
             Word translation
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-meaining"
-            v-model="isMeaningVisible"
+            v-model="settingsData.isMeaningVisible"
           >
             Meaning of the word
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-example"
-            v-model="isExampleVisible"
+            v-model="settingsData.isExampleVisible"
           >
             An example of using the word
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-transcription"
-            v-model="isTranscriptionVisible"
+            v-model="settingsData.isTranscriptionVisible"
           >
             Word transcription
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-association"
-            v-model="isAssociationVisible"
+            v-model="settingsData.isAssociationVisible"
           >
             Picture association
           </b-form-checkbox>
@@ -130,75 +142,81 @@
       </div>
     </div>
     <div class="footer">
-      <b-button class="setting__save footer__btn" variant="primary" @click="saveSettings"
-        >Save Setting</b-button
-      >
+      <b-button
+        class="setting__save footer__btn"
+        variant="primary"
+        @click="saveSettings"
+        :disabled="isSaveLoading"
+        >Save Setting <AppSpinner v-if="isSaveLoading"></AppSpinner
+      ></b-button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex';
+import { mapMutations, mapActions, mapState } from 'vuex';
+import AppSpinner from '@/components/AppSpinner.vue';
 
 export default {
   name: 'SettingPage',
+  components: { AppSpinner },
   data() {
     return {
-      isAutoVoice: true,
-      wordsPerDay: 5,
-      maxCardDay: 5,
-      isSayVisible: true,
-      isDificultVisible: true,
-      isRepeatVisible: false,
-      isEasyVisible: false,
-      isDeleteVisible: true,
-      isGoodVisible: false,
-      isWordVisible: false,
-      isMeaningVisible: true,
-      isExampleVisible: false,
-      isTranscriptionVisible: true,
-      isAssociationVisible: false,
+      settingsData: {
+        isAutoVoice: true,
+        wordsPerDay: 5,
+        maxCardDay: 5,
+        isSayVisible: true,
+        isDificultVisible: true,
+        isRepeatVisible: false,
+        isEasyVisible: false,
+        isDeleteVisible: true,
+        isGoodVisible: false,
+        isWordVisible: false,
+        isMeaningVisible: true,
+        isExampleVisible: false,
+        isTranscriptionVisible: true,
+        isAssociationVisible: false,
+      },
+      isSaveLoading: false,
     };
+  },
+  computed: {
+    ...mapState('Settings', ['settings']),
+  },
+  beforeMount() {
+    this.settingsData = this.settings;
   },
   methods: {
     ...mapMutations('Settings', ['setSettings']),
-    ...mapActions('Settings', ['sendSettings']),
+    ...mapActions('Settings', ['sendSettings', 'receiveSettings']),
 
     plusWordCount() {
-      this.wordsPerDay += 1;
+      this.settingsData.wordsPerDay += 1;
     },
     plusCardCount() {
-      this.maxCardDay += 1;
+      this.settingsData.maxCardDay += 1;
     },
     minusWordCount() {
-      if (this.wordsPerDay === 0) return;
-      this.wordsPerDay -= 1;
+      if (this.settingsData.wordsPerDay > 1) {
+        this.settingsData.wordsPerDay -= 1;
+      }
     },
     minusCardCount() {
-      if (this.maxCardDay === 0) return;
-      this.maxCardDay -= 1;
+      if (this.settingsData.maxCardDay > 0) {
+        this.settingsData.maxCardDay -= 1;
+      }
     },
-    saveSettings() {
-      const settings = {
-        isAutoVoice: this.isAutoVoice,
-        wordsPerDay: this.wordsPerDay,
-        maxCardDay: this.maxCardDay,
-        isSayVisible: this.isSayVisible,
-        isDificultVisible: this.isDificultVisible,
-        isRepeatVisible: this.isRepeatVisible,
-        isEasyVisible: this.isEasyVisible,
-        isDeleteVisible: this.isDeleteVisible,
-        isGoodVisible: this.isGoodVisible,
-        isWordVisible: this.isWordVisible,
-        isMeaningVisible: this.isMeaningVisible,
-        isExampleVisible: this.isExampleVisible,
-        isTranscriptionVisible: this.isTranscriptionVisible,
-        isAssociationVisible: this.isAssociationVisible,
-      };
-      this.setSettings({
-        settings,
-      });
-      this.sendSettings();
+    async saveSettings() {
+      this.isSaveLoading = true;
+      try {
+        this.setSettings(this.settingsData);
+        await this.sendSettings();
+      } catch (error) {
+        this.setError(error.message);
+      } finally {
+        this.isSaveLoading = false;
+      }
     },
   },
 };
