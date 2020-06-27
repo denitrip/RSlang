@@ -33,6 +33,7 @@ import AppSpinner from '@/components/AppSpinner.vue';
 import IconBase from '@/components/IconBase.vue';
 import IconSmallSpeakIt from '@/components/icons/IconSmallSpeakIt.vue';
 import { mapState, mapActions, mapMutations } from 'vuex';
+import { wordGroups } from '@/helpers/constants.helper';
 
 export default {
   name: 'DictionaryCard',
@@ -80,7 +81,7 @@ export default {
       if (this.index < 19) {
         this.isWordCreating = true;
         try {
-          await this.createUserWord({ difficulty: 'difficult', word: this.words[this.index] });
+          await this.createUserWord({ difficulty: wordGroups.learned, word: this.words[this.index] });
         } catch (error) {
           this.setError(error.message);
         } finally {

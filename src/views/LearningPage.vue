@@ -11,9 +11,9 @@
       <h3>Today learning</h3>
       <div class="learning__today__lerned">
         <div class="learning__today__lerned-text">
-          Today lerned: <span>{{ learnedCards }}</span> from <span>{{ maxCards }}</span>
+          Today lerned: <span>{{ learnedCards }}</span> from <span>{{ maxCardDay }}</span>
         </div>
-        <b-progress height="10px" :value="learnedCards" :max="maxCards" class="mb-3"></b-progress>
+        <b-progress height="10px" :value="learnedCards" :max="maxCardDay" class="mb-3"></b-progress>
       </div>
       <button class="btn btn-primary btn-rs">Start learning</button>
     </div>
@@ -54,8 +54,8 @@ export default {
   name: 'LearningPage',
   data() {
     return {
-      learnedCards: 32,
-      maxCards: 100,
+      learnedCards: 4,
+      maxCardDay: 10,
       isMainPage: true,
       isNewWordsLoading: false,
     };
@@ -64,6 +64,10 @@ export default {
     LearningWords,
     AppSpinner,
     Notification,
+  },
+  computed: {
+    ...mapState('Notification', ['isNotificationShow']),
+    ...mapState('Settings', ['settings']),
   },
   methods: {
     ...mapActions('Learning', ['getNewWords']),
@@ -83,9 +87,6 @@ export default {
         this.isNewWordsLoading = false;
       }
     },
-  },
-  computed: {
-    ...mapState('Notification', ['isNotificationShow']),
   },
   destroyed() {
     this.setIsNotificationShow(false);
