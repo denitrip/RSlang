@@ -8,28 +8,30 @@
         </IconBase>
       </div>
     </div>
-    <nav class="menu__navigation">
-      <router-link
-        class="menu__link"
-        v-for="item of menuItems"
-        :key="item.name"
-        :to="item.route"
-        active-class="active-link"
-      >
-        <IconBase :iconName="item.name" width="34px" height="34px" :viewBox="item.icon.viewbox">
-          <component :is="`Icon${item.icon.name}`" />
+    <div class="nav-wrapper">
+      <nav class="menu__navigation">
+        <router-link
+          class="menu__link"
+          v-for="item of menuItems"
+          :key="item.name"
+          :to="item.route"
+          active-class="active-link"
+        >
+          <IconBase :iconName="item.name" width="34px" height="34px" :viewBox="item.icon.viewbox">
+            <component :is="`Icon${item.icon.name}`" />
+          </IconBase>
+          <p v-if="isOpen">{{ item.name }}</p>
+        </router-link>
+      </nav>
+      <div class="menu__switch" @click="closeMenu" v-if="isOpen" title="Hide menu">
+        <img class="menu__arrowHide" src="../assets/img/sideMenu/arrowHide.svg" alt="" />
+      </div>
+      <div class="menu__logout" @click="onLogout">
+        <IconBase iconName="Log Out" width="34px" height="34px" viewBox="0 0 36 26">
+          <IconLogOut />
         </IconBase>
-        <p v-if="isOpen">{{ item.name }}</p>
-      </router-link>
-    </nav>
-    <div class="menu__switch" @click="closeMenu" v-if="isOpen" title="Hide menu">
-      <img class="menu__arrowHide" src="../assets/img/sideMenu/arrowHide.svg" alt="" />
-    </div>
-    <div class="menu__logout" @click="onLogout">
-      <IconBase iconName="Log Out" width="34px" height="34px" viewBox="0 0 36 26">
-        <IconLogOut />
-      </IconBase>
-      <p v-if="isOpen">Log Out</p>
+        <p v-if="isOpen">Log Out</p>
+      </div>
     </div>
   </div>
 </template>
@@ -148,8 +150,9 @@ export default {
 .menu {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 100vh;
+  justify-content: flex-start;
+  height: 100%;
+  min-height: 100vh;
   color: $color-white;
   text-align: center;
   background: $color-nile-blue;
@@ -251,6 +254,13 @@ export default {
   }
 }
 
+.nav-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
 .menu-open {
   width: 300px;
 }
@@ -263,7 +273,7 @@ export default {
   }
 }
 
-@media (max-width: 1680px) {
+@media screen and (max-width: $desktop-width) {
   .menu__navigation {
     margin-top: 12;
   }
@@ -273,7 +283,7 @@ export default {
   }
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: $tablet-width) {
   .menu__navigation {
     margin-top: 10px;
   }
@@ -286,7 +296,7 @@ export default {
   }
 }
 
-@media (max-width: 414px) {
+@media screen and (max-width: $mobile-big-width) {
   .menu__navigation {
     margin-top: 10px;
   }
@@ -296,7 +306,7 @@ export default {
   }
 }
 
-@media (max-width: 320px) {
+@media screen and (max-width: $mobile-small-width) {
   .menu__navigation {
     margin-top: 0;
   }
