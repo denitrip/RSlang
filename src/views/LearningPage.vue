@@ -40,6 +40,8 @@
     </div>
     <Notification v-if="isNotificationShow" />
     <button @click="open">NotificationShow</button>
+    <ShortTermStatistic v-if="isShortTermStatisticShow" />
+    <button @click="showStatistic">ShortTermStatistic</button>
   </div>
   <learning-words v-else></learning-words>
 </template>
@@ -49,6 +51,7 @@ import AppSpinner from '@/components/AppSpinner.vue';
 import LearningWords from '@/components/LearningWords.vue';
 import { mapState, mapMutations, mapActions } from 'vuex';
 import Notification from '../components/Notification.vue';
+import ShortTermStatistic from '../components/ShortTermStatistic.vue';
 
 export default {
   name: 'LearningPage',
@@ -64,13 +67,18 @@ export default {
     LearningWords,
     AppSpinner,
     Notification,
+    ShortTermStatistic,
   },
   methods: {
     ...mapActions('Learning', ['getNewWords']),
     ...mapActions('Error', ['setError']),
     ...mapMutations('Notification', ['setIsNotificationShow']),
+    ...mapMutations('ShortTermStatistic', ['setIsShortTermStatisticShow']),
     open() {
       this.setIsNotificationShow(true);
+    },
+    showStatistic() {
+      this.setIsShortTermStatisticShow(true);
     },
     async trainNewWords() {
       this.isNewWordsLoading = true;
@@ -86,9 +94,11 @@ export default {
   },
   computed: {
     ...mapState('Notification', ['isNotificationShow']),
+    ...mapState('ShortTermStatistic', ['isShortTermStatisticShow']),
   },
   destroyed() {
     this.setIsNotificationShow(false);
+    this.setIsShortTermStatisticShow(false);
   },
 };
 </script>
