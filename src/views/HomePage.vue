@@ -43,7 +43,8 @@ export default {
   }
 
   &__routerView {
-    height: calc(100vh - 86px);
+    height: 100%;
+    min-height: calc(100vh - 86px);
     overflow-y: auto;
   }
 }

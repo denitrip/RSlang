@@ -48,7 +48,7 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
-  height: calc(100vh - 86px);
+  height: 100%;
   padding-top: 24px;
   overflow-y: auto;
   background-color: $color-ghost;
@@ -73,10 +73,12 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 358px;
+  width: 100%;
+  max-width: 358px;
   height: 358px;
   margin: 24px;
   color: $color-white;
+  text-align: center;
   border-radius: 24px;
   box-shadow: 1px 5px 14px $box-shadow-one-color;
 
@@ -114,6 +116,21 @@ export default {
     .mini-games__link:hover {
       color: $color-dodger-blue;
     }
+  }
+}
+
+@media screen and (max-width: $mobile-big-width) {
+  .mini-games {
+    padding-top: 12px;
+  }
+
+  .mini-games__card {
+    height: calc(100vw - 60px);
+    margin: 12px;
+  }
+
+  .mini-games__link {
+    margin-top: 20px;
   }
 }
 </style>
