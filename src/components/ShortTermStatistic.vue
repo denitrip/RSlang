@@ -93,6 +93,7 @@ export default {
     position: absolute;
     top: 25px;
     right: 25px;
+    cursor: pointer;
   }
 
   &__head {
