@@ -17,11 +17,11 @@
       </p>
       <div class="buttons-wrapper">
         <button class="Primary-1">
-          <router-link :to="routerConsts.settings.path">Настройки</router-link>
+          <router-link :to="routerConsts.settings.path">Settings</router-link>
         </button>
         <button class="Primary-2" @click="close">
           <router-link :to="routerConsts.learningPage.path" style="color: white;"
-            >Учить ещё!</router-link
+            >Learn more</router-link
           >
         </button>
       </div>
@@ -43,8 +43,10 @@ export default {
   },
   methods: {
     ...mapMutations('Notification', ['setIsNotificationShow']),
+    ...mapMutations('Learning', ['setIsMainPage']),
     close() {
       this.setIsNotificationShow(false);
+      this.setIsMainPage(true);
     },
   },
 };
@@ -128,6 +130,7 @@ export default {
   background: $color-white;
   border: 1px solid $color-dodger-blue;
   border-radius: 20px;
+  outline: none;
 }
 
 .Primary-2 {
@@ -141,6 +144,7 @@ export default {
   background: $color-dodger-blue;
   border: 1px solid $color-dodger-blue;
   border-radius: 20px;
+  outline: none;
 }
 
 @media screen and (max-width: $puzzle-mobile-size) {

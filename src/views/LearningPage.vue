@@ -11,9 +11,14 @@
       <h3>Today learning</h3>
       <div class="learning__today__lerned">
         <div class="learning__today__lerned-text">
-          Today lerned: <span>{{ learnedCards }}</span> from <span>{{ maxCards }}</span>
+          Today lerned: <span>{{ index }}</span> from <span>{{ settings.maxCardDay }}</span>
         </div>
-        <b-progress height="10px" :value="learnedCards" :max="maxCards" class="mb-3"></b-progress>
+        <b-progress
+          height="10px"
+          :value="index"
+          :max="settings.maxCardDay"
+          class="mb-3"
+        ></b-progress>
       </div>
       <button class="btn btn-primary btn-rs">Start learning</button>
     </div>
@@ -38,8 +43,6 @@
         <button class="btn btn-primary btn-rs">Let’s train!</button>
       </div>
     </div>
-    <Notification v-if="isNotificationShow" />
-    <button @click="open">NotificationShow</button>
   </div>
   <learning-words v-else></learning-words>
 </template>
@@ -48,47 +51,39 @@
 import AppSpinner from '@/components/AppSpinner.vue';
 import LearningWords from '@/components/LearningWords.vue';
 import { mapState, mapMutations, mapActions } from 'vuex';
-import Notification from '../components/Notification.vue';
 
 export default {
   name: 'LearningPage',
   data() {
     return {
-      learnedCards: 32,
-      maxCards: 100,
-      isMainPage: true,
+      learnedCards: 4,
       isNewWordsLoading: false,
     };
   },
   components: {
     LearningWords,
     AppSpinner,
-    Notification,
+  },
+  computed: {
+    ...mapState('Settings', ['settings']),
+    ...mapState('Learning', ['isMainPage', 'index']),
   },
   methods: {
     ...mapActions('Learning', ['getNewWords']),
     ...mapActions('Error', ['setError']),
-    ...mapMutations('Notification', ['setIsNotificationShow']),
-    open() {
-      this.setIsNotificationShow(true);
-    },
+    ...mapMutations('Learning', ['setIsMainPage']),
+
     async trainNewWords() {
       this.isNewWordsLoading = true;
       try {
         await this.getNewWords();
-        this.isMainPage = false;
+        this.setIsMainPage(false);
       } catch (error) {
         this.setError(error.message);
       } finally {
         this.isNewWordsLoading = false;
       }
     },
-  },
-  computed: {
-    ...mapState('Notification', ['isNotificationShow']),
-  },
-  destroyed() {
-    this.setIsNotificationShow(false);
   },
 };
 </script>

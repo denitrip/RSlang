@@ -1,7 +1,8 @@
 <template>
   <div class="learning-card">
     <img :src="image" class="img" />
-    <div class="word-with-speak-it">
+    <div class="word word_russian">{{ russianWord }}</div>
+    <div class="word-with-speak-it" v-if="isResualtCard">
       <div class="word word_english">{{ englishWord }}</div>
       <span
         @click="onPlayAudio"
@@ -13,18 +14,28 @@
         </IconBase>
       </span>
     </div>
-    <div class="word word_transcription">{{ transcription }}</div>
-    <div class="text-meaning">{{ textMeaning | deleteItalic }}</div>
-    <div class="text-translate">{{ textMeaningTranslate }}</div>
-    <div class="text-example">{{ textExample | deleteBold }}</div>
-    <div class="text-translate">{{ textExampleTranslate }}</div>
-    <div class="word word_russian">{{ russianWord }}</div>
+    <div class="word word_transcription" v-if="isResualtCard">{{ transcription }}</div>
+    <div class="text-meaning" v-if="isResualtCard">{{ textMeaning | deleteItalic }}</div>
+    <div class="text-meaning" v-else>{{ textMeaning | deleteWord }}</div>
+    <div class="text-translate" v-if="isResualtCard">{{ textMeaningTranslate }}</div>
+    <div class="text-example" v-if="isResualtCard">{{ textExample | deleteBold }}</div>
+    <div class="text-example" v-else>{{ textExample | deleteWord }}</div>
+    <div class="text-translate" v-if="isResualtCard">{{ textExampleTranslate }}</div>
+    <input
+      type="text"
+      class="text-input"
+      ref="userWord"
+      :value="englishWord"
+      @keyup.enter="checkWord"
+      autofocus
+    />
     <button type="submit" class="btn wrap" @click="nextIndex" :disabled="isWordCreating">
       Next
       <AppSpinner v-if="isWordCreating"></AppSpinner>
       <span class="btn-arrow" v-else></span>
     </button>
-    <div class="show-answer">Show answer</div>
+    <div class="show-answer" @click="nextIndex" :disabled="isWordCreating">Show answer</div>
+    <Notification v-if="isNotificationShow" />
   </div>
 </template>
 
@@ -33,6 +44,8 @@ import AppSpinner from '@/components/AppSpinner.vue';
 import IconBase from '@/components/IconBase.vue';
 import IconSmallSpeakIt from '@/components/icons/IconSmallSpeakIt.vue';
 import { mapState, mapActions, mapMutations } from 'vuex';
+import { wordGroups } from '@/helpers/constants.helper';
+import Notification from '@/components/Notification.vue';
 
 export default {
   name: 'DictionaryCard',
@@ -40,6 +53,7 @@ export default {
     IconBase,
     IconSmallSpeakIt,
     AppSpinner,
+    Notification,
   },
   props: [
     'image',
@@ -55,6 +69,7 @@ export default {
     return {
       isSpeakItSelected: false,
       isWordCreating: false,
+      isResualtCard: false,
     };
   },
   filters: {
@@ -64,23 +79,37 @@ export default {
     deleteItalic(str) {
       return str.replace(/<i>|<\/i>/g, '');
     },
+    deleteWord(str) {
+      const start = str.indexOf('<');
+      const finish = str.lastIndexOf('>') + 1;
+      return `${str.slice(0, start)}[...]${str.slice(finish)}`;
+    },
   },
   computed: {
     ...mapState('Learning', ['isAudioPlay', 'index', 'words']),
+    ...mapState('Settings', ['settings']),
+    ...mapState('Notification', ['isNotificationShow']),
   },
   methods: {
     ...mapMutations('Learning', ['setIndex']),
     ...mapActions('Learning', ['onPlayAudio', 'createUserWord']),
     ...mapActions('Error', ['setError']),
+    ...mapMutations('Notification', ['setIsNotificationShow']),
 
+    showNotification() {
+      this.setIsNotificationShow(true);
+    },
     changeSpeakItStatus() {
       this.isSpeakItSelected = !this.isSpeakItSelected;
     },
     async nextIndex() {
-      if (this.index < 19) {
+      if (this.index < this.settings.wordsPerDay) {
         this.isWordCreating = true;
         try {
-          await this.createUserWord({ difficulty: 'difficult', word: this.words[this.index] });
+          await this.createUserWord({
+            difficulty: wordGroups.learned,
+            word: this.words[this.index],
+          });
         } catch (error) {
           this.setError(error.message);
         } finally {
@@ -88,7 +117,16 @@ export default {
           this.isWordCreating = false;
         }
       } else {
-        this.setIndex(0);
+        this.showNotification();
+      }
+    },
+    checkWord() {
+      // continue in the next issue
+      const userWord = this.$refs.userWord.value;
+      if (userWord === this.englishWord) {
+        console.log(true);
+      } else {
+        console.log(false);
       }
     },
   },
@@ -143,16 +181,9 @@ export default {
   }
 
   &_russian {
-    padding-bottom: 15px;
-    margin-top: 24px;
-    border-bottom: 1.5px solid $color-dodger-blue;
+    margin-top: 16px;
 
-    @include font($size: 36px, $height: 20px, $weight: normal);
-
-    @include media-mobile {
-      padding-bottom: 10px;
-      margin-top: 15px;
-    }
+    @include font($size: 24px, $height: 20px, $weight: normal);
   }
 }
 
@@ -202,9 +233,20 @@ export default {
   @include font($size: 14px, $height: 20px, $weight: 500);
 }
 
+.text-input {
+  width: 50%;
+  font-family: 'Gilroy', 'Arial', monospace !important;
+  font-size: 30px;
+  text-align: center;
+  border: none;
+  border-bottom: 2px solid $color-dodger-blue;
+  outline: none;
+}
+
 .show-answer {
   margin-top: 24.5px;
   color: $color-dodger-blue;
+  cursor: pointer;
   text-decoration-line: underline;
 
   @include font($size: 16px, $height: 20px, $weight: 600);

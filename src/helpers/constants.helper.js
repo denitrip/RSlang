@@ -5,6 +5,11 @@ export const dataSrc = `${gitContent}rslang-data/master/`;
 export const pictureSrc = `${gitContent}rslang_data_paintings/master/`;
 export const correctSound = `${dataSrc}/files/correct.mp3`;
 export const errorSound = `${dataSrc}/files/error.mp3`;
+export const wordGroups = {
+  learned: 'learned',
+  difficult: 'difficult',
+  deleted: 'deleted',
+};
 export const keys = {
   one: '1',
   two: '2',
