@@ -9,6 +9,7 @@ export default {
     deletedWords: [],
     index: 0,
     isAudioPlay: false,
+    isMainPage: true,
   },
   mutations: {
     setWords(state, payload) {
@@ -22,6 +23,9 @@ export default {
     },
     setIsAudioPlay(state, payload) {
       state.isAudioPlay = payload;
+    },
+    setIsMainPage(state, payload) {
+      state.isMainPage = payload;
     },
   },
   actions: {
