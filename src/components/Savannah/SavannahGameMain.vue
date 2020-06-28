@@ -25,6 +25,20 @@
           </button>
         </span>
       </div>
+      <b-progress height="16px" :max="wordsLength" class="game__progress-bar mb-3">
+        <b-progress-bar
+          height="16px"
+          show-value
+          variant="success"
+          :value="correctAnswersCount"
+        ></b-progress-bar>
+        <b-progress-bar
+          height="16px"
+          show-value
+          variant="danger"
+          :value="incorrectAnswersCount"
+        ></b-progress-bar>
+      </b-progress>
     </div>
     <SavannahStatistic v-else />
     <IconBase iconName="Savannah sun" :width="sunSize" :height="sunSize" viewBox="0 0 220 220">
@@ -71,6 +85,9 @@ export default {
     },
     correctAnswersCount() {
       return this.statsArray.filter((item) => item.correct).length || 0;
+    },
+    incorrectAnswersCount() {
+      return this.statsArray.filter((item) => !item.correct).length || 0;
     },
     backgroundStep() {
       return 100 / this.wordsLength;
@@ -254,6 +271,12 @@ export default {
   &_correct {
     animation: fallEnd 1s linear;
   }
+}
+
+.game__progress-bar {
+  width: 100%;
+  max-width: 320px;
+  margin-top: 40px;
 }
 
 @keyframes fall {
