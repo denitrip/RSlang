@@ -147,7 +147,7 @@
         variant="primary"
         @click="saveSettings"
         :disabled="isSaveLoading"
-        >Save Setting <AppSpinner v-if="isSaveLoading"></AppSpinner
+        >Save Settings <AppSpinner v-if="isSaveLoading"></AppSpinner
       ></b-button>
     </div>
   </div>
@@ -156,6 +156,7 @@
 <script>
 import { mapMutations, mapActions, mapState } from 'vuex';
 import AppSpinner from '@/components/AppSpinner.vue';
+import { setLocalStorageUserSettings } from '@/helpers/localStorage.helper';
 
 export default {
   name: 'SettingPage',
@@ -190,6 +191,7 @@ export default {
   methods: {
     ...mapMutations('Settings', ['setSettings']),
     ...mapActions('Settings', ['sendSettings', 'receiveSettings']),
+    ...mapActions('Error', ['setError']),
 
     plusWordCount() {
       this.settingsData.wordsPerDay += 1;
@@ -211,6 +213,7 @@ export default {
       this.isSaveLoading = true;
       try {
         this.setSettings(this.settingsData);
+        setLocalStorageUserSettings(this.settingsData);
         await this.sendSettings();
       } catch (error) {
         this.setError(error.message);

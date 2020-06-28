@@ -1,4 +1,6 @@
 import { application, apiAddress } from '@/helpers/constants.helper';
+import { setLocalStorageUserSettings } from '@/helpers/localStorage.helper';
+import { mapActions } from 'vuex';
 
 export default {
   namespaced: true,
@@ -25,6 +27,9 @@ export default {
       state.settings = payload;
     },
   },
+  methods: {
+    ...mapActions('Error', ['setError']),
+  },
   actions: {
     async receiveSettings({ rootState, commit, dispatch }) {
       const { token } = rootState.Auth.user;
@@ -41,6 +46,7 @@ export default {
       });
       if (response.ok) {
         const answer = await response.json();
+        setLocalStorageUserSettings(answer.optional);
         commit('setSettings', answer.optional);
       } else if (response.status === 404) {
         dispatch('Error/setInfo', 'Unable to receive your settings, setting to default', {
@@ -83,7 +89,7 @@ export default {
 
   getters: {
     getSettings(state) {
-      return state.settings.settings;
+      return state.settings;
     },
   },
 };
