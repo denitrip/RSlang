@@ -1,4 +1,5 @@
 import { application, apiAddress } from '@/helpers/constants.helper';
+import { setLocalStorageUserSettings } from '@/helpers/localStorage.helper';
 
 export default {
   namespaced: true,
@@ -41,6 +42,7 @@ export default {
       });
       if (response.ok) {
         const answer = await response.json();
+        setLocalStorageUserSettings(answer.optional);
         commit('setSettings', answer.optional);
       } else if (response.status === 404) {
         dispatch('Error/setInfo', 'Unable to receive your settings, setting to default', {
@@ -83,7 +85,7 @@ export default {
 
   getters: {
     getSettings(state) {
-      return state.settings.settings;
+      return state.settings;
     },
   },
 };
