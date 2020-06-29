@@ -11,7 +11,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import getLocalStorageData from '@/helpers/localStorage.helper';
+import { getLocalStorageData, getLocalStorageUserSettings } from '@/helpers/localStorage.helper';
 
 export default {
   name: 'App',
@@ -23,6 +23,7 @@ export default {
   },
   created() {
     const { user, email } = getLocalStorageData();
+    this.setSettings(getLocalStorageUserSettings());
     if (user) {
       this.setUser(user);
     }
@@ -32,6 +33,7 @@ export default {
   },
   methods: {
     ...mapMutations('Auth', ['setUser', 'setEmail']),
+    ...mapMutations('Settings', ['setSettings']),
   },
 };
 </script>

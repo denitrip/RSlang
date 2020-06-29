@@ -28,8 +28,14 @@
           individual progress and mini-games
         </p>
         <ul class="main_buttons">
-          <li class="main_buttons-button button button--filled">Start learning</li>
-          <li class="main_buttons-button button button--bordered">Watch video</li>
+          <li class="main_buttons-button">
+            <router-link :to="routerConsts.signUpPage.path" class="StartLearning"
+              ><button class="button button--filled">Start learning</button></router-link
+            >
+          </li>
+          <li class="main_buttons-button">
+            <WatchVideo />
+          </li>
         </ul>
       </div>
       <img src="~@/assets/images/welcome-bg.png" alt class="main-image" />
@@ -75,13 +81,14 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 import routerConsts from '@/router/routerConsts';
 import loginForm from '@/components/LoginForm.vue';
+import WatchVideo from '@/components/WatchVideo.vue';
 
 export default {
   name: 'LoginPage',
-  components: { loginForm },
+  components: { loginForm, WatchVideo },
   data() {
     return {
       currentRoute: this.$router.currentRoute.name,
@@ -89,6 +96,7 @@ export default {
     };
   },
   computed: {
+    ...mapState('WatchVideo', ['isVideoShow']),
     isLogIn() {
       return this.currentRoute === routerConsts.loginPage.name;
     },
@@ -109,8 +117,15 @@ export default {
       this.setError('Please log in to access this page.');
     }
   },
+  destroyed() {
+    this.setIsNotificationShow(false);
+  },
   methods: {
     ...mapActions('Error', ['setError']),
+    ...mapMutations('WatchVideo', ['setIsVideoShow']),
+    open() {
+      this.setIsVideoShow(true);
+    },
   },
 };
 </script>
@@ -219,6 +234,7 @@ header {
 
 .button {
   box-sizing: border-box;
+  width: 100%;
   font-size: 20px;
   line-height: 54px;
   text-align: center;
@@ -252,6 +268,7 @@ header {
 .button--filled {
   color: $color-white;
   background-color: $color-dodger-blue;
+  border: 1px solid $color-dodger-blue;
 }
 
 .button--filled:hover {
@@ -375,5 +392,9 @@ header {
 
 .text-colored {
   color: $color-golden-dream;
+}
+
+.StartLearning {
+  color: $color-white;
 }
 </style>
