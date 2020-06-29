@@ -1,143 +1,235 @@
 <template>
   <div class="dictionary" id="dictionaryPage">
     <div class="dictionary__tabs">
-      <div class="dictionary__tab" :class="{ checked: isLernTab }" @click="toogleTab('lern')">
-        <h3 class="tab-name">Learned words</h3>
-        <div class="tab-line"></div>
+      <div
+        class="dictionary__tab"
+        :class="{ checked: isLernedTab }"
+        @click="toogleTab(wordGroups.learned)"
+      >
+        Learned words
       </div>
       <div
         class="dictionary__tab"
         :class="{ checked: isDifficultTab }"
-        @click="toogleTab('difficult')"
+        @click="toogleTab(wordGroups.difficult)"
       >
-        <h3 class="tab-name">Difficult</h3>
-        <div class="tab-line"></div>
+        Difficult
       </div>
-      <div class="dictionary__tab" :class="{ checked: isDeletedTab }" @click="toogleTab('deleted')">
-        <h3 class="tab-name">Deleted</h3>
-        <div class="tab-line"></div>
-      </div>
-    </div>
-    <div class="dictionary__controls">
-      <div class="dictionary__controls__checked">
-        <b-form-checkbox class="" name="checkbox-checked-cards" size="lg">
-          Selected 4 words
-        </b-form-checkbox>
-      </div>
-      <div class="dictionary__controls__buttons">
-        <button class="lern-btn">Learn</button>
-        <button class="diff-btn">Difficult</button>
-        <button class="del-btn">Deleted</button>
+      <div
+        class="dictionary__tab"
+        :class="{ checked: isDeletedTab }"
+        @click="toogleTab(wordGroups.deleted)"
+      >
+        Deleted
       </div>
     </div>
-    <div class="dictionary__cards" v-if="isLernTab">
-      <dictionary-card
-        v-for="(card, i) in lernCards"
-        :key="i"
-        :englishWord="card.english"
-        :russianWord="card.russian"
-      ></dictionary-card>
-    </div>
-    <div class="dictionary__cards" v-if="isDifficultTab">
-      <dictionary-card
-        v-for="(card, i) in difficultCards"
-        :key="i"
-        :englishWord="card.english"
-        :russianWord="card.russian"
-      ></dictionary-card>
-    </div>
-    <div class="dictionary__cards" v-if="isDeletedTab">
-      <dictionary-card
-        v-for="(card, i) in deletedCards"
-        :key="i"
-        :englishWord="card.english"
-        :russianWord="card.russian"
-      ></dictionary-card>
-    </div>
+    <transition name="fade" mode="out-in">
+      <div class="tab-wrapper" :key="getTab" :class="{ 'tab-wrapper_loading': isChangeLoading }">
+        <div class="dictionary__controls">
+          <div class="dictionary__controls__checked">
+            <b-form-checkbox name="checkbox-checked-cards" size="lg" v-model="selectAll">
+              Selected {{ selectedWords.length }} words
+            </b-form-checkbox>
+          </div>
+          <AppSpinner
+            v-if="isChangeLoading"
+            size="lds-spinner_small-plus"
+            colorName="color-dodger-blue"
+          />
+          <div class="dictionary__controls__buttons">
+            <button
+              class="lern-btn"
+              v-if="!isLernedTab"
+              :disabled="!selectedWords.length || isChangeLoading"
+              @click="changeWordsDifficulty(wordGroups.learned)"
+            >
+              Learned
+            </button>
+            <button
+              class="diff-btn"
+              v-if="!isDifficultTab"
+              :disabled="!selectedWords.length || isChangeLoading"
+              @click="changeWordsDifficulty(wordGroups.difficult)"
+            >
+              Difficult
+            </button>
+            <button
+              class="del-btn"
+              v-if="!isDeletedTab"
+              :disabled="!selectedWords.length || isChangeLoading"
+              @click="changeWordsDifficulty(wordGroups.deleted)"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+        <AppSpinner v-if="isWordsLoading" size="lds-spinner_large" colorName="color-dodger-blue" />
+        <div class="cards-wrapper" v-else>
+          <div class="dictionary__cards" v-if="wordsArray.length" key="cards">
+            <dictionary-card
+              v-for="card in wordsArray"
+              :key="card.word"
+              :word="card"
+            ></dictionary-card>
+          </div>
+          <div class="empty-words" v-else key="empty">
+            The list of words is empty.
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
-import DictionaryCard from '../components/DictionaryCard.vue';
+import { mapActions, mapState, mapMutations } from 'vuex';
+import AppSpinner from '@/components/AppSpinner.vue';
+import DictionaryCard from '@/components/DictionaryCard.vue';
+import { wordGroups } from '@/helpers/constants.helper';
 
 export default {
   name: 'DictionaryPage',
-  data() {
-    return {
-      isLernTab: true,
-      isDifficultTab: false,
-      isDeletedTab: false,
-      lernCards: [
-        {
-          english: 'strawberry1',
-          russian: 'клубника2',
-        },
-        {
-          english: 'strawberry2',
-          russian: 'клубника2',
-        },
-        {
-          english: 'strawberry3',
-          russian: 'клубника3',
-        },
-      ],
-      difficultCards: [
-        {
-          english: 'difficult1',
-          russian: 'сложная1',
-        },
-        {
-          english: 'difficult2',
-          russian: 'сложная2',
-        },
-        {
-          english: 'difficult3',
-          russian: 'сложная3',
-        },
-        {
-          english: 'difficult4',
-          russian: 'сложная4',
-        },
-        {
-          english: 'difficult5',
-          russian: 'сложная5',
-        },
-      ],
-      deletedCards: [
-        {
-          english: 'deleted1',
-          russian: 'удаленная1',
-        },
-        {
-          english: 'deleted2',
-          russian: 'удаленная2',
-        },
-        {
-          english: 'deleted3',
-          russian: 'удаленная3',
-        },
-      ],
-    };
-  },
   components: {
     DictionaryCard,
+    AppSpinner,
+  },
+  data() {
+    return {
+      isLernedTab: true,
+      isDifficultTab: false,
+      isDeletedTab: false,
+      isWordsLoading: false,
+      isChangeLoading: false,
+      wordGroups,
+    };
+  },
+  computed: {
+    ...mapState('Learning', ['userWords']),
+
+    selectAll: {
+      get() {
+        if (this.wordsArray.length) {
+          return this.wordsArray.every((item) => item.selected);
+        }
+        return false;
+      },
+      set(value) {
+        const newUserWords = this.userWords.map((item) => {
+          if (this.isLernedTab && item.userWord.difficulty === wordGroups.learned) {
+            return { ...item, selected: value };
+          }
+          if (this.isDifficultTab && item.userWord.difficulty === wordGroups.difficult) {
+            return { ...item, selected: value };
+          }
+          if (this.isDeletedTab && item.userWord.difficulty === wordGroups.deleted) {
+            return { ...item, selected: value };
+          }
+          return item;
+        });
+        this.setUserWords(newUserWords);
+      },
+    },
+    learnedWords() {
+      return this.userWords.filter((item) => item.userWord.difficulty === wordGroups.learned);
+    },
+    difficultWords() {
+      return this.userWords.filter((item) => item.userWord.difficulty === wordGroups.difficult);
+    },
+    deletedWords() {
+      return this.userWords.filter((item) => item.userWord.difficulty === wordGroups.deleted);
+    },
+    wordsArray() {
+      if (this.isLernedTab) {
+        return this.learnedWords;
+      }
+      if (this.isDifficultTab) {
+        return this.difficultWords;
+      }
+      return this.deletedWords;
+    },
+    selectedLearnedWords() {
+      return this.learnedWords.filter((item) => item.selected);
+    },
+    selectedDifficultWords() {
+      return this.difficultWords.filter((item) => item.selected);
+    },
+    selectedDeletedWords() {
+      return this.deletedWords.filter((item) => item.selected);
+    },
+    selectedWords() {
+      if (this.isLernedTab) {
+        return this.selectedLearnedWords;
+      }
+      if (this.isDifficultTab) {
+        return this.selectedDifficultWords;
+      }
+      return this.selectedDeletedWords;
+    },
+    getTab() {
+      if (this.isLernedTab) {
+        return this.wordGroups.learned;
+      }
+      if (this.isDifficultTab) {
+        return this.wordGroups.difficult;
+      }
+      return this.wordGroups.deleted;
+    },
+  },
+  async created() {
+    this.isWordsLoading = true;
+    try {
+      await this.getAllUserWords();
+    } catch (error) {
+      this.setError(error.message);
+    } finally {
+      this.isWordsLoading = false;
+    }
   },
   methods: {
+    ...mapActions('Learning', ['getAllUserWords', 'changeUserWord']),
+    ...mapActions('Error', ['setError']),
+    ...mapMutations('Learning', ['setUserWords']),
+
     toogleTab(tab) {
-      if (tab === 'lern') {
-        this.isLernTab = true;
-      } else {
-        this.isLernTab = false;
-      }
-      if (tab === 'difficult') {
-        this.isDifficultTab = true;
-      } else {
+      if (tab === this.wordGroups.learned) {
+        this.isLernedTab = true;
         this.isDifficultTab = false;
-      }
-      if (tab === 'deleted') {
-        this.isDeletedTab = true;
-      } else {
         this.isDeletedTab = false;
+      } else if (tab === this.wordGroups.difficult) {
+        this.isLernedTab = false;
+        this.isDifficultTab = true;
+        this.isDeletedTab = false;
+      } else if (tab === this.wordGroups.deleted) {
+        this.isLernedTab = false;
+        this.isDifficultTab = false;
+        this.isDeletedTab = true;
+      }
+    },
+    async changeWordsDifficulty(difficulty) {
+      this.isChangeLoading = true;
+      try {
+        const promise = [];
+        this.selectedWords.forEach((item) => {
+          const changedWord = this.changeUserWord({
+            difficulty,
+            word: item,
+          });
+          promise.push(changedWord);
+        });
+        await Promise.all(promise);
+
+        const newUserWords = this.userWords.map((item) => {
+          const changedWord = this.selectedWords.find((i) => i.word === item.word);
+          if (changedWord) {
+            return { ...item, selected: false, userWord: { difficulty } };
+          }
+          return item;
+        });
+        this.setUserWords(newUserWords);
+      } catch (error) {
+        this.setError(error.message);
+      } finally {
+        this.isChangeLoading = false;
       }
     },
   },
@@ -149,69 +241,48 @@ $line-top-position: 70px;
 
 .dictionary {
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
   padding: 0 10px 8px 10px;
   background-color: $color-catskill-white;
 
   &__tabs {
     display: flex;
-    justify-content: space-around;
     margin-bottom: 30px;
   }
 
   &__tab {
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: calc(100% / 3);
     height: $line-top-position;
+    font-size: 24px;
+    font-weight: 500;
+    color: $color-manatee;
+    cursor: pointer;
+    border-bottom: 4px solid $color-manatee;
+    transition: color 0.3s, border-color 0.3s;
 
-    .tab-name {
-      color: $color-manatee;
-      cursor: pointer;
-
-      @include media-mobile {
-        @include font(1.18rem);
-      }
+    @include media-mobile {
+      @include font(1.18rem);
     }
 
-    .tab-line {
-      position: absolute;
-      top: $line-top-position;
-      width: 358px;
-      border-bottom: 4px solid $color-manatee;
-      border-radius: 4px;
-
-      @include media-laptop {
-        width: 200px;
-      }
-
-      @include media-tablet {
-        width: 180px;
-      }
-
-      @include media-mobile {
-        width: 100%;
-      }
+    &:not(:first-child) {
+      margin-left: 10px;
     }
   }
 
   .checked {
+    color: $color-dodger-blue;
+    cursor: default;
+    border-bottom: 4px solid $color-dodger-blue;
+
+    @include media-mobile {
+      width: 60px;
+    }
+
     @include media-mobile {
       @include font($size: 10px, $height: 13px);
-    }
-
-    .tab-name {
-      color: $color-dodger-blue;
-      cursor: pointer;
-
-      @include media-mobile {
-        width: 60px;
-      }
-    }
-
-    .tab-line {
-      border-bottom: 4px solid $color-dodger-blue;
     }
   }
 }
@@ -220,6 +291,7 @@ $line-top-position: 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   padding: 0 40px;
   margin-bottom: 16px;
 
@@ -250,6 +322,7 @@ $line-top-position: 70px;
       border: none;
       border-radius: 20px;
       outline: none;
+      transition: opacity 0.3s;
 
       @include media-laptop {
         padding: 16px 42px;
@@ -262,6 +335,12 @@ $line-top-position: 70px;
         margin: 4px 0 4px 2px;
 
         @include font($size: 15px, $height: 17px);
+      }
+
+      &:disabled {
+        pointer-events: none;
+        cursor: default;
+        opacity: 0.4;
       }
     }
 
@@ -278,5 +357,29 @@ $line-top-position: 70px;
       background-color: $color-wild-watermelon;
     }
   }
+}
+
+.tab-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &_loading {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.6;
+  }
+}
+
+.cards-wrapper {
+  width: 100%;
+}
+
+.empty-words {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  font-size: 26px;
+  color: $color-manatee;
 }
 </style>

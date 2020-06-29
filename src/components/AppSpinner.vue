@@ -1,5 +1,5 @@
 <template functional>
-  <div class="lds-spinner lds-spinner_small">
+  <div class="lds-spinner" :class="[props.size, props.colorName]">
     <div></div>
     <div></div>
     <div></div>
@@ -18,12 +18,46 @@
 <script>
 export default {
   name: 'AppSpinner',
+  props: {
+    size: {
+      type: [String],
+      default: 'lds-spinner_small',
+    },
+    colorName: {
+      type: [String],
+      default: 'color-onahau',
+    },
+  },
 };
 </script>
 
 <style lang="scss">
 .lds-spinner_small {
   @include spinner(23px);
+}
+
+.lds-spinner_small-plus {
+  @include spinner(50px);
+}
+
+.lds-spinner_medium {
+  @include spinner(100px);
+}
+
+.lds-spinner_large {
+  @include spinner(150px);
+}
+
+.color-dodger-blue {
+  div::after {
+    background: $color-dodger-blue !important;
+  }
+}
+
+.color-onahau {
+  div::after {
+    background: $color-onahau !important;
+  }
 }
 
 .lds-spinner {
