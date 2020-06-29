@@ -1,6 +1,5 @@
 import { application, apiAddress } from '@/helpers/constants.helper';
 import { setLocalStorageUserSettings } from '@/helpers/localStorage.helper';
-import { mapActions } from 'vuex';
 
 export default {
   namespaced: true,
@@ -26,9 +25,6 @@ export default {
     setSettings(state, payload) {
       state.settings = payload;
     },
-  },
-  methods: {
-    ...mapActions('Error', ['setError']),
   },
   actions: {
     async receiveSettings({ rootState, commit, dispatch }) {
