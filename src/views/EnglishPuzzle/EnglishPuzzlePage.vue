@@ -45,13 +45,7 @@ export default {
   },
   methods: {
     ...mapActions('Error', ['setError']),
-    ...mapActions('EnglishPuzzle', [
-      'getStats',
-      'getSettings',
-      'resetGame',
-      'getRoundsCount',
-      'setIsStartScreen',
-    ]),
+    ...mapActions('EnglishPuzzle', ['getStats', 'getSettings', 'resetGame', 'getRoundsCount']),
     ...mapMutations('EnglishPuzzle', [
       'setIsStartScreen',
       'setIsPictureOff',

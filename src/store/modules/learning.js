@@ -4,9 +4,7 @@ export default {
   namespaced: true,
   state: {
     words: [],
-    learnedWords: [],
-    difficultWords: [],
-    deletedWords: [],
+    userWords: [],
     index: 0,
     isAudioPlay: false,
     isMainPage: true,
@@ -15,8 +13,8 @@ export default {
     setWords(state, payload) {
       state.words = payload;
     },
-    setLearnedWords(state, payload) {
-      state.learnedWords = payload;
+    setUserWords(state, payload) {
+      state.userWords = payload;
     },
     setIndex(state, payload) {
       state.index = payload;
@@ -52,20 +50,56 @@ export default {
         body: JSON.stringify({ difficulty, optional: {} }),
       });
     },
-    async getNewWords({ rootState, commit }) {
+    async changeUserWord({ rootState }, { difficulty, word }) {
       const { userId, token } = rootState.Auth.user;
-      const { wordsPerDay } = rootState.Settings.settings;
-      const response = await fetch(`${apiAddress}users/${userId}/aggregatedWords?group=0&wordsPerDay=${wordsPerDay}&filter={"userWord":null}`, {
-        method: 'GET',
+      // eslint-disable-next-line no-underscore-dangle
+      await fetch(`${apiAddress}users/${userId}/words/${word._id}`, {
+        method: 'PUT',
         withCredentials: true,
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: application,
           'Content-Type': application,
         },
+        body: JSON.stringify({ difficulty, optional: {} }),
       });
+    },
+    async getNewWords({ rootState, commit }) {
+      const { userId, token } = rootState.Auth.user;
+      const { wordsPerDay } = rootState.Settings.settings;
+      const response = await fetch(
+        `${apiAddress}users/${userId}/aggregatedWords?group=0&wordsPerDay=${wordsPerDay}&filter={"userWord":null}`,
+        {
+          method: 'GET',
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: application,
+            'Content-Type': application,
+          },
+        },
+      );
       const newWords = await response.json();
       commit('setWords', newWords[0].paginatedResults);
+    },
+    async getAllUserWords({ rootState, commit }) {
+      const { userId, token } = rootState.Auth.user;
+      const response = await fetch(
+        `${apiAddress}users/${userId}/aggregatedWords?wordsPerPage=3600&filter={"userWord":{"$exists": true}}`,
+        {
+          method: 'GET',
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: application,
+            'Content-Type': application,
+          },
+        },
+      );
+      const allWords = await response.json();
+      const userWords = allWords[0].paginatedResults.map((item) => ({ ...item, selected: false }));
+
+      commit('setUserWords', userWords);
     },
   },
   getters: {
