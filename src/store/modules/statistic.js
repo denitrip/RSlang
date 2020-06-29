@@ -35,5 +35,11 @@ export default {
         value: 8,
       },
     ],
+    isShortTermStatisticShow: false,
+  },
+  mutations: {
+    setIsShortTermStatisticShow(state, payload) {
+      state.isShortTermStatisticShow = payload;
+    },
   },
 };

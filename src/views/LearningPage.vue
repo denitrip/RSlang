@@ -43,6 +43,10 @@
         <button class="btn btn-primary btn-rs">Let’s train!</button>
       </div>
     </div>
+    <div class="show-statistic">
+      <ShortTermStatistic v-if="isShortTermStatisticShow" />
+      <button @click="showStatistic">ShortTermStatistic</button>
+    </div>
   </div>
   <learning-words v-else></learning-words>
 </template>
@@ -51,6 +55,7 @@
 import AppSpinner from '@/components/AppSpinner.vue';
 import LearningWords from '@/components/LearningWords.vue';
 import { mapState, mapMutations, mapActions } from 'vuex';
+import ShortTermStatistic from '../components/ShortTermStatistic.vue';
 
 export default {
   name: 'LearningPage',
@@ -63,16 +68,22 @@ export default {
   components: {
     LearningWords,
     AppSpinner,
+    ShortTermStatistic,
   },
   computed: {
     ...mapState('Settings', ['settings']),
     ...mapState('Learning', ['isMainPage', 'index']),
+    ...mapState('Statistic', ['isShortTermStatisticShow']),
   },
   methods: {
     ...mapActions('Learning', ['getNewWords']),
     ...mapActions('Error', ['setError']),
     ...mapMutations('Learning', ['setIsMainPage']),
+    ...mapMutations('Statistic', ['setIsShortTermStatisticShow']),
 
+    showStatistic() {
+      this.setIsShortTermStatisticShow(true);
+    },
     async trainNewWords() {
       this.isNewWordsLoading = true;
       try {
@@ -84,6 +95,9 @@ export default {
         this.isNewWordsLoading = false;
       }
     },
+  },
+  destroyed() {
+    this.setIsShortTermStatisticShow(false);
   },
 };
 </script>
@@ -185,5 +199,11 @@ export default {
       }
     }
   }
+}
+
+.show-statistic {
+  position: absolute;
+  right: 30px;
+  width: max-content;
 }
 </style>
