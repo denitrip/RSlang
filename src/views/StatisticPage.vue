@@ -13,7 +13,7 @@ import { mapState } from 'vuex';
 export default {
   name: 'statisticPage',
   computed: {
-    ...mapState('LongTermStatistic', ['longTermStatistic']),
+    ...mapState('Statistic', ['longTermStatistic']),
   },
   extends: Line,
   mounted() {

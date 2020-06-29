@@ -5,7 +5,7 @@
       <img
         class="shortTermStatistic__btn-close"
         src="../assets/img/btn-close.png"
-        alt=""
+        alt="close"
         @click="close"
       />
       <h3 class="shortTermStatistic__head">Series is completed</h3>
@@ -33,10 +33,10 @@
 import { mapMutations } from 'vuex';
 
 export default {
-  name: 'ShortTermStatistic',
+  name: '',
   components: {},
   methods: {
-    ...mapMutations('ShortTermStatistic', ['setIsShortTermStatisticShow']),
+    ...mapMutations('Statistic', ['setIsShortTermStatisticShow']),
     close() {
       this.setIsShortTermStatisticShow(false);
     },
@@ -103,19 +103,19 @@ export default {
   }
 
   &__cards {
-    @include data(#00c853);
+    @include data($color-cornflower-blue);
   }
 
   &__correct-answer {
-    @include data(#4caf50);
+    @include data($color-lima);
   }
 
   &__new-words {
-    @include data(#76ff03);
+    @include data($color-web-orange);
   }
 
   &__longest-correct-series {
-    @include data(#558b2f);
+    @include data($color-dodger-blue);
   }
 }
 </style>

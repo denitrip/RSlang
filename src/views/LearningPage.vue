@@ -73,7 +73,7 @@ export default {
     ...mapActions('Learning', ['getNewWords']),
     ...mapActions('Error', ['setError']),
     ...mapMutations('Notification', ['setIsNotificationShow']),
-    ...mapMutations('ShortTermStatistic', ['setIsShortTermStatisticShow']),
+    ...mapMutations('Statistic', ['setIsShortTermStatisticShow']),
     open() {
       this.setIsNotificationShow(true);
     },
@@ -94,7 +94,7 @@ export default {
   },
   computed: {
     ...mapState('Notification', ['isNotificationShow']),
-    ...mapState('ShortTermStatistic', ['isShortTermStatisticShow']),
+    ...mapState('Statistic', ['isShortTermStatisticShow']),
   },
   destroyed() {
     this.setIsNotificationShow(false);
