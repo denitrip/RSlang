@@ -67,10 +67,20 @@
         <div class="cards-wrapper" v-else>
           <div class="dictionary__cards" v-if="wordsArray.length" key="cards">
             <dictionary-card
-              v-for="card in wordsArray"
+              v-for="card in paginationArray"
               :key="card.word"
               :word="card"
             ></dictionary-card>
+            <b-pagination
+              class="pagination"
+              v-model="currentPage"
+              :total-rows="wordsArray.length"
+              :per-page="perPage"
+              :pagination-simple="true"
+              pills
+              first-number
+              last-number
+            ></b-pagination>
           </div>
           <div class="empty-words" v-else key="empty">
             The list of words is empty.
@@ -101,6 +111,8 @@ export default {
       isWordsLoading: false,
       isChangeLoading: false,
       wordGroups,
+      currentPage: 1,
+      perPage: 5,
     };
   },
   computed: {
@@ -146,6 +158,12 @@ export default {
         return this.difficultWords;
       }
       return this.deletedWords;
+    },
+    paginationArray() {
+      return this.wordsArray.slice(
+        (this.currentPage - 1) * this.perPage,
+        this.currentPage * this.perPage,
+      );
     },
     selectedLearnedWords() {
       return this.learnedWords.filter((item) => item.selected);
@@ -248,6 +266,13 @@ $line-top-position: 70px;
   &__tabs {
     display: flex;
     margin-bottom: 30px;
+
+    @include media-mobile {
+      justify-content: space-between;
+      margin-bottom: 20px;
+
+      @include font(10px);
+    }
   }
 
   &__tab {
@@ -264,11 +289,18 @@ $line-top-position: 70px;
     transition: color 0.3s, border-color 0.3s;
 
     @include media-mobile {
-      @include font(1.18rem);
+      height: 45px;
+      text-align: center;
+
+      @include font(0.9rem);
     }
 
     &:not(:first-child) {
       margin-left: 10px;
+
+      @include media-mobile {
+        margin-left: 0;
+      }
     }
   }
 
@@ -282,7 +314,7 @@ $line-top-position: 70px;
     }
 
     @include media-mobile {
-      @include font($size: 10px, $height: 13px);
+      @include font($size: 1.18rem, $height: 13px);
     }
   }
 }
@@ -301,6 +333,7 @@ $line-top-position: 70px;
   }
 
   @include media-tablet {
+    flex-direction: column-reverse;
     padding: 0 8px;
     margin-bottom: 8px;
   }
@@ -381,5 +414,12 @@ $line-top-position: 70px;
   margin-top: 40px;
   font-size: 26px;
   color: $color-manatee;
+  text-align: center;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 </style>
