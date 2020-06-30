@@ -1,40 +1,26 @@
 <template>
   <div class="learning">
-    <b-progress :value="index" :max="settings.wordsPerDay" height="20px" class="w-50 mb-3 learning__progress"></b-progress>
-    <learning-card
-      :englishWord="words[index].word"
-      :russianWord="words[index].wordTranslate"
-      :transcription="words[index].transcription"
-      :textMeaning="words[index].textMeaning"
-      :textMeaningTranslate="words[index].textMeaningTranslate"
-      :textExample="words[index].textExample"
-      :textExampleTranslate="words[index].textExampleTranslate"
-      :image="getImageSrc"
-    ></learning-card>
+    <learning-card :word="words[index]"></learning-card>
+    <b-progress
+      :value="index"
+      :max="settings.wordsPerDay"
+      height="20px"
+      class="learning__progress"
+    ></b-progress>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import LearningCard from '@/components/LearningCard.vue';
-import { dataSrc } from '@/helpers/constants.helper';
 
 export default {
-  data() {
-    return {
-      dataSrc,
-    };
-  },
   components: {
     LearningCard,
   },
   computed: {
     ...mapState('Learning', ['words', 'index']),
     ...mapState('Settings', ['settings']),
-
-    getImageSrc() {
-      return `${this.dataSrc}${this.words[this.index].image}`;
-    },
   },
 };
 </script>
@@ -48,8 +34,9 @@ export default {
   height: 100%;
 
   &__progress {
-    margin-bottom: 40px;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 40px;
   }
 }
-
 </style>

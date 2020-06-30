@@ -7,40 +7,40 @@
         for example, <b>“New words”</b>, <b>“Repetition”</b> or <b>“All words”</b>. Good luck!
       </p>
     </div>
-    <div class="learning__today card-wrap">
+    <div class="learning-today card-wrap">
       <h3>Today learning</h3>
-      <div class="learning__today__lerned">
-        <div class="learning__today__lerned-text">
-          Today lerned: <span>{{ index }}</span> from <span>{{ settings.maxCardDay }}</span>
+      <div class="learning-today__lerned">
+        <div class="learning-today__lerned-text">
+          Today lerned: <span>{{ index }}</span> from <span>{{ settings.maxCardDay }}</span> words
         </div>
         <b-progress
           height="10px"
           :value="index"
           :max="settings.maxCardDay"
-          class="mb-3"
+          class="learning-today__progress"
         ></b-progress>
       </div>
-      <button class="btn btn-primary btn-rs">Start learning</button>
+      <button class="btn-rs">Start learning</button>
     </div>
-    <div class="learning__category">
-      <div class="learning__category__card card-wrap">
+    <div class="learning-category">
+      <div class="learning-category__card card-wrap">
         <h4>New words</h4>
         <p>Click here to learn new words for today.</p>
-        <button class="btn btn-primary btn-rs" @click="trainNewWords" :disabled="isNewWordsLoading">
+        <button class="btn-rs" @click="trainNewWords" :disabled="isNewWordsLoading">
           Let’s train! <AppSpinner v-if="isNewWordsLoading"></AppSpinner>
         </button>
       </div>
 
-      <div class="learning__category__card card-wrap">
+      <div class="learning-category__card card-wrap">
         <h4>Repeat</h4>
         <p>Click here to repeat the learned words.</p>
-        <button class="btn btn-primary btn-rs">Let’s train!</button>
+        <button class="btn-rs">Let’s train!</button>
       </div>
 
-      <div class="learning__category__card card-wrap">
+      <div class="learning-category__card card-wrap">
         <h4>All words</h4>
         <p>Here are all the words for today learning.</p>
-        <button class="btn btn-primary btn-rs">Let’s train!</button>
+        <button class="btn-rs">Let’s train!</button>
       </div>
     </div>
     <div class="show-statistic">
@@ -106,15 +106,14 @@ export default {
 .learning {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
   width: 100%;
   height: 100%;
-  padding: 25px 16px 0;
+  padding: 25px 16px;
   color: $color-pickled-bluewood;
   background-color: $color-catskill-white;
 
   &__header {
-    padding: 25px 53px 48px;
+    padding: 0 53px;
 
     h1 {
       font-size: 56px;
@@ -134,69 +133,84 @@ export default {
   }
 
   .card-wrap {
-    background-color: white;
+    background-color: $color-white;
     border-radius: 24px;
     box-shadow: 1px 5px 14px rgba(55, 114, 227, 0.1);
   }
 
   .btn-rs {
-    padding: 18px 60px;
+    @include english-puzzle-button(200px);
+
+    height: 60px;
     font-size: 20px;
-    line-height: 24px;
-    background: $color-dodger-blue;
-    border: none;
     border-radius: 20px;
   }
+}
 
-  &__today {
+.learning-today {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  min-height: 200px;
+  padding: 20px;
+  margin-top: 48px;
+  text-align: center;
+
+  h3 {
+    font-size: 32px;
+    font-weight: bold;
+    line-height: 39px;
+  }
+
+  &__lerned {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 72px 77px;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 21px;
 
-    h3 {
-      font-size: 32px;
-      font-weight: bold;
-      line-height: 39px;
+    &-text {
+      margin-bottom: 16px;
     }
 
-    &__lerned {
-      font-size: 18px;
-      line-height: 21px;
-
-      .learning__today__lerned-text {
-        margin-bottom: 16px;
-      }
-
-      .learning__today__lerned-text span {
-        color: $color-dodger-blue;
-      }
+    .learning-today__lerned-text span {
+      color: $color-dodger-blue;
     }
   }
 
-  &__category {
+  &__progress {
+    width: 100%;
+  }
+}
+
+.learning-category {
+  display: flex;
+  margin-top: 48px;
+
+  &__card {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: space-between;
-    margin-top: 48px;
+    width: calc(100% / 3);
+    min-height: 240px;
+    padding: 20px;
+    text-align: center;
 
-    &__card {
-      padding: 27px 60px 30px;
-      text-align: center;
+    h4 {
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 29px;
+    }
 
-      h4 {
-        margin-bottom: 14px;
-        font-size: 24px;
-        font-weight: bold;
-        line-height: 29px;
-      }
+    p {
+      max-width: 200px;
+      font-size: 18px;
+    }
 
-      p {
-        max-width: 239px;
-      }
-
-      .btn-rs {
-        margin-top: 30px;
-      }
+    &:not(:first-child) {
+      margin-left: 16px;
     }
   }
 }
@@ -205,5 +219,42 @@ export default {
   position: absolute;
   right: 30px;
   width: max-content;
+}
+
+@media (hover: hover) {
+  .btn-rs:hover {
+    background-color: $color-cornflower-blue;
+  }
+}
+
+@media screen and (max-width: $learning-tablet-size) {
+  .learning__header {
+    padding: 0;
+    text-align: center;
+  }
+
+  .learning-today,
+  .learning-category {
+    flex-direction: column;
+    margin-top: 20px;
+  }
+
+  .learning-today__lerned {
+    margin: 20px 0;
+  }
+
+  .learning-category__card {
+    width: 100%;
+    min-height: 165px;
+    margin: 5px 0;
+
+    &:not(:first-child) {
+      margin-left: 0;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+  }
 }
 </style>

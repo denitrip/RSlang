@@ -1,4 +1,4 @@
-import { dataSrc, apiAddress, application } from '@/helpers/constants.helper';
+import { apiAddress, application } from '@/helpers/constants.helper';
 
 export default {
   namespaced: true,
@@ -27,15 +27,6 @@ export default {
     },
   },
   actions: {
-    onPlayAudio({ getters, commit }) {
-      const { getAudioExampleSrc } = getters;
-      commit('setIsAudioPlay', true);
-      const audio = new Audio(getAudioExampleSrc);
-      audio.onended = () => {
-        commit('setIsAudioPlay', false);
-      };
-      audio.play();
-    },
     async createUserWord({ rootState }, { difficulty, word }) {
       const { userId, token } = rootState.Auth.user;
       // eslint-disable-next-line no-underscore-dangle
@@ -100,12 +91,6 @@ export default {
       const userWords = allWords[0].paginatedResults.map((item) => ({ ...item, selected: false }));
 
       commit('setUserWords', userWords);
-    },
-  },
-  getters: {
-    getAudioExampleSrc(state) {
-      const file = state.words[state.index].audio;
-      return `${dataSrc}${file}`;
     },
   },
 };
