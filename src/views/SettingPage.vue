@@ -60,24 +60,24 @@
           <h3>Button display settings</h3>
           <b-form-checkbox
             class="setting__checkbox"
-            name="checkbox-say"
-            v-model="settingsData.isSayVisible"
+            name="checkbox-repeat"
+            v-model="settingsData.isRepeatVisible"
           >
-            «Say out loud» button
+            «Repeat» button
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-difficult"
-            v-model="settingsData.isDificultVisible"
+            v-model="settingsData.isDifficultVisible"
           >
             «Difficult» button
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
-            name="checkbox-repeat"
-            v-model="settingsData.isRepeatVisible"
+            name="checkbox-good"
+            v-model="settingsData.isGoodVisible"
           >
-            «Repeat» button
+            «Good» button
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
@@ -92,13 +92,6 @@
             v-model="settingsData.isDeleteVisible"
           >
             «Delete» button
-          </b-form-checkbox>
-          <b-form-checkbox
-            class="setting__checkbox"
-            name="checkbox-good"
-            v-model="settingsData.isGoodVisible"
-          >
-            «Good» button
           </b-form-checkbox>
         </div>
         <div class="setting__submenu">
@@ -138,6 +131,13 @@
           >
             Picture association
           </b-form-checkbox>
+          <b-form-checkbox
+            class="setting__checkbox"
+            name="checkbox-show-answer"
+            v-model="settingsData.isShowAnswerVisible"
+          >
+            Show answer button
+          </b-form-checkbox>
         </div>
       </div>
     </div>
@@ -165,19 +165,19 @@ export default {
     return {
       settingsData: {
         isAutoVoice: true,
-        wordsPerDay: 5,
-        maxCardDay: 5,
-        isSayVisible: true,
-        isDificultVisible: true,
-        isRepeatVisible: false,
-        isEasyVisible: false,
+        wordsPerDay: 20,
+        maxCardDay: 20,
+        isRepeatVisible: true,
+        isDifficultVisible: true,
+        isGoodVisible: true,
+        isEasyVisible: true,
         isDeleteVisible: true,
-        isGoodVisible: false,
-        isWordVisible: false,
+        isWordVisible: true,
         isMeaningVisible: true,
-        isExampleVisible: false,
+        isExampleVisible: true,
         isTranscriptionVisible: true,
-        isAssociationVisible: false,
+        isAssociationVisible: true,
+        isShowAnswerVisible: true,
       },
       isSaveLoading: false,
     };
@@ -191,7 +191,7 @@ export default {
   methods: {
     ...mapMutations('Settings', ['setSettings']),
     ...mapActions('Settings', ['sendSettings', 'receiveSettings']),
-    ...mapActions('Error', ['setError']),
+    ...mapActions('Error', ['setError', 'setInfo']),
 
     plusWordCount() {
       this.settingsData.wordsPerDay += 1;
@@ -215,6 +215,7 @@ export default {
         this.setSettings(this.settingsData);
         setLocalStorageUserSettings(this.settingsData);
         await this.sendSettings();
+        this.setInfo('Settings saved!');
       } catch (error) {
         this.setError(error.message);
       } finally {

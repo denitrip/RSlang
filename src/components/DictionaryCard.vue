@@ -152,7 +152,11 @@ export default {
         });
         const newUserWords = this.userWords.map((item) => {
           if (item.word === this.word.word) {
-            return { ...item, selected: false, userWord: { difficulty } };
+            return {
+              ...item,
+              selected: false,
+              userWord: { difficulty, optional: item.userWord.optional },
+            };
           }
           return item;
         });

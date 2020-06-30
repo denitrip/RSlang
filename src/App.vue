@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
-import { getLocalStorageData, getLocalStorageUserSettings } from '@/helpers/localStorage.helper';
+import { mapState, mapMutations, mapActions } from 'vuex';
+import { getLocalStorageData } from '@/helpers/localStorage.helper';
 
 export default {
   name: 'App',
@@ -21,11 +21,12 @@ export default {
   computed: {
     ...mapState('Error', ['error']),
   },
-  created() {
+  async created() {
     const { user, email } = getLocalStorageData();
-    this.setSettings(getLocalStorageUserSettings());
+
     if (user) {
       this.setUser(user);
+      await this.receiveSettings();
     }
     if (email) {
       this.setEmail(email);
@@ -34,6 +35,7 @@ export default {
   methods: {
     ...mapMutations('Auth', ['setUser', 'setEmail']),
     ...mapMutations('Settings', ['setSettings']),
+    ...mapActions('Settings', ['receiveSettings']),
   },
 };
 </script>
