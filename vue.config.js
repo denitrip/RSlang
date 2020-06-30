@@ -1,7 +1,6 @@
 module.exports = {
   pages: {
     index: {
-      // точка входа для страницы
       entry: 'src/main.js',
       title: 'RSlang',
     },
