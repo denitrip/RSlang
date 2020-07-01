@@ -1,11 +1,16 @@
 <template>
   <div class="menu" :class="{ 'menu-open': isOpen, 'menu-close': !isOpen }">
-    <div class="menu__logo" v-if="isOpen">RSlang</div>
-    <div class="menu__burger" v-if="!isOpen">
-      <div class="menu__burger-wrapper" @click="openMenu">
-        <IconBase iconName="Open menu" width="34px" height="34px" viewBox="0 0 32 28">
+    <div class="menu__logo">RSlang</div>
+    <div class="menu__burger">
+      <div
+        class="menu__burger-wrapper"
+        :class="{ 'menu__burger-wrapper_open': isOpen }"
+        @click="openMenu"
+      >
+        <!-- <IconBase iconName="Open menu" width="34px" height="34px" viewBox="0 0 32 28">
           <IconBurger />
-        </IconBase>
+        </IconBase> -->
+        <div class="menu__burger-line"></div>
       </div>
     </div>
     <div class="nav-wrapper">
@@ -23,9 +28,6 @@
           <p v-if="isOpen">{{ item.name }}</p>
         </router-link>
       </nav>
-      <div class="menu__switch" @click="closeMenu" v-if="isOpen" title="Hide menu">
-        <img class="menu__arrowHide" src="../assets/img/sideMenu/arrowHide.svg" alt="" />
-      </div>
       <div class="menu__logout" @click="onLogout">
         <IconBase iconName="Log Out" width="34px" height="34px" viewBox="0 0 36 26">
           <IconLogOut />
@@ -120,11 +122,8 @@ export default {
   methods: {
     ...mapActions('Auth', ['logoutUser']),
 
-    closeMenu() {
-      this.isOpen = false;
-    },
     openMenu() {
-      this.isOpen = true;
+      this.isOpen = !this.isOpen;
     },
     onLogout() {
       this.logoutUser();
@@ -169,9 +168,11 @@ export default {
   }
 
   &__burger {
+    position: absolute;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 60px;
     min-height: 86px;
     color: $color-white;
     cursor: pointer;
@@ -179,6 +180,66 @@ export default {
 
     &:hover {
       color: $color-golden-dream;
+    }
+  }
+
+  &__burger-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 30px;
+    height: 24px;
+    cursor: pointer;
+    transition: transform 0.3s;
+
+    &::before,
+    &::after {
+      position: absolute;
+      content: '';
+    }
+
+    &::before {
+      top: 0;
+    }
+
+    &::after {
+      bottom: 0;
+    }
+
+    .menu__burger-line,
+    &::before,
+    &::after {
+      width: 100%;
+      height: 2.5px;
+      background-color: white;
+      transition: transform 0.3s;
+    }
+
+    &_open {
+      .menu__burger-line {
+        height: 0;
+      }
+
+      &::before {
+        top: 50%;
+        opacity: 0.1;
+        transform: rotate(45deg);
+      }
+
+      &::after {
+        top: 50%;
+        opacity: 0.1;
+        transform: rotate(-45deg);
+      }
+    }
+
+    &:hover {
+      .menu__burger-line,
+      &::before,
+      &::after {
+        background-color: $color-golden-dream;
+        opacity: 1;
+      }
     }
   }
 
@@ -305,11 +366,24 @@ export default {
   .menu__link {
     margin-bottom: 10px;
   }
+
+  .menu-close {
+    width: 0;
+
+    .nav-wrapper {
+      display: none;
+    }
+
+    .menu__burger {
+      z-index: 1;
+      width: 60px;
+    }
+  }
 }
 
 @media screen and (max-width: $mobile-small-width) {
   .menu__navigation {
-    margin-top: 0;
+    margin-top: 6px;
   }
 
   .menu__link {
