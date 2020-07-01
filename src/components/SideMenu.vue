@@ -209,7 +209,7 @@ export default {
         color: $color-golden-dream;
       }
 
-      margin-left: 90px;
+      padding-left: 60px;
       background: $color-prussian-blue;
     }
   }
