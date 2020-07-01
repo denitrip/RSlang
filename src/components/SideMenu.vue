@@ -7,9 +7,6 @@
         :class="{ 'menu__burger-wrapper_open': isOpen }"
         @click="openMenu"
       >
-        <!-- <IconBase iconName="Open menu" width="34px" height="34px" viewBox="0 0 32 28">
-          <IconBurger />
-        </IconBase> -->
         <div class="menu__burger-line"></div>
       </div>
     </div>
