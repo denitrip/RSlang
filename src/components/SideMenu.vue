@@ -269,6 +269,7 @@ export default {
   width: 60px;
 
   .menu__link {
+    padding-left: 15px;
     margin-left: 0;
   }
 }
