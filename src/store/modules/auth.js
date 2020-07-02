@@ -42,6 +42,7 @@ export default {
         commit('setEmail', email);
         setLocalStorageUserData(newUser, email);
         dispatch('Settings/receiveSettings', null, { root: true });
+        dispatch('Statistic/receiveStatistic', null, { root: true });
       } else {
         throw new Error('Incorrect e-mail or password');
       }

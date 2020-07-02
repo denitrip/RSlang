@@ -11,11 +11,12 @@
       <h3>Today learning</h3>
       <div class="learning-today__lerned">
         <div class="learning-today__lerned-text">
-          Today lerned: <span>{{ index }}</span> from <span>{{ settings.maxCardDay }}</span> words
+          Today learned: <span>{{ todayLearned }}</span> from
+          <span>{{ settings.maxCardDay }}</span> words
         </div>
         <b-progress
           height="10px"
-          :value="index"
+          :value="todayLearned"
           :max="settings.maxCardDay"
           class="learning-today__progress"
         ></b-progress>
@@ -26,27 +27,50 @@
       <div class="learning-category__card card-wrap">
         <h4>New words</h4>
         <p>Click here to learn new words for today.</p>
-        <button class="btn-rs" @click="trainNewWords" :disabled="isNewWordsLoading">
+        <button
+          class="btn-rs"
+          @click="trainNewWords"
+          :disabled="isNewWordsLoading || newWordsComplete || cardsComplete"
+        >
           Let’s train! <AppSpinner v-if="isNewWordsLoading"></AppSpinner>
         </button>
+        <b-progress
+          height="10px"
+          :value="todayLearnedNewWord"
+          :max="settings.wordsPerDay"
+          class="learning-today__progress learning-today__progress_new"
+          show-value
+        ></b-progress>
       </div>
 
       <div class="learning-category__card card-wrap">
-        <h4>Repeat</h4>
+        <h4>Repeat words</h4>
         <p>Click here to repeat the learned words.</p>
-        <button class="btn-rs">Let’s train!</button>
+        <button
+          class="btn-rs"
+          @click="trainLearnedWords"
+          :disabled="isLearnedWordsLoading || !learnedWordsCount || cardsComplete"
+        >
+          Let’s train! <AppSpinner v-if="isLearnedWordsLoading"></AppSpinner>
+        </button>
+        <p>{{ learnedWordsCount }} learned words</p>
       </div>
 
       <div class="learning-category__card card-wrap">
-        <h4>All words</h4>
-        <p>Here are all the words for today learning.</p>
-        <button class="btn-rs">Let’s train!</button>
+        <h4>Difficult words</h4>
+        <p>Click here to repeat the difficult words.</p>
+        <button
+          class="btn-rs"
+          @click="trainDifficultWords"
+          :disabled="isDifficultWordsLoading || !difficultWordsCount || cardsComplete"
+        >
+          Let’s train! <AppSpinner v-if="isDifficultWordsLoading"></AppSpinner>
+        </button>
+        <p>{{ difficultWordsCount }} difficult words</p>
       </div>
     </div>
-    <div class="show-statistic">
-      <ShortTermStatistic v-if="isShortTermStatisticShow" />
-      <button @click="showStatistic">ShortTermStatistic</button>
-    </div>
+    <ShortTermStatistic v-if="isShortTermStatisticShow" />
+    <Notification v-if="isNotificationShow" />
   </div>
   <learning-words v-else></learning-words>
 </template>
@@ -54,50 +78,119 @@
 <script>
 import AppSpinner from '@/components/AppSpinner.vue';
 import LearningWords from '@/components/LearningWords.vue';
-import { mapState, mapMutations, mapActions } from 'vuex';
-import ShortTermStatistic from '../components/ShortTermStatistic.vue';
+import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
+import ShortTermStatistic from '@/components/ShortTermStatistic.vue';
+import Notification from '@/components/Notification.vue';
 
 export default {
   name: 'LearningPage',
   data() {
     return {
-      learnedCards: 4,
       isNewWordsLoading: false,
+      isLearnedWordsLoading: false,
+      isDifficultWordsLoading: false,
+      isWordsLoading: false,
     };
   },
   components: {
     LearningWords,
     AppSpinner,
     ShortTermStatistic,
+    Notification,
   },
   computed: {
     ...mapState('Settings', ['settings']),
-    ...mapState('Learning', ['isMainPage', 'index']),
+    ...mapState('Learning', [
+      'isMainPage',
+      'index',
+      'todayLearnedNewWord',
+      'difficultWordsCount',
+      'learnedWordsCount',
+    ]),
     ...mapState('Statistic', ['isShortTermStatisticShow']),
+    ...mapGetters('Statistic', ['todayLearned']),
+    ...mapState('Notification', ['isNotificationShow']),
+
+    newWordsComplete() {
+      return this.todayLearnedNewWord === this.settings.wordsPerDay;
+    },
+    cardsComplete() {
+      return this.todayLearned === this.settings.maxCardDay;
+    },
+  },
+  async created() {
+    this.isWordsLoading = true;
+    try {
+      this.setIsNotificationShow(false);
+      this.setIsShortTermStatisticShow(false);
+      await this.getAllUserWords();
+      this.learnedCount();
+    } catch (error) {
+      this.setError(error.message);
+    } finally {
+      this.isWordsLoading = false;
+    }
+  },
+  destroyed() {
+    this.setIsMainPage(true);
   },
   methods: {
-    ...mapActions('Learning', ['getNewWords']),
+    ...mapActions('Learning', [
+      'getNewWords',
+      'getAllUserWords',
+      'learnedCount',
+      'getDifficultWords',
+      'getLearnedWords',
+    ]),
     ...mapActions('Error', ['setError']),
-    ...mapMutations('Learning', ['setIsMainPage']),
+    ...mapMutations('Learning', [
+      'setIsMainPage',
+      'setIsNewWords',
+      'setStartState',
+      'setIndex',
+      'setNewWordsGame',
+      'setDifficultWordsGame',
+      'setLearnedWordsGame',
+    ]),
+    ...mapMutations('Notification', ['setIsNotificationShow']),
     ...mapMutations('Statistic', ['setIsShortTermStatisticShow']),
 
-    showStatistic() {
-      this.setIsShortTermStatisticShow(true);
-    },
     async trainNewWords() {
       this.isNewWordsLoading = true;
       try {
         await this.getNewWords();
-        this.setIsMainPage(false);
+        this.setNewWordsGame();
+        this.setStartState();
       } catch (error) {
         this.setError(error.message);
       } finally {
         this.isNewWordsLoading = false;
       }
     },
-  },
-  destroyed() {
-    this.setIsShortTermStatisticShow(false);
+    async trainDifficultWords() {
+      this.isDifficultWordsLoading = true;
+      try {
+        await this.getDifficultWords();
+        this.setDifficultWordsGame();
+        this.setStartState();
+      } catch (error) {
+        this.setError(error.message);
+      } finally {
+        this.isDifficultWordsLoading = false;
+      }
+    },
+    async trainLearnedWords() {
+      this.isLearnedWordsLoading = true;
+      try {
+        await this.getLearnedWords();
+        this.setLearnedWordsGame();
+        this.setStartState();
+      } catch (error) {
+        this.setError(error.message);
+      } finally {
+        this.isLearnedWordsLoading = false;
+      }
+    },
   },
 };
 </script>
@@ -181,6 +274,10 @@ export default {
 
   &__progress {
     width: 100%;
+
+    &_new {
+      margin-top: 10px;
+    }
   }
 }
 

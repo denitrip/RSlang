@@ -25,29 +25,26 @@
         <p>Longest series of correct answers:</p>
         <p>{{ longestSeries }}</p>
       </div>
+      <button class="shortTermStatistic__button" @click="close">OK</button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 
 export default {
-  name: '',
-  components: {},
+  name: 'ShortTermStatistic',
+  computed: {
+    ...mapState('Statistic', ['cardsCount', 'correctAnswer', 'newWords', 'longestSeries']),
+  },
   methods: {
     ...mapMutations('Statistic', ['setIsShortTermStatisticShow']),
+    ...mapMutations('Notification', ['setIsNotificationShow']),
     close() {
       this.setIsShortTermStatisticShow(false);
+      this.setIsNotificationShow(true);
     },
-  },
-  data() {
-    return {
-      cardsCount: 11,
-      correctAnswer: 6,
-      newWords: 4,
-      longestSeries: 3,
-    };
   },
 };
 </script>
@@ -59,6 +56,10 @@ export default {
   width: 100%;
   margin-top: 4%;
   color: $color;
+
+  p + p {
+    margin-left: 20px;
+  }
 }
 
 .bkg-shortTerm {
@@ -75,19 +76,18 @@ export default {
   position: fixed;
   top: calc(50% - 200px);
   left: calc(50% - 217px);
-  z-index: 11;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: max-content;
-  height: max-content;
-  padding: 4%;
+  max-width: 450px;
+  padding: 30px 40px;
   font-size: 20px;
   font-weight: 500;
   background: $color-white;
-  border: 1px solid $color-black;
-  border-radius: 5%;
+  border-radius: 24px;
+  box-shadow: 1px 5px 14px $box-shadow-one-color;
 
   &__btn-close {
     position: absolute;
@@ -100,6 +100,7 @@ export default {
     margin-bottom: 4%;
     font-weight: 900;
     color: $color-dodger-blue;
+    text-align: center;
   }
 
   &__cards {
@@ -116,6 +117,20 @@ export default {
 
   &__longest-correct-series {
     @include data($color-dodger-blue);
+  }
+
+  &__button {
+    @include english-puzzle-button(150px);
+
+    margin-top: 20px;
+  }
+}
+
+@media screen and (max-width: $puzzle-mobile-size) {
+  .shortTermStatistic {
+    top: 0;
+    left: 0;
+    margin: 10px;
   }
 }
 </style>

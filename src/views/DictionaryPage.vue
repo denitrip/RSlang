@@ -186,7 +186,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('Learning', ['getAllUserWords', 'changeUserWord']),
+    ...mapActions('Learning', ['getAllUserWords', 'changeUserWordDifficulty']),
     ...mapActions('Error', ['setError']),
     ...mapMutations('Learning', ['setUserWords']),
 
@@ -210,7 +210,7 @@ export default {
       try {
         const promise = [];
         this.selectedWords.forEach((item) => {
-          const changedWord = this.changeUserWord({
+          const changedWord = this.changeUserWordDifficulty({
             difficulty,
             word: item,
           });
@@ -221,7 +221,11 @@ export default {
         const newUserWords = this.userWords.map((item) => {
           const changedWord = this.selectedWords.find((i) => i.word === item.word);
           if (changedWord) {
-            return { ...item, selected: false, userWord: { difficulty } };
+            return {
+              ...item,
+              selected: false,
+              userWord: { difficulty, optional: item.userWord.optional },
+            };
           }
           return item;
         });
