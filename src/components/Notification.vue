@@ -16,14 +16,16 @@
         >
       </p>
       <div class="buttons-wrapper">
-        <button class="Primary-1">
-          <router-link :to="routerConsts.settings.path">Settings</router-link>
-        </button>
-        <button class="Primary-2" @click="close">
-          <router-link :to="routerConsts.learningPage.path" style="color: white;"
-            >Learn more</router-link
-          >
-        </button>
+        <router-link :to="routerConsts.settings.path">
+          <button class="Primary-1">
+            Settings
+          </button>
+        </router-link>
+        <router-link :to="routerConsts.learningPage.path" style="color: white;">
+          <button class="Primary-2" @click="close">
+            Learn more
+          </button>
+        </router-link>
       </div>
     </div>
   </div>
