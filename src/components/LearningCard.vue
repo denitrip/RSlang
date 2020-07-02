@@ -1,42 +1,76 @@
 <template>
-  <div class="learning-card">
-    <img :src="`${dataSrc}${word.image}`" class="img" />
-    <div class="word-with-speak-it" v-if="isResualtCard">
+  <form
+    class="learning-card"
+    @submit.prevent="submitCard"
+    :class="[{ 'learning-card_error': isError }, { 'learning-card_correct': isCorrect }]"
+  >
+    <img :src="`${dataSrc}${word.image}`" class="img" v-if="settings.isAssociationVisible" />
+    <div class="word-with-speak-it" v-if="isCompleteState">
       <div class="word word_english">{{ word.word }}</div>
       <span
-        @click="onPlayAudio"
+        @click="onPlaySound"
         class="icon icon__speak-it "
         :class="{ 'icon__speak-it_played': isAudioPlay }"
       >
-        <IconBase width="18" height="16" viewBox="0 0 18 16">
+        <IconBase width="22" height="20" viewBox="0 0 18 16">
           <IconSmallSpeakIt />
         </IconBase>
       </span>
     </div>
-    <div class="word word_transcription" v-if="isResualtCard">{{ word.transcription }}</div>
-    <div class="word word_russian">{{ word.wordTranslate }}</div>
-    <div class="text-meaning" v-if="isResualtCard">{{ word.textMeaning | deleteItalic }}</div>
-    <div class="text-meaning" v-else>{{ word.textMeaning | deleteWord }}</div>
-    <div class="text-translate" v-if="isResualtCard">{{ word.textMeaningTranslate }}</div>
-    <div class="text-example" v-if="isResualtCard">{{ word.textExample | deleteBold }}</div>
-    <div class="text-example" v-else>{{ word.textExample | deleteWord }}</div>
-    <div class="text-translate" v-if="isResualtCard">{{ word.textExampleTranslate }}</div>
-    <input
-      type="text"
-      class="text-input"
-      ref="userWord"
-      :value="word.word"
-      @keyup.enter="checkWord"
-      autofocus
-    />
-    <button type="submit" class="button-next" @click="nextIndex" :disabled="isWordCreating">
+    <div class="word word_transcription" v-if="isCompleteState && settings.isTranscriptionVisible">
+      {{ word.transcription }}
+    </div>
+    <div class="word word_russian" v-if="settings.isWordVisible">{{ word.wordTranslate }}</div>
+    <div class="text-meaning" v-if="isCompleteState && settings.isMeaningVisible">
+      {{ word.textMeaning | deleteItalic }}
+    </div>
+    <div class="text-meaning" v-else-if="settings.isMeaningVisible">
+      {{ word.textMeaning | deleteWord }}
+    </div>
+    <div class="text-translate" v-if="isCompleteState && settings.isMeaningVisible && isTranslate">
+      {{ word.textMeaningTranslate }}
+    </div>
+    <div class="text-example" v-if="isCompleteState && settings.isExampleVisible">
+      {{ word.textExample | deleteBold }}
+    </div>
+    <div class="text-example" v-else-if="settings.isExampleVisible">
+      {{ word.textExample | deleteWord }}
+    </div>
+    <div class="text-translate" v-if="isCompleteState && settings.isExampleVisible && isTranslate">
+      {{ word.textExampleTranslate }}
+    </div>
+    <div class="text">
+      <input
+        type="text"
+        class="text-input"
+        :class="[{ 'text-input_error': isError }, { 'text-input_correct': isCorrect }]"
+        :style="[{ width: `${word.word.length * 18}px` }]"
+        v-model="answer"
+        v-focus
+        :disabled="isCompleteState"
+      />
+      <div
+        class="text-error"
+        :style="[{ width: `${word.word.length * 18}px` }]"
+        v-html="charsError"
+        v-if="isError"
+        @click="hideError"
+      ></div>
+    </div>
+    <button type="submit" class="button" :disabled="isWordCreating" v-if="isCompleteState">
       Next
       <AppSpinner v-if="isWordCreating"></AppSpinner>
       <span class="btn-arrow" v-else></span>
     </button>
-    <div class="show-answer" @click="nextIndex" :disabled="isWordCreating">Show answer</div>
+    <button type="submit" class="button" v-else :disabled="!answer">
+      Check
+      <span class="btn-arrow"></span>
+    </button>
+    <div class="show-answer" @click="showAnswer" v-if="settings.isShowAnswerVisible">
+      Show answer
+    </div>
     <Notification v-if="isNotificationShow" />
-  </div>
+  </form>
 </template>
 
 <script>
@@ -75,14 +109,12 @@ export default {
       }),
     },
   },
-  data() {
-    return {
-      isSpeakItSelected: true,
-      isWordCreating: false,
-      isResualtCard: true,
-      isAudioPlay: false,
-      dataSrc,
-    };
+  directives: {
+    focus: {
+      inserted(el) {
+        el.focus();
+      },
+    },
   },
   filters: {
     deleteBold(str) {
@@ -97,13 +129,43 @@ export default {
       return `${str.slice(0, start)}[...]${str.slice(finish)}`;
     },
   },
+  data() {
+    return {
+      isWordCreating: false,
+      isAudioPlay: false,
+      isError: false,
+      isCorrect: false,
+      answer: '',
+      dataSrc,
+      charsError: null,
+    };
+  },
   computed: {
-    ...mapState('Learning', ['index', 'words']),
+    ...mapState('Learning', [
+      'index',
+      'words',
+      'isStartState',
+      'isCompleteState',
+      'todayLearned',
+      'todayLearnedNewWord',
+      'learnedWordsCount',
+      'isTranslate',
+      'isNewWords',
+      'isDifficultWords',
+      'isLearnedWords',
+    ]),
     ...mapState('Settings', ['settings']),
     ...mapState('Notification', ['isNotificationShow']),
   },
   methods: {
-    ...mapMutations('Learning', ['setIndex']),
+    ...mapMutations('Learning', [
+      'setIndex',
+      'setStartState',
+      'setCompleteState',
+      'setTodayLearned',
+      'setTodayLearnedNewWord',
+      'setLearnedWordsCount',
+    ]),
     ...mapActions('Learning', ['createUserWord']),
     ...mapActions('Error', ['setError']),
     ...mapMutations('Notification', ['setIsNotificationShow']),
@@ -111,28 +173,81 @@ export default {
     showNotification() {
       this.setIsNotificationShow(true);
     },
-    changeSpeakItStatus() {
-      this.isSpeakItSelected = !this.isSpeakItSelected;
-    },
-    async nextIndex() {
-      if (this.index < this.settings.wordsPerDay) {
-        this.isWordCreating = true;
-        try {
-          await this.createUserWord({
-            difficulty: wordGroups.learned,
-            word: this.words[this.index],
-          });
-        } catch (error) {
-          this.setError(error.message);
-        } finally {
-          this.setIndex(this.index + 1);
-          this.isWordCreating = false;
-        }
-      } else {
-        this.showNotification();
+    submitCard() {
+      if (this.isCompleteState && !!this.answer) {
+        this.nextCard();
+      } else if (this.isStartState && !!this.answer) {
+        this.checkCard();
       }
     },
-    onPlayAudio() {
+    nextCard() {
+      if (this.isNewWords) {
+        this.nextNewWord();
+      } else if (this.isDifficultWords) {
+        console.log('next diff');
+      } else if (this.isLearnedWords) {
+        console.log('next learned');
+      }
+    },
+    async nextNewWord() {
+      this.isWordCreating = true;
+      try {
+        await this.createUserWord({
+          difficulty: wordGroups.learned,
+          word: this.words[this.index],
+        });
+      } catch (error) {
+        this.setError(error.message);
+      } finally {
+        if (this.index !== this.newWordsCount - 1) {
+          this.setIndex(this.index + 1);
+        } else {
+          this.showNotification();
+        }
+        this.resetGame();
+        this.setTodayLearned(this.todayLearned + 1);
+        this.setTodayLearnedNewWord(this.todayLearnedNewWord + 1);
+        this.setLearnedWordsCount(this.learnedWordsCount + 1);
+      }
+    },
+    checkCard() {
+      if (this.answer.toLowerCase() === this.word.word.toLowerCase()) {
+        this.isCorrect = true;
+        this.setCompleteState();
+        this.onPlayWord();
+      } else {
+        this.isError = true;
+        this.repaintWord();
+      }
+    },
+    showAnswer() {
+      this.answer = this.word.word;
+      this.checkCard();
+    },
+    repaintWord() {
+      const result = [];
+      // eslint-disable-next-line no-restricted-syntax
+      for (let i = 0; i < this.answer.length; i += 1) {
+        if (this.answer[i].toLowerCase() === this.word.word[i].toLowerCase()) {
+          result.push(`<span style="color: #53b54a">${this.answer[i]}</span>`);
+        } else {
+          result.push(`<span style="color: #ff5267">${this.answer[i]}</span>`);
+        }
+      }
+      this.charsError = result.join('');
+    },
+    hideError() {
+      this.isError = false;
+      this.charsError = null;
+    },
+    resetGame() {
+      this.setStartState();
+      this.isCorrect = false;
+      this.isError = false;
+      this.isWordCreating = false;
+      this.answer = '';
+    },
+    onPlaySound() {
       this.isAudioPlay = true;
       const audio = new Audio(`${dataSrc}${this.word.audio}`);
       audio.onended = () => {
@@ -140,14 +255,31 @@ export default {
       };
       audio.play();
     },
-    checkWord() {
-      // continue in the next issue
-      const userWord = this.$refs.userWord.value;
-      if (userWord === this.englishWord) {
-        console.log(true);
-      } else {
-        console.log(false);
+    onPlayWord() {
+      if (this.settings.isAutoVoice) {
+        const audio = new Audio(`${dataSrc}${this.word.audio}`);
+        audio.onended = () => {
+          if (this.settings.isMeaningVisible) {
+            this.onPlayTextMeaning();
+          } else if (this.settings.isExampleVisible) {
+            this.onPlayTextExample();
+          }
+        };
+        audio.play();
       }
+    },
+    onPlayTextMeaning() {
+      const audio = new Audio(`${dataSrc}${this.word.audioMeaning}`);
+      audio.onended = () => {
+        if (this.settings.isExampleVisible) {
+          this.onPlayTextExample();
+        }
+      };
+      audio.play();
+    },
+    onPlayTextExample() {
+      const audio = new Audio(`${dataSrc}${this.word.audioExample}`);
+      audio.play();
     },
   },
 };
@@ -163,6 +295,16 @@ export default {
   padding: 40px 10px;
   background-color: white;
   border-radius: 25px;
+  box-shadow: 0 0 20px $box-shadow-one-color;
+  transition: box-shadow 0.3s;
+
+  &_error {
+    box-shadow: 0 0 20px $color-wild-watermelon;
+  }
+
+  &_correct {
+    box-shadow: 0 0 20px $color-apple;
+  }
 }
 
 .img {
@@ -177,12 +319,11 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 8px 0;
 }
 
 .word {
   @include font($size: 24px, $height: 20px, $weight: normal);
-
-  margin-top: 8px;
 
   &_english {
     color: $color-dodger-blue;
@@ -201,6 +342,7 @@ export default {
 
   &__speak-it {
     margin-left: 10px;
+    line-height: 1;
     cursor: pointer;
 
     &_played {
@@ -239,13 +381,29 @@ export default {
   @include font($size: 14px, $height: 20px, $weight: 500);
 }
 
-.text-input {
-  width: 100%;
+.text {
+  position: relative;
+}
+
+.text-input,
+.text-error {
+  margin-top: 16px;
   font-family: 'Roboto Mono', monospace;
   font-size: 30px;
   border: none;
   border-bottom: 2px solid $color-dodger-blue;
   outline: none;
+  transition: color 0.3s;
+}
+
+.text-error {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 16px);
+  user-select: none;
+  background-color: $color-white;
 }
 
 .show-answer {
@@ -261,7 +419,7 @@ export default {
   }
 }
 
-.button-next {
+.button {
   display: flex;
   align-items: center;
   justify-content: space-between;
