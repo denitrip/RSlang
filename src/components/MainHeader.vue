@@ -6,7 +6,7 @@
     <div class="user-section">
       <!-- <img src="../assets/img/header/notifications_image.png" alt="#" /> -->
       <router-link :to="routerConsts.settings.path"
-        ><img src="../assets/img/header/settings_image.png" alt="#"
+        ><img src="../assets/img/header/settings_image.png" alt="#" class="rot"
       /></router-link>
       <div class="user-details">
         <div class="user-name" :title="email">
@@ -62,14 +62,24 @@ export default {
   }
 }
 
-img {
+img.rot {
   width: 20px;
   height: 20px;
   margin-left: 16px;
 }
 
-img:hover {
-  background-color: $color-dodger-blue;
+img.rot:hover {
+  animation: 1s linear 0s normal none infinite running rot;
+}
+
+@keyframes rot {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .container-label {
@@ -130,6 +140,7 @@ img:hover {
 @media (max-width: 414px) {
   .header-container {
     justify-content: center;
+    padding-left: 60px;
     margin: 0;
   }
 

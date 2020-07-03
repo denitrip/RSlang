@@ -1,4 +1,4 @@
-import getLocalStorageData from '@/helpers/localStorage.helper';
+import { getLocalStorageData } from '@/helpers/localStorage.helper';
 
 export default function authGuard(to, from, next) {
   const { user } = getLocalStorageData();

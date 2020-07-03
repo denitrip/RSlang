@@ -1,23 +1,24 @@
 import { application, apiAddress } from '@/helpers/constants.helper';
+import { setLocalStorageUserSettings } from '@/helpers/localStorage.helper';
 
 export default {
   namespaced: true,
   state: {
     settings: {
       isAutoVoice: true,
-      wordsPerDay: 5,
-      maxCardDay: 5,
-      isSayVisible: true,
-      isDificultVisible: true,
-      isRepeatVisible: false,
-      isEasyVisible: false,
+      wordsPerDay: 10,
+      maxCardDay: 20,
+      isRepeatVisible: true,
+      isDifficultVisible: true,
+      isGoodVisible: true,
+      isEasyVisible: true,
       isDeleteVisible: true,
-      isGoodVisible: false,
-      isWordVisible: false,
+      isWordVisible: true,
       isMeaningVisible: true,
-      isExampleVisible: false,
+      isExampleVisible: true,
       isTranscriptionVisible: true,
-      isAssociationVisible: false,
+      isAssociationVisible: true,
+      isShowAnswerVisible: true,
     },
   },
   mutations: {
@@ -41,19 +42,15 @@ export default {
       });
       if (response.ok) {
         const answer = await response.json();
+        setLocalStorageUserSettings(answer.optional);
         commit('setSettings', answer.optional);
       } else if (response.status === 404) {
-        dispatch('Error/setInfo', 'Unable to receive your settings, setting to default', {
-          root: true,
-        });
+        await dispatch('sendSettings');
       } else {
-        dispatch('Error/setError', 'Something went wrong, setting your local settings to default', {
-          root: true,
-        });
-        throw new Error('Unable to set settings');
+        throw new Error('Something went wrong, setting your local settings to default');
       }
     },
-    async sendSettings({ state, dispatch, rootState }) {
+    async sendSettings({ state, rootState }) {
       const { token } = rootState.Auth.user;
       const { userId } = rootState.Auth.user;
       const URL = `${apiAddress}users/${userId}/settings`;
@@ -72,18 +69,15 @@ export default {
         },
         body: payload,
       });
-      if (response.ok) {
-        dispatch('Error/setInfo', 'Settings saved!', { root: true });
-      } else {
-        dispatch('Error/setError', 'Something went wrong, sorry :C', { root: true });
-        throw new Error('Unable to set settings');
+      if (!response.ok) {
+        throw new Error('Something went wrong, sorry :C');
       }
     },
   },
 
   getters: {
     getSettings(state) {
-      return state.settings.settings;
+      return state.settings;
     },
   },
 };

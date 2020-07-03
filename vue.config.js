@@ -1,4 +1,10 @@
 module.exports = {
+  pages: {
+    index: {
+      entry: 'src/main.js',
+      title: 'RSlang',
+    },
+  },
   css: {
     loaderOptions: {
       sass: {
