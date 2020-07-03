@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapActions } from 'vuex';
 import routerConsts from '@/router/routerConsts';
 import loginForm from '@/components/LoginForm.vue';
 import WatchVideo from '@/components/WatchVideo.vue';
@@ -96,7 +96,6 @@ export default {
     };
   },
   computed: {
-    ...mapState('WatchVideo', ['isVideoShow']),
     isLogIn() {
       return this.currentRoute === routerConsts.loginPage.name;
     },
@@ -117,15 +116,8 @@ export default {
       this.setError('Please log in to access this page.');
     }
   },
-  destroyed() {
-    this.setIsNotificationShow(false);
-  },
   methods: {
     ...mapActions('Error', ['setError']),
-    ...mapMutations('WatchVideo', ['setIsVideoShow']),
-    open() {
-      this.setIsVideoShow(true);
-    },
   },
 };
 </script>

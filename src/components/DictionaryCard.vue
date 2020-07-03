@@ -140,19 +140,23 @@ export default {
   },
   methods: {
     ...mapMutations('Learning', ['setUserWords']),
-    ...mapActions('Learning', ['changeUserWord']),
+    ...mapActions('Learning', ['changeUserWordDifficulty']),
     ...mapActions('Error', ['setError']),
 
     async changeWordDifficulty(difficulty) {
       this.isWordChanging = true;
       try {
-        await this.changeUserWord({
+        await this.changeUserWordDifficulty({
           difficulty,
           word: this.word,
         });
         const newUserWords = this.userWords.map((item) => {
           if (item.word === this.word.word) {
-            return { ...item, selected: false, userWord: { difficulty } };
+            return {
+              ...item,
+              selected: false,
+              userWord: { difficulty, optional: item.userWord.optional },
+            };
           }
           return item;
         });
