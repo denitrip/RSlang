@@ -15,7 +15,10 @@ import EnglishPuzzleStatisticPage from '@/views/EnglishPuzzle/EnglishPuzzleStati
 import EnglishPuzzleStats from '@/components/EnglishPuzzle/EnglishPuzzleStatistic.vue';
 import EnglishPuzzleStatsDetail from '@/components/EnglishPuzzle/EnglishPuzzleStatisticDetail.vue';
 import SavannahPage from '@/views/Savannah/SavannahPage.vue';
-import SpeakItPage from '@/views/SpeakIt/SpeakItPage.vue';
+import SpeakitPage from '@/views/Speakit/SpeakitPage.vue';
+import SpeakitStatisticPage from '@/views/Speakit/SpeakitStatisticPage.vue';
+import SpeakitStats from '@/components/Speakit/SpeakitStatistic.vue';
+import SpeakitStatsDetail from '@/components/Speakit/SpeakitStatisticDetail.vue';
 import AudiocallPage from '@/views/Audiocall/AudiocallPage.vue';
 
 Vue.use(VueRouter);
@@ -70,9 +73,29 @@ const routes = [
         component: StatisticPage,
       },
       {
-        path: routerConsts.speakItPage.path,
-        name: routerConsts.speakItPage.name,
-        component: SpeakItPage,
+        path: routerConsts.speakitPage.path,
+        name: routerConsts.speakitPage.name,
+        beforeEnter: AuthGuard,
+        component: SpeakitPage,
+      },
+      {
+        path: routerConsts.SpeakitStatisticPage.path,
+        component: SpeakitStatisticPage,
+        beforeEnter: AuthGuard,
+        children: [
+          {
+            path: routerConsts.speakitStats.path,
+            name: routerConsts.speakitStats.name,
+            beforeEnter: AuthGuard,
+            component: SpeakitStats,
+          },
+          {
+            path: routerConsts.speakitStatsDetailed.path,
+            name: routerConsts.speakitStatsDetailed.name,
+            beforeEnter: AuthGuard,
+            component: SpeakitStatsDetail,
+          },
+        ],
       },
       {
         path: routerConsts.EnglishPuzzleStatisticPage.path,

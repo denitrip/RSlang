@@ -59,9 +59,21 @@ export default {
     path: '/savannah',
     name: 'savannah',
   },
-  speakItPage: {
-    path: '/speak-It',
-    name: 'speakIt',
+  speakitPage: {
+    path: '/speak-it',
+    name: 'speakit',
+  },
+  SpeakitStatisticPage: {
+    path: '/speakit-statistic',
+    name: 'speakitStatistic',
+  },
+  speakitStats: {
+    path: '',
+    name: 'speakStats',
+  },
+  speakitStatsDetailed: {
+    path: '/speakit-statistic/detail',
+    name: 'speakitStatsDetail',
   },
   audiocallPage: {
     path: '/audiocall',

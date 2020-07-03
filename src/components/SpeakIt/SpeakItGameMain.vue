@@ -3,15 +3,28 @@
     <main class="speak-it" id="speak-it">
       <div class="wrapper main-wrapper">
         <div class="selected">
-          <img class="image" src="~@/assets/img/speakIt/do_you_speak.jpg" />
-          <p class="translation">fvgfg</p>
+          <img class="image" :src="pictureSrc" />
+          <input
+            type="text"
+            class="audioRecording"
+            v-if="isStartGame"
+            readonly
+            :value="wordRecording"
+          />
+          <p class="translation" v-else>{{ translation }}</p>
         </div>
-
         <div id="content" class="content">
-          <div class="item" v-for="card in cards" :key="card.word">
-            <object class="audio-icon">
-              <audio class="audio" src=""></audio>
-            </object>
+          <div
+            class="item"
+            :class="[
+              { item_startGame: isStartGame },
+              { item_correctWord: correctAnswer.includes(card) },
+            ]"
+            v-for="card in words"
+            :key="card.word"
+            @click="onClickCard(card)"
+          >
+            <object class="audio-icon"> </object>
             <div class="transcript">
               <p class="word">{{ card.word }}</p>
               <p class="transcription">{{ card.transcription }}</p>
@@ -24,53 +37,45 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
+import { dataSrc } from '@/helpers/constants.helper';
+
 export default {
   name: 'SpeakItGameMain',
+  components: {},
   data() {
     return {
-      cards: [
-        {
-          word: 'apple',
-          transcription: 'fpppf',
-        },
-        {
-          word: 'apple',
-          transcription: 'fpppf',
-        },
-        {
-          word: 'apple',
-          transcription: 'fpppf',
-        },
-        {
-          word: 'apple',
-          transcription: 'fpppf',
-        },
-        {
-          word: 'apple',
-          transcription: 'fpppf',
-        },
-        {
-          word: 'apple',
-          transcription: 'fpppf',
-        },
-        {
-          word: 'apple',
-          transcription: 'fpppf',
-        },
-        {
-          word: 'apple',
-          transcription: 'fpppf',
-        },
-        {
-          word: 'apple',
-          transcription: 'fpppf',
-        },
-        {
-          word: 'apple',
-          transcription: 'fpppf',
-        },
-      ],
+      dataSrc,
     };
+  },
+  computed: {
+    ...mapState('Speakit', [
+      'words',
+      'isStartGame',
+      'wordRecording',
+      'translation',
+      'isCorrectWord',
+      'isGameEnd',
+      'correctAnswer',
+      'pictureSrc',
+    ]),
+  },
+  methods: {
+    ...mapMutations('Speakit', ['setPictureSrc', 'setTranslation']),
+    onPlayAudio(audioSrc) {
+      const audio = new Audio(`${dataSrc}${audioSrc}`);
+      audio.play();
+    },
+    onClickCard(card) {
+      if (!this.isStartGame) {
+        this.onPlayAudio(card.audio);
+        this.onChangeInfo(card);
+      }
+    },
+    onChangeInfo(card) {
+      this.setTranslation(card.wordTranslate);
+      this.setPictureSrc(`${dataSrc}${card.image}`);
+    },
   },
 };
 </script>
@@ -102,23 +107,50 @@ export default {
 }
 
 .image {
-  width: 350px;
+  width: 390px;
+  height: 260px;
   margin-top: 20px;
   border-radius: 20px;
   box-shadow: 0 0 25px 4px rgba(0, 0, 0, 0.404);
 
   @include media-mobile {
     width: 290px;
+    height: 200px;
   }
 
   @include media-mobile-small {
     width: 240px;
+    height: 180px;
   }
 }
 
-.translation {
+.translation,
+.audioRecording {
   margin: 20px 0;
   font-size: 30px;
+}
+
+.audioRecording {
+  display: block;
+  height: 50px;
+  padding: 5px 20px;
+  margin: 20px 0;
+  margin-bottom: 14px;
+  font-size: 30px;
+  line-height: 40px;
+  color: rgba(14, 30, 37, 0.7);
+  text-align: center;
+  background-color: transparent;
+  background-image: url('~@/assets/img/speakIt/microphone.svg');
+  background-repeat: no-repeat;
+  background-position: 10px 15px;
+  background-size: 20px;
+  border: 0;
+  border-bottom: 1px solid rgb(206, 212, 218);
+
+  @media (max-width: 414px) {
+    width: 90%;
+  }
 }
 
 .words {
@@ -139,8 +171,18 @@ export default {
   width: 200px;
   padding: 10px;
   margin: 0 15px 30px 15px;
+  cursor: pointer;
   border: 1px solid rgba(0, 0, 0, 0.384);
   border-radius: 10px;
+
+  &_startGame {
+    cursor: default;
+  }
+
+  &_correctWord {
+    background-color: $color-apple;
+    opacity: 0.2;
+  }
 
   @include media-tablet {
     width: 180px;
@@ -163,6 +205,7 @@ export default {
   width: 20px;
   height: 20px;
   margin: 0 15px 0 0;
-  background: url(https://image.flaticon.com/icons/svg/876/876356.svg);
+  color: #00c49d;
+  background: url('~@/assets/img/speakIt/speaker.svg');
 }
 </style>

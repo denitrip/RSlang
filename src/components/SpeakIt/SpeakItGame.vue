@@ -1,26 +1,26 @@
 <template functional>
   <div class="game__wrapper">
-    <component :is="props.components.SpeakItGameMenu"></component>
-    <component :is="props.components.SpeakItGameMain"></component>
-    <component :is="props.components.SpeakItGameControls"></component>
+    <component :is="props.components.SpeakitGameMenu"></component>
+    <component :is="props.components.SpeakitGameMain"></component>
+    <component :is="props.components.SpeakitGameControls"></component>
   </div>
 </template>
 
 <script>
-import SpeakItGameMenu from '@/components/SpeakIt/SpeakItGameMenu.vue';
-import SpeakItGameMain from '@/components/SpeakIt/SpeakItGameMain.vue';
-import SpeakItGameControls from '@/components/SpeakIt/SpeakItGameControls.vue';
+import SpeakitGameMenu from '@/components/Speakit/SpeakitGameMenu.vue';
+import SpeakitGameMain from '@/components/Speakit/SpeakitGameMain.vue';
+import SpeakitGameControls from '@/components/Speakit/SpeakitGameControls.vue';
 
 export default {
-  name: 'EnglishPuzzleGame',
+  name: 'SpeakitGame',
   props: {
     components: {
       type: Object,
       default() {
         return {
-          SpeakItGameMenu,
-          SpeakItGameMain,
-          SpeakItGameControls,
+          SpeakitGameMenu,
+          SpeakitGameMain,
+          SpeakitGameControls,
         };
       },
     },

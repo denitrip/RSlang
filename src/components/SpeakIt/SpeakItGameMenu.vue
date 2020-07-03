@@ -26,6 +26,7 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
 import AppSpinner from '@/components/AppSpinner.vue';
+import defaultPicture from '@/assets/img/speakIt/do_you_speak.jpg';
 
 export default {
   name: 'SpeakItGameMenu',
@@ -36,19 +37,17 @@ export default {
     return {
       completeArray: [],
       isGameLoading: false,
+      defaultPicture,
     };
   },
   computed: {
-    ...mapState('EnglishPuzzle', [
+    ...mapState('Speakit', [
       'selectedLevel',
       'selectedRound',
       'roundCount',
-      'isAutoSpeech',
-      'isTranslate',
-      'isSpeech',
-      'isImage',
       'completeRounds',
-      'isPictureOff',
+      'words',
+      'pictureSrc',
     ]),
 
     completeRoundsArray() {
@@ -63,15 +62,14 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('EnglishPuzzle', [
+    ...mapMutations('Speakit', [
       'setSelectedLevel',
       'setSelectedRound',
-      'setIsAutoSpeech',
-      'setIsTranslate',
-      'setIsSpeech',
-      'setIsImage',
+      'setIncorrectAnswer',
+      'setIsStartGame',
+      'setPictureSrc',
     ]),
-    ...mapActions('EnglishPuzzle', ['getRoundsCount', 'resetGame']),
+    ...mapActions('Speakit', ['getRoundsCount', 'resetGame']),
     ...mapActions('Error', ['setError']),
 
     async onSetSelectedLevel(event) {
@@ -82,6 +80,9 @@ export default {
         this.setSelectedRound(1);
         await this.getRoundsCount();
         await this.resetGame();
+        this.setIsStartGame(false);
+        this.setIncorrectAnswer([...this.words]);
+        this.setPictureSrc(defaultPicture);
       } catch (error) {
         this.setError(error.message);
       } finally {
@@ -94,23 +95,14 @@ export default {
       try {
         this.setSelectedRound(event.target.value);
         await this.resetGame();
+        this.setIsStartGame(false);
+        this.setIncorrectAnswer([...this.words]);
+        this.setPictureSrc(defaultPicture);
       } catch (error) {
         this.setError(error.message);
       } finally {
         this.isGameLoading = false;
       }
-    },
-    onSetIsAutoSpeech(event) {
-      this.setIsAutoSpeech(event.target.checked);
-    },
-    onSetIsTranslate(event) {
-      this.setIsTranslate(event.target.checked);
-    },
-    onSetIsSpeech(event) {
-      this.setIsSpeech(event.target.checked);
-    },
-    onSetIsImage(event) {
-      this.setIsImage(event.target.checked);
     },
   },
 };
