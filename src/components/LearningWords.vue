@@ -25,7 +25,6 @@
       </div>
       <button class="close-button" @click="closeTraining" title="Close training">&times;</button>
     </div>
-    <learning-card :word="words[index]"></learning-card>
     <div class="learning__progress">
       <b-progress
         :value="index"
@@ -36,6 +35,7 @@
       ></b-progress>
       <span class="learning__progress-max">{{ wordsCount }}</span>
     </div>
+    <learning-card :word="words[index]"></learning-card>
   </div>
 </template>
 
@@ -109,7 +109,7 @@ export default {
     align-items: center;
     width: 100%;
     max-width: 400px;
-    margin-top: 40px;
+    margin: 20px 0;
 
     &-bar {
       width: 100%;

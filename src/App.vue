@@ -28,6 +28,7 @@ export default {
       if (user) {
         this.setUser(user);
         await this.receiveSettings();
+        await this.receiveStatistic();
       }
       if (email) {
         this.setEmail(email);
@@ -38,8 +39,8 @@ export default {
   },
   methods: {
     ...mapMutations('Auth', ['setUser', 'setEmail']),
-    ...mapMutations('Settings', ['setSettings']),
     ...mapActions('Settings', ['receiveSettings']),
+    ...mapActions('Statistic', ['receiveStatistic']),
     ...mapActions('Error', ['setError']),
   },
 };

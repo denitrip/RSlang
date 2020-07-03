@@ -6,7 +6,7 @@ export default {
   state: {
     settings: {
       isAutoVoice: true,
-      wordsPerDay: 20,
+      wordsPerDay: 10,
       maxCardDay: 20,
       isRepeatVisible: true,
       isDifficultVisible: true,

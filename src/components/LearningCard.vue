@@ -1,76 +1,115 @@
 <template>
-  <form
-    class="learning-card"
-    @submit.prevent="submitCard"
-    :class="[{ 'learning-card_error': isError }, { 'learning-card_correct': isCorrect }]"
-  >
-    <img :src="`${dataSrc}${word.image}`" class="img" v-if="settings.isAssociationVisible" />
-    <div class="word-with-speak-it" v-if="isCompleteState">
-      <div class="word word_english">{{ word.word }}</div>
-      <span
-        @click="onPlaySound"
-        class="icon icon__speak-it "
-        :class="{ 'icon__speak-it_played': isAudioPlay }"
-      >
-        <IconBase width="22" height="20" viewBox="0 0 18 16">
-          <IconSmallSpeakIt />
-        </IconBase>
-      </span>
-    </div>
-    <div class="word word_transcription" v-if="isCompleteState && settings.isTranscriptionVisible">
-      {{ word.transcription }}
-    </div>
-    <div class="word word_russian" v-if="settings.isWordVisible">{{ word.wordTranslate }}</div>
-    <div class="text-meaning" v-if="isCompleteState && settings.isMeaningVisible">
-      {{ word.textMeaning | deleteItalic }}
-    </div>
-    <div class="text-meaning" v-else-if="settings.isMeaningVisible">
-      {{ word.textMeaning | deleteWord }}
-    </div>
-    <div class="text-translate" v-if="isCompleteState && settings.isMeaningVisible && isTranslate">
-      {{ word.textMeaningTranslate }}
-    </div>
-    <div class="text-example" v-if="isCompleteState && settings.isExampleVisible">
-      {{ word.textExample | deleteBold }}
-    </div>
-    <div class="text-example" v-else-if="settings.isExampleVisible">
-      {{ word.textExample | deleteWord }}
-    </div>
-    <div class="text-translate" v-if="isCompleteState && settings.isExampleVisible && isTranslate">
-      {{ word.textExampleTranslate }}
-    </div>
-    <div class="text">
-      <input
-        type="text"
-        class="text-input"
-        :class="[{ 'text-input_error': isError }, { 'text-input_correct': isCorrect }]"
-        :style="[{ width: `${word.word.length * 18}px` }]"
-        v-model="answer"
-        v-focus
-        :disabled="isCompleteState"
-      />
+  <div class="learning-wrapper">
+    <form
+      class="learning-card"
+      @submit.prevent="submitCard"
+      :class="[{ 'learning-card_error': isError }, { 'learning-card_correct': isCorrect }]"
+    >
+      <img :src="`${dataSrc}${word.image}`" class="img" v-if="settings.isAssociationVisible" />
+      <div class="word-with-speak-it" v-if="isCompleteState">
+        <div class="word word_english">{{ word.word }}</div>
+        <span
+          @click="onPlaySound"
+          class="icon icon__speak-it "
+          :class="{ 'icon__speak-it_played': isAudioPlay }"
+        >
+          <IconBase width="22" height="20" viewBox="0 0 18 16">
+            <IconSmallSpeakIt />
+          </IconBase>
+        </span>
+      </div>
       <div
-        class="text-error"
-        :style="[{ width: `${word.word.length * 18}px` }]"
-        v-html="charsError"
-        v-if="isError"
-        @click="hideError"
-      ></div>
-    </div>
-    <button type="submit" class="button" :disabled="isWordCreating" v-if="isCompleteState">
-      Next
-      <AppSpinner v-if="isWordCreating"></AppSpinner>
-      <span class="btn-arrow" v-else></span>
-    </button>
-    <button type="submit" class="button" v-else :disabled="!answer">
-      Check
-      <span class="btn-arrow"></span>
-    </button>
-    <div class="show-answer" @click="showAnswer" v-if="settings.isShowAnswerVisible">
-      Show answer
-    </div>
-    <Notification v-if="isNotificationShow" />
-  </form>
+        class="word word_transcription"
+        v-if="isCompleteState && settings.isTranscriptionVisible"
+      >
+        {{ word.transcription }}
+      </div>
+      <div class="word word_russian" v-if="settings.isWordVisible">{{ word.wordTranslate }}</div>
+      <div class="text-meaning" v-if="isCompleteState && settings.isMeaningVisible">
+        {{ word.textMeaning | deleteItalic }}
+      </div>
+      <div class="text-meaning" v-else-if="settings.isMeaningVisible">
+        {{ word.textMeaning | deleteWord }}
+      </div>
+      <div
+        class="text-translate"
+        v-if="isCompleteState && settings.isMeaningVisible && isTranslate"
+      >
+        {{ word.textMeaningTranslate }}
+      </div>
+      <div class="text-example" v-if="isCompleteState && settings.isExampleVisible">
+        {{ word.textExample | deleteBold }}
+      </div>
+      <div class="text-example" v-else-if="settings.isExampleVisible">
+        {{ word.textExample | deleteWord }}
+      </div>
+      <div
+        class="text-translate"
+        v-if="isCompleteState && settings.isExampleVisible && isTranslate"
+      >
+        {{ word.textExampleTranslate }}
+      </div>
+      <div class="text">
+        <input
+          type="text"
+          class="text-input"
+          :class="[{ 'text-input_error': isError }, { 'text-input_correct': isCorrect }]"
+          :style="[{ width: `${word.word.length * 18}px` }]"
+          v-model="answer"
+          v-focus
+          :disabled="isCompleteState"
+        />
+        <div
+          class="text-error"
+          :style="[{ width: `${word.word.length * 18}px` }]"
+          v-html="charsError"
+          v-if="isError"
+          @click="hideError"
+        ></div>
+      </div>
+      <button type="submit" class="button" :disabled="isWordLoading" v-if="isCompleteState">
+        Next
+        <AppSpinner v-if="isWordLoading"></AppSpinner>
+        <span class="btn-arrow" v-else></span>
+      </button>
+      <button type="submit" class="button" v-else :disabled="!answer">
+        Check
+        <span class="btn-arrow"></span>
+      </button>
+      <div class="show-answer" @click="showAnswer" v-if="settings.isShowAnswerVisible">
+        Show answer
+      </div>
+    </form>
+    <transition name="fade" mode="out-in">
+      <div class="buttons-wrapper" v-if="isCompleteState">
+        <button class="learning__button" v-if="settings.isRepeatVisible" :disabled="isWordLoading">
+          Repeat
+        </button>
+        <button
+          class="learning__button"
+          v-if="settings.isDifficultVisible"
+          @click="controlsNextCard(wordGroups.difficult)"
+          :disabled="isWordLoading"
+        >
+          Difficult
+        </button>
+        <button class="learning__button" v-if="settings.isGoodVisible" :disabled="isWordLoading">
+          Good
+        </button>
+        <button class="learning__button" v-if="settings.isEasyVisible" :disabled="isWordLoading">
+          Easy
+        </button>
+        <button
+          class="learning__button"
+          v-if="settings.isDeleteVisible"
+          @click="controlsNextCard(wordGroups.deleted)"
+          :disabled="isWordLoading"
+        >
+          Delete
+        </button>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -79,7 +118,6 @@ import IconBase from '@/components/IconBase.vue';
 import IconSmallSpeakIt from '@/components/icons/IconSmallSpeakIt.vue';
 import { mapState, mapActions, mapMutations } from 'vuex';
 import { wordGroups, dataSrc } from '@/helpers/constants.helper';
-import Notification from '@/components/Notification.vue';
 
 export default {
   name: 'DictionaryCard',
@@ -87,7 +125,6 @@ export default {
     IconBase,
     IconSmallSpeakIt,
     AppSpinner,
-    Notification,
   },
   props: {
     word: {
@@ -131,10 +168,12 @@ export default {
   },
   data() {
     return {
-      isWordCreating: false,
+      wordGroups,
+      isWordLoading: false,
       isAudioPlay: false,
       isError: false,
       isCorrect: false,
+      isErrorAnswer: false,
       answer: '',
       dataSrc,
       charsError: null,
@@ -146,7 +185,6 @@ export default {
       'words',
       'isStartState',
       'isCompleteState',
-      'todayLearned',
       'todayLearnedNewWord',
       'learnedWordsCount',
       'isTranslate',
@@ -155,24 +193,35 @@ export default {
       'isLearnedWords',
     ]),
     ...mapState('Settings', ['settings']),
-    ...mapState('Notification', ['isNotificationShow']),
+    ...mapState('Statistic', [
+      'cardsCount',
+      'correctAnswer',
+      'newWords',
+      'series',
+      'longestSeries',
+    ]),
   },
   methods: {
     ...mapMutations('Learning', [
       'setIndex',
       'setStartState',
       'setCompleteState',
-      'setTodayLearned',
       'setTodayLearnedNewWord',
       'setLearnedWordsCount',
+      'setIsMainPage',
     ]),
-    ...mapActions('Learning', ['createUserWord']),
+    ...mapActions('Learning', ['createUserWord', 'learnUserWord']),
     ...mapActions('Error', ['setError']),
-    ...mapMutations('Notification', ['setIsNotificationShow']),
+    ...mapActions('Statistic', ['updateStatistic']),
+    ...mapMutations('Statistic', [
+      'setIsShortTermStatisticShow',
+      'setCardsCount',
+      'setCorrectAnswer',
+      'setNewWords',
+      'setSeries',
+      'setLongestSeries',
+    ]),
 
-    showNotification() {
-      this.setIsNotificationShow(true);
-    },
     submitCard() {
       if (this.isCompleteState && !!this.answer) {
         this.nextCard();
@@ -182,32 +231,49 @@ export default {
     },
     nextCard() {
       if (this.isNewWords) {
-        this.nextNewWord();
+        this.nextNewWord(wordGroups.learned);
       } else if (this.isDifficultWords) {
-        console.log('next diff');
+        this.nextWord(wordGroups.difficult);
       } else if (this.isLearnedWords) {
-        console.log('next learned');
+        this.nextWord(wordGroups.learned);
       }
     },
-    async nextNewWord() {
-      this.isWordCreating = true;
+    controlsNextCard(difficult) {
+      if (this.isNewWords) {
+        this.nextNewWord(difficult);
+      } else {
+        this.nextWord(difficult);
+      }
+    },
+    async nextNewWord(difficulty) {
+      this.isWordLoading = true;
       try {
         await this.createUserWord({
-          difficulty: wordGroups.learned,
+          difficulty,
           word: this.words[this.index],
         });
+        await this.updateStatistic();
       } catch (error) {
         this.setError(error.message);
       } finally {
-        if (this.index !== this.newWordsCount - 1) {
-          this.setIndex(this.index + 1);
-        } else {
-          this.showNotification();
-        }
-        this.resetGame();
-        this.setTodayLearned(this.todayLearned + 1);
-        this.setTodayLearnedNewWord(this.todayLearnedNewWord + 1);
+        this.setNewWords(this.newWords + 1);
+        this.nextRound();
         this.setLearnedWordsCount(this.learnedWordsCount + 1);
+        this.setTodayLearnedNewWord(this.todayLearnedNewWord + 1);
+      }
+    },
+    async nextWord(difficulty) {
+      this.isWordLoading = true;
+      try {
+        await this.learnUserWord({
+          difficulty,
+          word: this.words[this.index],
+        });
+        await this.updateStatistic();
+      } catch (error) {
+        this.setError(error.message);
+      } finally {
+        this.nextRound();
       }
     },
     checkCard() {
@@ -217,7 +283,20 @@ export default {
         this.onPlayWord();
       } else {
         this.isError = true;
+        this.isErrorAnswer = true;
         this.repaintWord();
+      }
+    },
+    recordStatistic() {
+      this.setCardsCount(this.cardsCount + 1);
+      if (this.isErrorAnswer) {
+        this.setSeries(0);
+      } else {
+        this.setCorrectAnswer(this.correctAnswer + 1);
+        this.setSeries(this.series + 1);
+        if (this.series >= this.longestSeries) {
+          this.setLongestSeries(this.series);
+        }
       }
     },
     showAnswer() {
@@ -240,11 +319,22 @@ export default {
       this.isError = false;
       this.charsError = null;
     },
+    nextRound() {
+      this.recordStatistic();
+      if (this.index !== this.words.length - 1) {
+        this.setIndex(this.index + 1);
+      } else {
+        this.setIsShortTermStatisticShow(true);
+        this.setIsMainPage(true);
+      }
+      this.resetGame();
+    },
     resetGame() {
       this.setStartState();
       this.isCorrect = false;
       this.isError = false;
-      this.isWordCreating = false;
+      this.isErrorAnswer = false;
+      this.isWordLoading = false;
       this.answer = '';
     },
     onPlaySound() {
@@ -419,13 +509,29 @@ export default {
   }
 }
 
-.button {
+.buttons-wrapper {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.learning__button {
+  justify-content: center;
+  max-width: 100px;
+  padding: 17px;
+}
+
+.button {
   justify-content: space-between;
-  width: 100%;
   max-width: 221px;
   padding: 17px;
+}
+
+.button,
+.learning__button {
+  display: flex;
+  align-items: center;
+  width: 100%;
   margin-top: 24px;
   color: $color-white;
   cursor: pointer;
@@ -455,6 +561,10 @@ export default {
   }
 }
 
+.learning__button:not(:first-child) {
+  margin-left: 10px;
+}
+
 .btn-arrow {
   width: 18px;
   height: 24px;
@@ -467,6 +577,21 @@ export default {
 @media (hover: hover) {
   .icon__speak-it:hover {
     color: $color-dodger-blue;
+  }
+}
+
+@media screen and (max-width: $mobile-big-width) {
+  .buttons-wrapper {
+    flex-direction: column;
+  }
+
+  .learning__button {
+    max-width: 100%;
+
+    &:not(:first-child) {
+      margin-top: 10px;
+      margin-left: 0;
+    }
   }
 }
 </style>

@@ -165,7 +165,7 @@ export default {
     return {
       settingsData: {
         isAutoVoice: true,
-        wordsPerDay: 20,
+        wordsPerDay: 10,
         maxCardDay: 20,
         isRepeatVisible: true,
         isDifficultVisible: true,
@@ -190,7 +190,7 @@ export default {
   },
   methods: {
     ...mapMutations('Settings', ['setSettings']),
-    ...mapActions('Settings', ['sendSettings', 'receiveSettings']),
+    ...mapActions('Settings', ['sendSettings']),
     ...mapActions('Error', ['setError', 'setInfo']),
 
     plusWordCount() {

@@ -13,7 +13,6 @@ export default {
     isStartState: true,
     isCompleteState: false,
     isTranslate: true,
-    todayLearned: 0,
     todayLearnedNewWord: 0,
     learnedWordsCount: 0,
     difficultWordsCount: 0,
@@ -39,9 +38,6 @@ export default {
     },
     setIsLearnedWords(state, payload) {
       state.isLearnedWords = payload;
-    },
-    setTodayLearned(state, payload) {
-      state.todayLearned = payload;
     },
     setTodayLearnedNewWord(state, payload) {
       state.todayLearnedNewWord = payload;
@@ -129,7 +125,7 @@ export default {
         body: JSON.stringify(payload),
       });
     },
-    async changeUserWord({ rootState }, { word }) {
+    async learnUserWord({ rootState }, { word }) {
       const { userId, token } = rootState.Auth.user;
       const date = Date.now();
       const nextDate = date + 24 * 60 * 60 * 1000;
@@ -195,30 +191,19 @@ export default {
     learnedCount({ state, commit }) {
       const { userWords } = state;
       const today = new Date();
-      const todayYear = today.getFullYear();
-      const todayMonth = today.getMonth();
-      const todayDay = today.getDate();
-      let todayLearned = 0;
+      const todayString = today.toLocaleDateString();
+
       let todayLearnedNewWord = 0;
       let learnedWordsCount = 0;
       let difficultWordsCount = 0;
       userWords.forEach((item) => {
-        const { lastLearnedDate, firstLearnedDate } = item.userWord.optional;
+        const { firstLearnedDate } = item.userWord.optional;
         const { difficulty } = item.userWord;
 
-        const lastDate = new Date(lastLearnedDate);
-        const lastYear = lastDate.getFullYear();
-        const lastMonth = lastDate.getMonth();
-        const lastDay = lastDate.getDate();
-        if (lastYear === todayYear && lastMonth === todayMonth && lastDay === todayDay) {
-          todayLearned += 1;
-        }
-
         const firstDate = new Date(firstLearnedDate);
-        const firstYear = firstDate.getFullYear();
-        const firstMonth = firstDate.getMonth();
-        const firstDay = firstDate.getDate();
-        if (firstYear === todayYear && firstMonth === todayMonth && firstDay === todayDay) {
+        const firstDateString = firstDate.toLocaleDateString();
+
+        if (todayString === firstDateString) {
           todayLearnedNewWord += 1;
         }
 
@@ -230,13 +215,14 @@ export default {
           difficultWordsCount += 1;
         }
       });
-      commit('setTodayLearned', todayLearned);
       commit('setTodayLearnedNewWord', todayLearnedNewWord);
       commit('setLearnedWordsCount', learnedWordsCount);
       commit('setDifficultWordsCount', difficultWordsCount);
     },
-    getDifficultWords({ state, commit, rootState }) {
-      const { userWords, todayLearned } = state;
+    async getDifficultWords({ state, commit, dispatch, rootState, rootGetters }) {
+      await dispatch('getAllUserWords');
+      const { userWords } = state;
+      const todayLearned = rootGetters['Statistic/todayLearned'];
       const { maxCardDay } = rootState.Settings.settings;
       const cardsCount = maxCardDay - todayLearned;
 
@@ -250,8 +236,10 @@ export default {
 
       commit('setWords', difficultArray.slice(0, cardsCount));
     },
-    getLearnedWords({ state, commit, rootState }) {
-      const { userWords, todayLearned } = state;
+    async getLearnedWords({ state, commit, dispatch, rootState, rootGetters }) {
+      await dispatch('getAllUserWords');
+      const { userWords } = state;
+      const todayLearned = rootGetters['Statistic/todayLearned'];
       const { maxCardDay } = rootState.Settings.settings;
       const cardsCount = maxCardDay - todayLearned;
 
