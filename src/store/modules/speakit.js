@@ -103,9 +103,8 @@ export default {
         throw new Error('Something went wrong');
       }
     },
-    async resetGame({ commit, dispatch }) {
+    async resetGame({ dispatch }) {
       await dispatch('getWords');
-      commit('setStartState');
     },
   },
   getters: {
