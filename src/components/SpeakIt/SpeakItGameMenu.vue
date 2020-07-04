@@ -19,6 +19,14 @@
         </option>
       </select>
     </div>
+    <div class="score">
+      <div
+        class="score__star"
+        :class="[{ item_startGame: isStartGame }]"
+        :key="star.length"
+        v-for="star in correctAnswer.length"
+      ></div>
+    </div>
     <app-spinner v-if="isGameLoading"></app-spinner>
   </div>
 </template>
@@ -44,10 +52,12 @@ export default {
     ...mapState('Speakit', [
       'selectedLevel',
       'selectedRound',
+      'isStartGame',
       'roundCount',
       'completeRounds',
       'words',
       'pictureSrc',
+      'correctAnswer',
     ]),
 
     completeRoundsArray() {
@@ -142,6 +152,19 @@ export default {
 .round_complete {
   color: $color-white;
   background-color: $color-apple;
+}
+
+.score {
+  display: flex;
+  justify-content: flex-end;
+  height: 40px;
+
+  &__star {
+    width: 40px;
+    height: 40px;
+    background-image: url('~@/assets/img/speakIt/star.svg');
+    background-size: 40px 40px;
+  }
 }
 
 @media screen and (max-width: $puzzle-mobile-size) {

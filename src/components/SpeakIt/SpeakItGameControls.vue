@@ -18,7 +18,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import { dataSrc } from '@/helpers/constants.helper';
+import { dataSrc, correctSound } from '@/helpers/constants.helper';
 import defaultPicture from '@/assets/img/speakIt/do_you_speak.jpg';
 
 export default {
@@ -45,6 +45,7 @@ export default {
       'wordRecording',
       'isCorrectWord',
       'pictureSrc',
+      'isSound',
     ]),
   },
   created() {
@@ -105,6 +106,7 @@ export default {
           item.word.toLowerCase() === this.wordRecording.toLowerCase()
           && !this.correctResult.includes(item)
         ) {
+          this.onPlaySound(correctSound);
           this.setIsCorrectWord(true);
           this.showPicture(item);
           this.correctResult.push(item);
@@ -130,6 +132,12 @@ export default {
       this.recognition.removeEventListener('end', this.recognition.start);
       this.recognition.stop();
       this.$router.push('/speakit-statistic/detail');
+    },
+    onPlaySound(src) {
+      if (this.isSound) {
+        const audio = new Audio(src);
+        audio.play();
+      }
     },
   },
 };
