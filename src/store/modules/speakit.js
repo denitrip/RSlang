@@ -9,6 +9,7 @@ export default {
     selectedRound: 1,
     roundCount: 25,
     completeRounds: [],
+    isSound: true,
     isStartGame: false,
     isGameEnd: false,
     isCorrectWord: false,

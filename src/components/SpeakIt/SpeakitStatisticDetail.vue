@@ -63,7 +63,7 @@ import IconVolume from '@/components/icons/IconVolume.vue';
 import IconBucket from '@/components/icons/IconBucket.vue';
 
 export default {
-  name: 'SpeakitStatistic',
+  name: 'SpeakitStatisticDetail',
   components: {
     IconBase,
     IconVolume,
@@ -96,6 +96,7 @@ export default {
       'setIncorrectAnswer',
       'setWordRecording',
       'setIsStartGame',
+      'setTranslation',
       'setPictureSrc',
     ]),
     ...mapActions('Speakit', ['resetGame']),
@@ -119,7 +120,6 @@ export default {
       this.isStartLoading = true;
       try {
         await this.resetGame();
-        this.setRestartRound();
         this.setIsStartGame(false);
         this.setIsStartScreen(false);
         this.setCorrectAnswer([]);
@@ -176,7 +176,7 @@ export default {
 }
 
 .detail__description {
-  margin-top: 10px;
+  margin-top: 11px;
   text-align: center;
 }
 

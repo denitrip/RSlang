@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import SpeakitGameMenu from '@/components/Speakit/SpeakitGameMenu.vue';
-import SpeakitGameMain from '@/components/Speakit/SpeakitGameMain.vue';
-import SpeakitGameControls from '@/components/Speakit/SpeakitGameControls.vue';
+import SpeakitGameMenu from '@/components/SpeakIt/SpeakItGameMenu.vue';
+import SpeakitGameMain from '@/components/SpeakIt/SpeakItGameMain.vue';
+import SpeakitGameControls from '@/components/SpeakIt/SpeakItGameControls.vue';
 
 export default {
   name: 'SpeakitGame',

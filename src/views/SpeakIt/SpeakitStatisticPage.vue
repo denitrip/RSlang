@@ -34,7 +34,7 @@ export default {
 
 @media screen and (max-width: $puzzle-mobile-size) {
   .statistic {
-    padding: 10px;
+    padding: 11px;
   }
 }
 </style>

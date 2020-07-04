@@ -15,11 +15,11 @@
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
-import SpeakitStartScreen from '@/components/Speakit/SpeakitStartScreen.vue';
-import SpeakitGame from '@/components/Speakit/SpeakitGame.vue';
+import SpeakitStartScreen from '@/components/SpeakIt/SpeakItStartScreen.vue';
+import SpeakitGame from '@/components/SpeakIt/SpeakItGame.vue';
 
 export default {
-  name: 'HomePage',
+  name: 'SpeakitPage',
   components: {
     SpeakitStartScreen,
     SpeakitGame,

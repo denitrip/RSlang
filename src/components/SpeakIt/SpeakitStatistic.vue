@@ -23,7 +23,7 @@ import { mapState, mapMutations, mapActions } from 'vuex';
 import { getWordsByLevelAndRound } from '@/helpers/englishPuzzle.helper';
 
 export default {
-  name: 'EnglishPuzzleStatistic',
+  name: 'SpeakitStatistic',
   computed: {
     ...mapState('EnglishPuzzle', ['puzzleStats']),
   },
@@ -86,7 +86,7 @@ export default {
 }
 
 .statistic__link {
-  margin-top: 10px;
+  margin-top: 11px;
   color: $color-dodger-blue;
   text-decoration: none;
   cursor: pointer;
