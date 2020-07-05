@@ -13,6 +13,7 @@ export default {
     statistics: {
       learnedWords: 0,
       stats: [],
+      puzzleStats: [],
     },
     longTermStatistic: [
       {
@@ -91,10 +92,12 @@ export default {
         setLocalStorageUserStatistic({
           learnedWords: answer.learnedWords,
           stats: JSON.parse(answer.optional.stats),
+          puzzleStats: JSON.parse(answer.optional.puzzleStats),
         });
         commit('setStatistics', {
           learnedWords: answer.learnedWords,
           stats: JSON.parse(answer.optional.stats),
+          puzzleStats: JSON.parse(answer.optional.puzzleStats),
         });
       } else if (response.status === 404) {
         await dispatch('sendStatistic');
@@ -105,12 +108,13 @@ export default {
     async sendStatistic({ state, rootState }) {
       const { token } = rootState.Auth.user;
       const { userId } = rootState.Auth.user;
-      const URL = `${apiAddress}users/${userId}/statistics`;
       const { statistics } = state;
+      const URL = `${apiAddress}users/${userId}/statistics`;
       const stats = JSON.stringify(statistics.stats);
+      const puzzleStats = JSON.stringify(statistics.puzzleStats);
       const payload = JSON.stringify({
         learnedWords: statistics.learnedWords,
-        optional: { stats },
+        optional: { stats, puzzleStats },
       });
       const response = await fetch(URL, {
         method: 'PUT',
@@ -128,7 +132,7 @@ export default {
     },
     async updateStatistic({ state, commit, dispatch }) {
       const { statistics } = state;
-      const { stats } = statistics;
+      const { stats, puzzleStats } = statistics;
       let { learnedWords } = statistics;
       const today = new Date();
       const label = today.toLocaleDateString();
@@ -140,7 +144,7 @@ export default {
         stats.push({ label, value: 1 });
       }
 
-      commit('setStatistics', { learnedWords, stats });
+      commit('setStatistics', { learnedWords, stats, puzzleStats });
       await dispatch('sendStatistic');
     },
   },

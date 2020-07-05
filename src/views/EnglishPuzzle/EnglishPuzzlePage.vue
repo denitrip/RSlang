@@ -37,7 +37,7 @@ export default {
     this.updateWidth();
     window.addEventListener('resize', this.updateWidth);
     if (this.user) {
-      this.onLoadStats();
+      this.getSettings();
     }
   },
   destroyed() {
@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     ...mapActions('Error', ['setError']),
-    ...mapActions('EnglishPuzzle', ['getStats', 'getSettings', 'resetGame', 'getRoundsCount']),
+    ...mapActions('EnglishPuzzle', ['getSettings', 'resetGame', 'getRoundsCount']),
     ...mapMutations('EnglishPuzzle', [
       'setIsStartScreen',
       'setIsPictureOff',
@@ -63,14 +63,6 @@ export default {
         this.setError(error.message);
       } finally {
         this.isStartLoading = false;
-      }
-    },
-    async onLoadStats() {
-      try {
-        await this.getStats();
-        await this.getSettings();
-      } catch (error) {
-        this.setError(error.message);
       }
     },
     updateWidth() {

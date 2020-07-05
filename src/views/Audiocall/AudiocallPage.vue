@@ -38,11 +38,14 @@ export default {
   methods: {
     ...mapActions('Error', ['setError']),
     ...mapActions('Audiocall', ['startGame']),
-    ...mapMutations('Audiocall', ['setIsStartScreen', 'resetGame']),
+    ...mapActions('Learning', ['loadLearnedUserWords']),
+    ...mapMutations('Audiocall', ['setIsStartScreen', 'resetGame', 'setWords']),
 
     async onStartGame() {
       this.isStartLoading = true;
       try {
+        const words = await this.loadLearnedUserWords();
+        this.setWords(words);
         await this.startGame();
         this.setIsStartScreen(false);
       } catch (error) {
