@@ -242,7 +242,7 @@ export default {
     border: none;
     border-radius: 50%;
 
-    @include media-tablet {
+    @include media-tablet-extra {
       margin-left: 14px;
       background-color: $color-apple;
     }
@@ -255,7 +255,7 @@ export default {
   &__close {
     font-size: 50px;
 
-    @include media-tablet {
+    @include media-tablet-extra {
       position: absolute;
       top: 8px;
       right: 10px;
@@ -265,7 +265,7 @@ export default {
   &__speak-it {
     margin-left: 25px;
 
-    @include media-tablet {
+    @include media-tablet-extra {
       display: none;
     }
 
@@ -277,7 +277,7 @@ export default {
       display: none;
       color: $color-cornflower-blue;
 
-      @include media-tablet {
+      @include media-tablet-extra {
         display: inline-block;
         margin-left: 0;
       }
@@ -287,7 +287,7 @@ export default {
   &__bucket {
     margin-left: 16px;
 
-    @include media-tablet {
+    @include media-tablet-extra {
       color: $color-wild-watermelon;
     }
   }
@@ -295,7 +295,7 @@ export default {
   &__do-you-know {
     margin-left: 16px;
 
-    @include media-tablet {
+    @include media-tablet-extra {
       color: $color-golden-dream;
     }
   }
@@ -303,14 +303,14 @@ export default {
   &__backup {
     margin-left: 16px;
 
-    @include media-tablet {
+    @include media-tablet-extra {
       color: $color-dodger-blue;
     }
   }
 }
 
 .icons {
-  @include media-tablet {
+  @include media-tablet-extra {
     margin-top: 10px;
     margin-bottom: 30px;
     margin-left: 26px;
@@ -319,7 +319,8 @@ export default {
 
 .dictionary-card {
   width: 100%;
-  height: 106px;
+  height: auto;
+  min-height: 106px;
   margin-top: 8px;
   background-color: $color-white;
   border-radius: 25px;
@@ -331,14 +332,6 @@ export default {
     opacity: 0.6;
   }
 
-  @include media-laptop {
-    height: auto;
-  }
-
-  @include media-tablet {
-    height: max-content;
-  }
-
   &__wrapper {
     position: relative;
     display: flex;
@@ -346,9 +339,10 @@ export default {
     justify-content: space-between;
     width: 90%;
     height: inherit;
+    min-height: inherit;
     margin: auto;
 
-    @include media-tablet {
+    @include media-tablet-extra {
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
@@ -362,7 +356,7 @@ export default {
   display: flex;
   align-items: center;
 
-  @include media-tablet {
+  @include media-tablet-extra {
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -379,7 +373,7 @@ export default {
 .word {
   margin-left: 26px;
 
-  @include media-tablet {
+  @include media-tablet-extra {
     flex-basis: 100%;
     text-align: center;
   }
@@ -391,11 +385,11 @@ export default {
   }
 
   &_transcription {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: $color-manatee;
 
-    @include media-tablet {
+    @include media-tablet-extra {
       flex-basis: 100%;
       margin-left: 24px;
       font-size: 1rem;
@@ -406,7 +400,7 @@ export default {
 
 .custom-checkbox.b-custom-control-lg,
 .input-group-lg .custom-checkbox {
-  @include media-tablet {
+  @include media-tablet-extra {
     position: absolute;
     top: 16px;
     left: 16px;
@@ -417,7 +411,7 @@ export default {
   color: $color-dodger-blue;
   text-align: center;
 
-  @include media-tablet {
+  @include media-tablet-extra {
     flex-basis: 100%;
     text-align: center;
   }
@@ -449,4 +443,5 @@ export default {
     color: $color-golden-dream;
   }
 }
+
 </style>
