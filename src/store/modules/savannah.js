@@ -16,68 +16,7 @@ export default {
     wallpaperSrc:
       'https://raw.githubusercontent.com/arcanar7/rslang-data/master/savannah/savannah-0.jpg',
     isModeEnRu: true,
-    words: [
-      {
-        word: 'agree',
-        audio: 'files/01_0001.mp3',
-        wordTranslate: 'согласна',
-      },
-      {
-        word: 'alcohol',
-        audio: 'files/01_0002.mp3',
-        wordTranslate: 'алкоголь',
-      },
-      {
-        word: 'arrive',
-        audio: 'files/01_0003.mp3',
-        wordTranslate: 'прибыть',
-      },
-      {
-        word: 'August',
-        audio: 'files/01_0004.mp3',
-        wordTranslate: 'август',
-      },
-      {
-        word: 'boat',
-        audio: 'files/01_0005.mp3',
-        wordTranslate: 'лодка',
-      },
-      {
-        word: 'breakfast',
-        audio: 'files/01_0006.mp3',
-        wordTranslate: 'завтрак',
-      },
-      {
-        word: 'camera',
-        audio: 'files/01_0007.mp3',
-        wordTranslate: 'камера',
-      },
-      {
-        word: 'capital',
-        audio: 'files/01_0008.mp3',
-        wordTranslate: 'столица',
-      },
-      {
-        word: 'catch',
-        audio: 'files/01_0009.mp3',
-        wordTranslate: 'поймать',
-      },
-      {
-        word: 'duck',
-        audio: 'files/01_0010.mp3',
-        wordTranslate: 'утка',
-      },
-      {
-        word: 'enjoy',
-        audio: 'files/01_0011.mp3',
-        wordTranslate: 'наслаждаться',
-      },
-      {
-        word: 'invite',
-        audio: 'files/01_0012.mp3',
-        wordTranslate: 'пригласить',
-      },
-    ],
+    words: [],
   },
   mutations: {
     setIsStartScreen(state, payload) {
@@ -112,6 +51,9 @@ export default {
     },
     setIsModeEnRu(state, payload) {
       state.isModeEnRu = payload;
+    },
+    setWords(state, payload) {
+      state.words = payload;
     },
     resetGame(state) {
       state.isStartScreen = true;

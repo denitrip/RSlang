@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 import IconBase from '@/components/IconBase.vue';
 import IconSun from '@/components/icons/IconSun.vue';
 import SavannahStatistic from '@/components/Savannah/SavannahStatistic.vue';
@@ -119,6 +119,7 @@ export default {
       'setLives',
       'setIsGameEnd',
     ]),
+    ...mapActions('Learning', ['changeDateUserWord']),
 
     checkAnswer(index) {
       const question = this.words[this.wordNumber].word;
@@ -130,6 +131,8 @@ export default {
       }
     },
     onCorrectAnswer() {
+      const nextDate = Date.now() + 24 * 60 * 60 * 1000;
+      this.changeDateUserWord({ word: this.words[this.wordNumber], nextDate });
       this.onPlaySound(correctSound);
       this.setStatsArray([...this.statsArray, { ...this.words[this.wordNumber], correct: true }]);
       this.isCheck = true;
@@ -141,6 +144,8 @@ export default {
       }, 1500);
     },
     onIncorrectAnswer() {
+      const nextDate = Date.now() + 22 * 60 * 60 * 1000;
+      this.changeDateUserWord({ word: this.words[this.wordNumber], nextDate });
       this.onPlaySound(errorSound);
       this.setStatsArray([...this.statsArray, { ...this.words[this.wordNumber], correct: false }]);
       this.setLost([...this.lost, this.lives.pop()]);

@@ -57,12 +57,15 @@ export default {
     },
     setIsTranslate(state, payload) {
       state.isTranslate = payload;
+      state.prevIsTranslate = payload;
     },
     setIsSpeech(state, payload) {
       state.isSpeech = payload;
+      state.prevIsSpeech = payload;
     },
     setIsImage(state, payload) {
       state.isImage = payload;
+      state.prevIsImage = payload;
     },
     setWords(state, payload) {
       state.words = payload;
@@ -272,95 +275,38 @@ export default {
         commit('setSentenceArray', sentenceArray);
       }
     },
-    async getStats({ commit, rootState }) {
-      const { user } = rootState.Auth;
-
-      const response = await fetch(`${apiAddress}users/${user.userId}/statistics`, {
-        method: 'GET',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-          Accept: application,
-        },
-      });
-      if (response.ok) {
-        const statistics = await response.json();
-        const puzzleStats = JSON.parse(statistics.optional.puzzle);
-        commit('setPuzzleStats', puzzleStats);
-      } else if (response.status !== 404) {
-        throw new Error(response.statusText);
-      }
-    },
-    async saveStats({ state, commit, rootState }) {
-      const { sentenceArray, puzzleStats, selectedLevel, selectedRound } = state;
-      const { user } = rootState.Auth;
+    async saveStats({ state, commit, dispatch, rootState }) {
+      const { sentenceArray, selectedLevel, selectedRound } = state;
+      const { learnedWords, stats, puzzleStats } = rootState.Statistic.statistics;
       const currentRoundStats = new CurrentRoundStats(selectedLevel, selectedRound, sentenceArray);
       puzzleStats.push(currentRoundStats);
+      commit('setCurrentRoundStats', currentRoundStats);
+      commit('Statistic/setStatistics', { learnedWords, stats, puzzleStats }, { root: true });
+      await dispatch('Statistic/sendStatistic', null, { root: true });
+    },
+    getSettings({ state, commit, rootState }) {
+      const { roundCount } = state;
+      const { settings } = rootState.Settings;
+      const { completeRounds, lastRound } = settings.puzzleSettings;
 
-      const response = await fetch(`${apiAddress}users/${user.userId}/statistics`, {
-        method: 'PUT',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-          Accept: application,
-          'Content-Type': application,
-        },
-        body: JSON.stringify({ optional: { puzzle: JSON.stringify(puzzleStats) } }),
-      });
-      if (response.ok) {
-        commit('setCurrentRoundStats', currentRoundStats);
-        commit('setPuzzleStats', puzzleStats);
+      if (lastRound.page === roundCount) {
+        commit('setSelectedLevel', Number(lastRound.lvl) + 1);
+        commit('setSelectedRound', 1);
       } else {
-        const res = await response.json();
-        throw new Error(res.error.errors[0].message);
+        commit('setSelectedRound', Number(lastRound.page) + 1);
       }
+      commit('setCompleteRounds', completeRounds);
     },
-    async getSettings({ state, commit, rootState }) {
-      const { user } = rootState.Auth;
-
-      const response = await fetch(`${apiAddress}users/${user.userId}/settings`, {
-        method: 'GET',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-          Accept: application,
-        },
-      });
-      if (response.ok) {
-        const settings = await response.json();
-        const { completeRounds, lastRound } = JSON.parse(settings.optional.puzzle);
-        const { roundCount } = state;
-
-        if (lastRound.page === roundCount) {
-          commit('setSelectedLevel', Number(lastRound.lvl) + 1);
-          commit('setSelectedRound', 1);
-        } else {
-          commit('setSelectedRound', Number(lastRound.page) + 1);
-        }
-        commit('setCompleteRounds', completeRounds);
-      } else if (response.status !== 404) {
-        throw new Error(response.statusText);
-      }
-    },
-    async saveSettings({ state, rootState }) {
+    async saveSettings({ state, commit, dispatch, rootState }) {
       const { completeRounds, selectedLevel, selectedRound } = state;
-      const { user } = rootState.Auth;
+      const { settings } = rootState.Settings;
       const lastRound = { lvl: Number(selectedLevel), page: Number(selectedRound) };
-      const settings = { lastRound, completeRounds };
-
-      const response = await fetch(`${apiAddress}users/${user.userId}/settings`, {
-        method: 'PUT',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-          Accept: application,
-          'Content-Type': application,
-        },
-        body: JSON.stringify({ optional: { puzzle: JSON.stringify(settings) } }),
-      });
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
+      commit(
+        'Settings/setSettings',
+        { ...settings, puzzleSettings: { lastRound, completeRounds } },
+        { root: true },
+      );
+      await dispatch('Settings/sendSettings', null, { root: true });
     },
     onPlayAudio({ getters, commit }) {
       const { getAudioExampleSrc } = getters;

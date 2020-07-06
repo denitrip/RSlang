@@ -19,6 +19,13 @@ export default {
       isTranscriptionVisible: true,
       isAssociationVisible: true,
       isShowAnswerVisible: true,
+      puzzleSettings: {
+        lastRound: {
+          lvl: 0,
+          page: 0,
+        },
+        completeRounds: [],
+      },
     },
   },
   mutations: {
