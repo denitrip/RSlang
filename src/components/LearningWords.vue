@@ -70,11 +70,20 @@ export default {
       return this.words.length;
     },
   },
+  async destroyed() {
+    try {
+      await this.getAllUserWords();
+      this.learnedCount();
+    } catch (error) {
+      this.setError(error.message);
+    }
+  },
   methods: {
     ...mapMutations('Learning', ['setIsMainPage', 'setIsTranslate']),
     ...mapMutations('Settings', ['setSettings']),
     ...mapActions('Error', ['setError']),
     ...mapActions('Settings', ['sendSettings']),
+    ...mapActions('Learning', ['getAllUserWords', 'learnedCount']),
 
     closeTraining() {
       this.setIsMainPage(true);
