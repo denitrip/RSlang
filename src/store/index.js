@@ -10,6 +10,7 @@ import Statistic from '@/store/modules/statistic';
 import Audiocall from '@/store/modules/audiocall';
 import Learning from '@/store/modules/learning';
 import Notification from '@/store/modules/notification';
+import Sprint from '@/store/modules/sprint';
 
 Vue.use(Vuex);
 
@@ -25,5 +26,6 @@ export default new Vuex.Store({
     Audiocall,
     Learning,
     Notification,
+    Sprint,
   },
 });

@@ -17,6 +17,7 @@ import EnglishPuzzleStatsDetail from '@/components/EnglishPuzzle/EnglishPuzzleSt
 import SavannahPage from '@/views/Savannah/SavannahPage.vue';
 import SpeakItPage from '@/views/SpeakIt/SpeakItPage.vue';
 import AudiocallPage from '@/views/Audiocall/AudiocallPage.vue';
+import SprintPage from '@/views/Sprint/SprintPage.vue';
 
 Vue.use(VueRouter);
 
@@ -102,6 +103,11 @@ const routes = [
         path: routerConsts.audiocallPage.path,
         name: routerConsts.audiocallPage.name,
         component: AudiocallPage,
+      },
+      {
+        path: routerConsts.sprintPage.path,
+        name: routerConsts.sprintPage.name,
+        component: SprintPage,
       },
     ],
   },

@@ -67,4 +67,8 @@ export default {
     path: '/audiocall',
     name: 'audiocall',
   },
+  sprintPage: {
+    path: '/sprint',
+    name: 'sprint',
+  },
 };
