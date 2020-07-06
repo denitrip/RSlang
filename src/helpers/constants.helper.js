@@ -18,3 +18,4 @@ export const keys = {
   five: '5',
   enter: 'Enter',
 };
+export const wordDeletedMassage = 'Word deleted successfully';

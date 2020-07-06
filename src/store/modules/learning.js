@@ -253,5 +253,47 @@ export default {
 
       commit('setWords', learnedArray.slice(0, cardsCount));
     },
+    async loadLearnedUserWords({ rootState }) {
+      const { userId, token } = rootState.Auth.user;
+      const wordsPerGame = 20;
+      const response = await fetch(
+        `${apiAddress}users/${userId}/aggregatedWords?wordsPerPage=3600&filter={"userWord.difficulty":"learned"}`,
+        {
+          method: 'GET',
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: application,
+            'Content-Type': application,
+          },
+        },
+      );
+      const learnedArray = await response.json();
+      learnedArray[0].paginatedResults.sort(
+        (a, b) => a.userWord.optional.nextLearnedDate - b.userWord.optional.nextLearnedDate,
+      );
+      return learnedArray[0].paginatedResults.slice(0, wordsPerGame);
+    },
+    async changeDateUserWord({ rootState }, { word, nextDate }) {
+      const { userId, token } = rootState.Auth.user;
+      const payload = {
+        difficulty: word.userWord.difficulty,
+        optional: {
+          ...word.userWord.optional,
+          nextLearnedDate: nextDate,
+        },
+      };
+      // eslint-disable-next-line no-underscore-dangle
+      await fetch(`${apiAddress}users/${userId}/words/${word._id}`, {
+        method: 'PUT',
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: application,
+          'Content-Type': application,
+        },
+        body: JSON.stringify(payload),
+      });
+    },
   },
 };

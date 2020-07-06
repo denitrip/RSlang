@@ -32,7 +32,7 @@
             <IconVolume />
           </IconBase>
         </div>
-        {{ words[wordNumber].textExample }}
+        {{ words[wordNumber].textExample | deleteBold }}
       </div>
       <div class="attempt-words">
         <span class="attempt-words__word" v-for="(item, i) in wordsArray[wordNumber]" :key="i">
@@ -62,7 +62,7 @@
         <button
           class="controls__button"
           v-else
-          @click="onIncorrectAnswer"
+          @click="onSetAnswer(22, false)"
           @keydown.enter.prevent=""
         >
           Don't know
@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 import AudiocallStatistic from '@/components/Audiocall/AudiocallStatistic.vue';
 import { dataSrc, correctSound, errorSound, keys } from '@/helpers/constants.helper';
 import IconBase from '@/components/IconBase.vue';
@@ -139,24 +139,23 @@ export default {
   },
   methods: {
     ...mapMutations('Audiocall', ['setWordNumber', 'setStatsArray', 'setIsGameEnd']),
+    ...mapActions('Learning', ['changeDateUserWord']),
 
     checkAnswer(index) {
       const question = this.words[this.wordNumber].word;
       const answer = this.wordsArray[this.wordNumber][index].word;
       if (answer === question) {
         this.onPlaySound(correctSound);
-        this.onCorrectAnswer();
+        this.onSetAnswer(24, true);
       } else {
         this.onPlaySound(errorSound);
-        this.onIncorrectAnswer();
+        this.onSetAnswer(22, false);
       }
     },
-    onCorrectAnswer() {
-      this.setStatsArray([...this.statsArray, { ...this.words[this.wordNumber], correct: true }]);
-      this.isCheck = true;
-    },
-    onIncorrectAnswer() {
-      this.setStatsArray([...this.statsArray, { ...this.words[this.wordNumber], correct: false }]);
+    onSetAnswer(hour, correct) {
+      const nextDate = Date.now() + hour * 60 * 60 * 1000;
+      this.changeDateUserWord({ word: this.words[this.wordNumber], nextDate });
+      this.setStatsArray([...this.statsArray, { ...this.words[this.wordNumber], correct }]);
       this.isCheck = true;
     },
     onCheckGameOver() {

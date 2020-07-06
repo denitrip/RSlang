@@ -154,9 +154,6 @@ export default {
     },
   },
   filters: {
-    deleteBold(str) {
-      return str.replace(/<b>|<\/b>/g, '');
-    },
     deleteItalic(str) {
       return str.replace(/<i>|<\/i>/g, '');
     },
@@ -382,7 +379,7 @@ export default {
   align-items: center;
   width: 100%;
   max-width: 500px;
-  padding: 40px 10px;
+  padding: 40px;
   background-color: white;
   border-radius: 25px;
   box-shadow: 0 0 20px $box-shadow-one-color;
