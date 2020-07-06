@@ -60,7 +60,7 @@
         </span>
       </div>
     </div>
-    <div class="dictionary-card__wrapper" v-else>
+    <div class="dictionary-card__back" v-else>
       <b-form-checkbox size="lg" :id="word.word" v-model="isSelected" name="checkbox-1">
       </b-form-checkbox>
       <img
@@ -253,13 +253,10 @@ export default {
   }
 
   &__close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
     font-size: 50px;
-
-    @include media-tablet-extra {
-      position: absolute;
-      top: 8px;
-      right: 10px;
-    }
   }
 
   &__speak-it {
@@ -343,12 +340,27 @@ export default {
     margin: auto;
 
     @include media-tablet-extra {
+      flex-direction: column;
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
       height: max-content;
       padding: 15px 0;
     }
+  }
+
+  &__back {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    height: max-content;
+    min-height: inherit;
+    padding: 15px 0;
+    margin: auto;
   }
 }
 
@@ -400,9 +412,11 @@ export default {
 
 .custom-checkbox.b-custom-control-lg,
 .input-group-lg .custom-checkbox {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+
   @include media-tablet-extra {
-    position: absolute;
-    top: 16px;
     left: 16px;
   }
 }
@@ -443,5 +457,4 @@ export default {
     color: $color-golden-dream;
   }
 }
-
 </style>
