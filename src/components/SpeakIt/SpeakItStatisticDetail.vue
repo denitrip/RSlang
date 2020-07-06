@@ -176,7 +176,7 @@ export default {
 }
 
 .detail__description {
-  margin-top: 11px;
+  margin-top: 10px;
   text-align: center;
 }
 

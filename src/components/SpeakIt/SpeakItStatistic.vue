@@ -86,7 +86,7 @@ export default {
 }
 
 .statistic__link {
-  margin-top: 11px;
+  margin-top: 10px;
   color: $color-dodger-blue;
   text-decoration: none;
   cursor: pointer;
