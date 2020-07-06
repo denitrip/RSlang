@@ -63,12 +63,12 @@
     <div class="dictionary-card__back" v-else>
       <b-form-checkbox size="lg" :id="word.word" v-model="isSelected" name="checkbox-1">
       </b-form-checkbox>
-      <img
+      <!-- <img
         :src="`${dataSrc}${word.image}`"
         class="picture"
         :alt="word.word"
         v-if="settings.isAssociationVisible"
-      />
+      /> -->
       <div class="word_transcription" v-if="settings.isTranscriptionVisible">
         {{ word.transcription }}
       </div>
@@ -91,7 +91,7 @@
           Next {{ new Date(word.userWord.optional.nextLearnedDate).toLocaleString() }}
         </div>
       </div>
-      <div class="text">Repeated {{ word.userWord.optional.learnedCount }}</div>
+      <div class="text">Repeated {{ word.userWord.optional.learnedCount }} times</div>
       <b-button-close @click="flipCard" class="icon__close">×</b-button-close>
     </div>
   </div>
@@ -414,7 +414,7 @@ export default {
 .input-group-lg .custom-checkbox {
   position: absolute;
   top: 16px;
-  left: 16px;
+  left: -2.5%;
 
   @include media-tablet-extra {
     left: 16px;
