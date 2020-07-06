@@ -12,8 +12,17 @@ export function setLocalStorageUserData(user, email) {
 export function setLocalStorageUserSettings(settings) {
   localStorage.setItem('settings', JSON.stringify(settings));
 }
+
 export function getLocalStorageUserSettings() {
   return JSON.parse(localStorage.getItem('settings'));
+}
+
+export function setLocalStorageUserStatistic(statistic) {
+  localStorage.setItem('statistic', JSON.stringify(statistic));
+}
+
+export function getLocalStorageUserStatistic() {
+  return JSON.parse(localStorage.getItem('statistic'));
 }
 
 export function clearStorage() {

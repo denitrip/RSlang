@@ -140,6 +140,7 @@ img.rot:hover {
 @media (max-width: 414px) {
   .header-container {
     justify-content: center;
+    padding-left: 60px;
     margin: 0;
   }
 

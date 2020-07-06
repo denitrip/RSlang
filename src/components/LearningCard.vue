@@ -1,41 +1,114 @@
 <template>
-  <div class="learning-card">
-    <img :src="image" class="img" />
-    <div class="word word_russian">{{ russianWord }}</div>
-    <div class="word-with-speak-it" v-if="isResualtCard">
-      <div class="word word_english">{{ englishWord }}</div>
-      <span
-        @click="onPlayAudio"
-        class="icon icon__speak-it "
-        :class="{ 'icon__speak-it_selected': isAudioPlay }"
+  <div class="learning-wrapper">
+    <form
+      class="learning-card"
+      @submit.prevent="submitCard"
+      :class="[{ 'learning-card_error': isError }, { 'learning-card_correct': isCorrect }]"
+    >
+      <img :src="`${dataSrc}${word.image}`" class="img" v-if="settings.isAssociationVisible" />
+      <div class="word-with-speak-it" v-if="isCompleteState">
+        <div class="word word_english">{{ word.word }}</div>
+        <span
+          @click="onPlaySound"
+          class="icon icon__speak-it "
+          :class="{ 'icon__speak-it_played': isAudioPlay }"
+        >
+          <IconBase width="22" height="20" viewBox="0 0 18 16">
+            <IconSmallSpeakIt />
+          </IconBase>
+        </span>
+      </div>
+      <div
+        class="word word_transcription"
+        v-if="isCompleteState && settings.isTranscriptionVisible"
       >
-        <IconBase width="18" height="16" viewBox="0 0 18 16">
-          <IconSmallSpeakIt />
-        </IconBase>
-      </span>
-    </div>
-    <div class="word word_transcription" v-if="isResualtCard">{{ transcription }}</div>
-    <div class="text-meaning" v-if="isResualtCard">{{ textMeaning | deleteItalic }}</div>
-    <div class="text-meaning" v-else>{{ textMeaning | deleteWord }}</div>
-    <div class="text-translate" v-if="isResualtCard">{{ textMeaningTranslate }}</div>
-    <div class="text-example" v-if="isResualtCard">{{ textExample | deleteBold }}</div>
-    <div class="text-example" v-else>{{ textExample | deleteWord }}</div>
-    <div class="text-translate" v-if="isResualtCard">{{ textExampleTranslate }}</div>
-    <input
-      type="text"
-      class="text-input"
-      ref="userWord"
-      :value="englishWord"
-      @keyup.enter="checkWord"
-      autofocus
-    />
-    <button type="submit" class="btn wrap" @click="nextIndex" :disabled="isWordCreating">
-      Next
-      <AppSpinner v-if="isWordCreating"></AppSpinner>
-      <span class="btn-arrow" v-else></span>
-    </button>
-    <div class="show-answer" @click="nextIndex" :disabled="isWordCreating">Show answer</div>
-    <Notification v-if="isNotificationShow" />
+        {{ word.transcription }}
+      </div>
+      <div class="word word_russian" v-if="settings.isWordVisible">{{ word.wordTranslate }}</div>
+      <div class="text-meaning" v-if="isCompleteState && settings.isMeaningVisible">
+        {{ word.textMeaning | deleteItalic }}
+      </div>
+      <div class="text-meaning" v-else-if="settings.isMeaningVisible">
+        {{ word.textMeaning | deleteWord }}
+      </div>
+      <div
+        class="text-translate"
+        v-if="isCompleteState && settings.isMeaningVisible && isTranslate"
+      >
+        {{ word.textMeaningTranslate }}
+      </div>
+      <div class="text-example" v-if="isCompleteState && settings.isExampleVisible">
+        {{ word.textExample | deleteBold }}
+      </div>
+      <div class="text-example" v-else-if="settings.isExampleVisible">
+        {{ word.textExample | deleteWord }}
+      </div>
+      <div
+        class="text-translate"
+        v-if="isCompleteState && settings.isExampleVisible && isTranslate"
+      >
+        {{ word.textExampleTranslate }}
+      </div>
+      <div class="text">
+        <input
+          type="text"
+          class="text-input"
+          :class="[{ 'text-input_error': isError }, { 'text-input_correct': isCorrect }]"
+          :style="[{ width: `${word.word.length * 18}px` }]"
+          v-model="answer"
+          v-focus
+          :disabled="isCompleteState"
+        />
+        <div
+          class="text-error"
+          :style="[{ width: `${word.word.length * 18}px` }]"
+          v-html="charsError"
+          v-if="isError"
+          @click="hideError"
+        ></div>
+      </div>
+      <button type="submit" class="button" :disabled="isWordLoading" v-if="isCompleteState">
+        Next
+        <AppSpinner v-if="isWordLoading"></AppSpinner>
+        <span class="btn-arrow" v-else></span>
+      </button>
+      <button type="submit" class="button" v-else :disabled="!answer">
+        Check
+        <span class="btn-arrow"></span>
+      </button>
+      <div class="show-answer" @click="showAnswer" v-if="settings.isShowAnswerVisible">
+        Show answer
+      </div>
+    </form>
+    <transition name="fade" mode="out-in">
+      <div class="buttons-wrapper" v-if="isCompleteState">
+        <button class="learning__button" v-if="settings.isRepeatVisible" :disabled="isWordLoading">
+          Repeat
+        </button>
+        <button
+          class="learning__button"
+          v-if="settings.isDifficultVisible"
+          @click="controlsNextCard(wordGroups.difficult)"
+          :disabled="isWordLoading"
+        >
+          Difficult
+        </button>
+        <button class="learning__button" v-if="settings.isGoodVisible" :disabled="isWordLoading">
+          Good
+        </button>
+        <button class="learning__button" v-if="settings.isEasyVisible" :disabled="isWordLoading">
+          Easy
+        </button>
+        <button
+          class="learning__button"
+          v-if="settings.isDeleteVisible"
+          @click="controlsNextCard(wordGroups.deleted)"
+          :disabled="isWordLoading"
+        >
+          Delete
+        </button>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -44,8 +117,7 @@ import AppSpinner from '@/components/AppSpinner.vue';
 import IconBase from '@/components/IconBase.vue';
 import IconSmallSpeakIt from '@/components/icons/IconSmallSpeakIt.vue';
 import { mapState, mapActions, mapMutations } from 'vuex';
-import { wordGroups } from '@/helpers/constants.helper';
-import Notification from '@/components/Notification.vue';
+import { wordGroups, dataSrc } from '@/helpers/constants.helper';
 
 export default {
   name: 'DictionaryCard',
@@ -53,29 +125,35 @@ export default {
     IconBase,
     IconSmallSpeakIt,
     AppSpinner,
-    Notification,
   },
-  props: [
-    'image',
-    'englishWord',
-    'russianWord',
-    'transcription',
-    'textMeaning',
-    'textMeaningTranslate',
-    'textExample',
-    'textExampleTranslate',
-  ],
-  data() {
-    return {
-      isSpeakItSelected: false,
-      isWordCreating: false,
-      isResualtCard: false,
-    };
+  props: {
+    word: {
+      type: [Object],
+      default: () => ({
+        word: 'agree',
+        image: 'files/01_0001.jpg',
+        audio: 'files/01_0001.mp3',
+        audioMeaning: 'files/01_0001_meaning.mp3',
+        audioExample: 'files/01_0001_example.mp3',
+        textMeaning: 'To agree is to have the same opinion or belief as another person',
+        textExample: 'The students agree they have too much homework',
+        transcription: '[əgríː]',
+        wordTranslate: 'согласна',
+        textMeaningTranslate:
+          'Согласиться - значит иметь то же мнение или убеждение, что и другой человек',
+        textExampleTranslate: 'Студенты согласны, что у них слишком много домашней работы',
+        id: 1,
+      }),
+    },
+  },
+  directives: {
+    focus: {
+      inserted(el) {
+        el.focus();
+      },
+    },
   },
   filters: {
-    deleteBold(str) {
-      return str.replace(/<b>|<\/b>/g, '');
-    },
     deleteItalic(str) {
       return str.replace(/<i>|<\/i>/g, '');
     },
@@ -85,49 +163,210 @@ export default {
       return `${str.slice(0, start)}[...]${str.slice(finish)}`;
     },
   },
+  data() {
+    return {
+      wordGroups,
+      isWordLoading: false,
+      isAudioPlay: false,
+      isError: false,
+      isCorrect: false,
+      isErrorAnswer: false,
+      answer: '',
+      dataSrc,
+      charsError: null,
+    };
+  },
   computed: {
-    ...mapState('Learning', ['isAudioPlay', 'index', 'words']),
+    ...mapState('Learning', [
+      'index',
+      'words',
+      'isStartState',
+      'isCompleteState',
+      'todayLearnedNewWord',
+      'learnedWordsCount',
+      'isTranslate',
+      'isNewWords',
+      'isDifficultWords',
+      'isLearnedWords',
+    ]),
     ...mapState('Settings', ['settings']),
-    ...mapState('Notification', ['isNotificationShow']),
+    ...mapState('Statistic', [
+      'cardsCount',
+      'correctAnswer',
+      'newWords',
+      'series',
+      'longestSeries',
+    ]),
   },
   methods: {
-    ...mapMutations('Learning', ['setIndex']),
-    ...mapActions('Learning', ['onPlayAudio', 'createUserWord']),
+    ...mapMutations('Learning', [
+      'setIndex',
+      'setStartState',
+      'setCompleteState',
+      'setTodayLearnedNewWord',
+      'setLearnedWordsCount',
+      'setIsMainPage',
+    ]),
+    ...mapActions('Learning', ['createUserWord', 'learnUserWord']),
     ...mapActions('Error', ['setError']),
-    ...mapMutations('Notification', ['setIsNotificationShow']),
+    ...mapActions('Statistic', ['updateStatistic']),
+    ...mapMutations('Statistic', [
+      'setIsShortTermStatisticShow',
+      'setCardsCount',
+      'setCorrectAnswer',
+      'setNewWords',
+      'setSeries',
+      'setLongestSeries',
+    ]),
 
-    showNotification() {
-      this.setIsNotificationShow(true);
+    submitCard() {
+      if (this.isCompleteState && !!this.answer) {
+        this.nextCard();
+      } else if (this.isStartState && !!this.answer) {
+        this.checkCard();
+      }
     },
-    changeSpeakItStatus() {
-      this.isSpeakItSelected = !this.isSpeakItSelected;
+    nextCard() {
+      if (this.isNewWords) {
+        this.nextNewWord(wordGroups.learned);
+      } else if (this.isDifficultWords) {
+        this.nextWord(wordGroups.difficult);
+      } else if (this.isLearnedWords) {
+        this.nextWord(wordGroups.learned);
+      }
     },
-    async nextIndex() {
-      if (this.index < this.settings.wordsPerDay) {
-        this.isWordCreating = true;
-        try {
-          await this.createUserWord({
-            difficulty: wordGroups.learned,
-            word: this.words[this.index],
-          });
-        } catch (error) {
-          this.setError(error.message);
-        } finally {
-          this.setIndex(this.index + 1);
-          this.isWordCreating = false;
+    controlsNextCard(difficult) {
+      if (this.isNewWords) {
+        this.nextNewWord(difficult);
+      } else {
+        this.nextWord(difficult);
+      }
+    },
+    async nextNewWord(difficulty) {
+      this.isWordLoading = true;
+      try {
+        await this.createUserWord({
+          difficulty,
+          word: this.words[this.index],
+        });
+        await this.updateStatistic();
+      } catch (error) {
+        this.setError(error.message);
+      } finally {
+        this.setNewWords(this.newWords + 1);
+        this.nextRound();
+        this.setLearnedWordsCount(this.learnedWordsCount + 1);
+        this.setTodayLearnedNewWord(this.todayLearnedNewWord + 1);
+      }
+    },
+    async nextWord(difficulty) {
+      this.isWordLoading = true;
+      try {
+        await this.learnUserWord({
+          difficulty,
+          word: this.words[this.index],
+        });
+        await this.updateStatistic();
+      } catch (error) {
+        this.setError(error.message);
+      } finally {
+        this.nextRound();
+      }
+    },
+    checkCard() {
+      if (this.answer.toLowerCase() === this.word.word.toLowerCase()) {
+        this.isCorrect = true;
+        this.setCompleteState();
+        this.onPlayWord();
+      } else {
+        this.isError = true;
+        this.isErrorAnswer = true;
+        this.repaintWord();
+      }
+    },
+    recordStatistic() {
+      this.setCardsCount(this.cardsCount + 1);
+      if (this.isErrorAnswer) {
+        this.setSeries(0);
+      } else {
+        this.setCorrectAnswer(this.correctAnswer + 1);
+        this.setSeries(this.series + 1);
+        if (this.series >= this.longestSeries) {
+          this.setLongestSeries(this.series);
         }
-      } else {
-        this.showNotification();
       }
     },
-    checkWord() {
-      // continue in the next issue
-      const userWord = this.$refs.userWord.value;
-      if (userWord === this.englishWord) {
-        console.log(true);
-      } else {
-        console.log(false);
+    showAnswer() {
+      this.answer = this.word.word;
+      this.checkCard();
+    },
+    repaintWord() {
+      const result = [];
+      // eslint-disable-next-line no-restricted-syntax
+      for (let i = 0; i < this.answer.length; i += 1) {
+        if (this.answer[i].toLowerCase() === this.word.word[i].toLowerCase()) {
+          result.push(`<span style="color: #53b54a">${this.answer[i]}</span>`);
+        } else {
+          result.push(`<span style="color: #ff5267">${this.answer[i]}</span>`);
+        }
       }
+      this.charsError = result.join('');
+    },
+    hideError() {
+      this.isError = false;
+      this.charsError = null;
+    },
+    nextRound() {
+      this.recordStatistic();
+      if (this.index !== this.words.length - 1) {
+        this.setIndex(this.index + 1);
+      } else {
+        this.setIsShortTermStatisticShow(true);
+        this.setIsMainPage(true);
+      }
+      this.resetGame();
+    },
+    resetGame() {
+      this.setStartState();
+      this.isCorrect = false;
+      this.isError = false;
+      this.isErrorAnswer = false;
+      this.isWordLoading = false;
+      this.answer = '';
+    },
+    onPlaySound() {
+      this.isAudioPlay = true;
+      const audio = new Audio(`${dataSrc}${this.word.audio}`);
+      audio.onended = () => {
+        this.isAudioPlay = false;
+      };
+      audio.play();
+    },
+    onPlayWord() {
+      if (this.settings.isAutoVoice) {
+        const audio = new Audio(`${dataSrc}${this.word.audio}`);
+        audio.onended = () => {
+          if (this.settings.isMeaningVisible) {
+            this.onPlayTextMeaning();
+          } else if (this.settings.isExampleVisible) {
+            this.onPlayTextExample();
+          }
+        };
+        audio.play();
+      }
+    },
+    onPlayTextMeaning() {
+      const audio = new Audio(`${dataSrc}${this.word.audioMeaning}`);
+      audio.onended = () => {
+        if (this.settings.isExampleVisible) {
+          this.onPlayTextExample();
+        }
+      };
+      audio.play();
+    },
+    onPlayTextExample() {
+      const audio = new Audio(`${dataSrc}${this.word.audioExample}`);
+      audio.play();
     },
   },
 };
@@ -138,35 +377,41 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 500px;
-  padding: 40px 60px;
+  width: 100%;
+  max-width: 500px;
+  padding: 40px;
   background-color: white;
   border-radius: 25px;
+  box-shadow: 0 0 20px $box-shadow-one-color;
+  transition: box-shadow 0.3s;
 
-  @include media-mobile {
-    width: 250px;
-    height: 411px;
+  &_error {
+    box-shadow: 0 0 20px $color-wild-watermelon;
+  }
+
+  &_correct {
+    box-shadow: 0 0 20px $color-apple;
   }
 }
 
 .img {
-  width: auto;
-  height: 200px;
+  width: 100%;
+  max-width: 300px;
+  height: 100%;
+  max-height: 200px;
   border-radius: 20px;
 }
 
 .word-with-speak-it {
   display: flex;
+  align-items: center;
   justify-content: center;
-  height: 20px;
-  margin-top: 16px;
-
-  @include media-mobile {
-    margin-top: 10px;
-  }
+  margin: 8px 0;
 }
 
 .word {
+  @include font($size: 24px, $height: 20px, $weight: normal);
+
   &_english {
     color: $color-dodger-blue;
 
@@ -174,30 +419,20 @@ export default {
   }
 
   &_transcription {
-    margin-top: 8px;
     color: $color-manatee;
-
-    @include font($size: 24px, $height: 20px, $weight: normal);
-  }
-
-  &_russian {
-    margin-top: 16px;
-
-    @include font($size: 24px, $height: 20px, $weight: normal);
   }
 }
 
 .icon {
   color: $color-ghost;
+  transition: color 0.3s;
 
   &__speak-it {
-    width: 17px;
-    height: 15px;
-    margin-top: -2px;
-    margin-left: 4px;
+    margin-left: 10px;
+    line-height: 1;
     cursor: pointer;
 
-    &_selected {
+    &_played {
       color: $color-dodger-blue;
     }
   }
@@ -215,14 +450,14 @@ export default {
 }
 
 .text-example {
-  margin-top: 15px;
+  margin-top: 16px;
   color: $color-dodger-blue;
   text-align: center;
 
   @include font($size: 18px, $height: 21px, $weight: 500);
 
   @include media-mobile {
-    margin-top: 10px;
+    margin-top: 8px;
   }
 }
 
@@ -233,18 +468,33 @@ export default {
   @include font($size: 14px, $height: 20px, $weight: 500);
 }
 
-.text-input {
-  width: 50%;
-  font-family: 'Gilroy', 'Arial', monospace !important;
+.text {
+  position: relative;
+}
+
+.text-input,
+.text-error {
+  margin-top: 16px;
+  font-family: 'Roboto Mono', monospace;
   font-size: 30px;
-  text-align: center;
   border: none;
   border-bottom: 2px solid $color-dodger-blue;
   outline: none;
+  transition: color 0.3s;
+}
+
+.text-error {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 16px);
+  user-select: none;
+  background-color: $color-white;
 }
 
 .show-answer {
-  margin-top: 24.5px;
+  margin-top: 24px;
   color: $color-dodger-blue;
   cursor: pointer;
   text-decoration-line: underline;
@@ -256,17 +506,29 @@ export default {
   }
 }
 
-.wrap {
-  width: 187px;
+.buttons-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.btn {
+.learning__button {
+  justify-content: center;
+  max-width: 100px;
+  padding: 17px;
+}
+
+.button {
+  justify-content: space-between;
+  max-width: 221px;
+  padding: 17px;
+}
+
+.button,
+.learning__button {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 221px;
-  height: 50.5px;
-  padding: 0 17px 0 17px;
+  width: 100%;
   margin-top: 24px;
   color: $color-white;
   cursor: pointer;
@@ -278,13 +540,26 @@ export default {
 
   @include font($size: 14px, $height: 16px, $weight: normal);
 
-  @include media-mobile {
-    margin-top: 20px;
+  &:hover {
+    background: $color-cornflower-blue
+      radial-gradient(circle, transparent 1%, $color-cornflower-blue 1%) center/15000%;
+  }
+
+  &:active {
+    background-color: $color-malibu;
+    background-size: 100%;
+    transition: background 0s;
   }
 
   &:disabled {
+    pointer-events: none;
     cursor: default;
+    opacity: 0.4;
   }
+}
+
+.learning__button:not(:first-child) {
+  margin-left: 10px;
 }
 
 .btn-arrow {
@@ -294,5 +569,26 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 13px 10px;
+}
+
+@media (hover: hover) {
+  .icon__speak-it:hover {
+    color: $color-dodger-blue;
+  }
+}
+
+@media screen and (max-width: $mobile-big-width) {
+  .buttons-wrapper {
+    flex-direction: column;
+  }
+
+  .learning__button {
+    max-width: 100%;
+
+    &:not(:first-child) {
+      margin-top: 10px;
+      margin-left: 0;
+    }
+  }
 }
 </style>

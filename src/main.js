@@ -14,6 +14,14 @@ Vue.use(CircularCountDownTimer);
 
 Vue.config.productionTip = false;
 
+Vue.mixin({
+  filters: {
+    deleteBold(str) {
+      return str.replace(/<b>|<\/b>/g, '');
+    },
+  },
+});
+
 new Vue({
   router,
   store,

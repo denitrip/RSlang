@@ -2,7 +2,7 @@
   <section class="statistic__wrapper">
     <h1 class="statistic__title">Game statistic</h1>
     <div class="statistic__detail">
-      <div class="details">
+      <div class="details" :class="[{ details_deleting: isDeleting }]">
         <div class="detail__dont-know">
           <span>I don' know </span>
           <span class="detail__dont-know-count">{{ dontKnowArray.length }}</span>
@@ -34,7 +34,11 @@
               </span>
               <p class="detail__words">{{ item.word }} - {{ item.wordTranslate }}</p>
             </div>
-            <span class="detail__delete" @click="onDeleteWord(item)">
+            <span
+              class="detail__delete"
+              @click="onDeleteWord(item)"
+              v-if="item.userWord.difficulty !== wordGroups.deleted"
+            >
               <icon-base icon-name="delete" width="20px" height="20px" viewBox="0 0 24 30">
                 <icon-bucket />
               </icon-base>
@@ -52,8 +56,8 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
-import { dataSrc } from '@/helpers/constants.helper';
+import { mapState, mapMutations, mapActions } from 'vuex';
+import { dataSrc, wordGroups, wordDeletedMassage } from '@/helpers/constants.helper';
 import IconBase from '@/components/IconBase.vue';
 import IconVolume from '@/components/icons/IconVolume.vue';
 import IconBucket from '@/components/icons/IconBucket.vue';
@@ -64,6 +68,12 @@ export default {
     IconBase,
     IconVolume,
     IconBucket,
+  },
+  data() {
+    return {
+      wordGroups,
+      isDeleting: false,
+    };
   },
   computed: {
     ...mapState('Savannah', ['statsArray']),
@@ -77,7 +87,9 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('Savannah', ['resetGame']),
+    ...mapMutations('Savannah', ['resetGame', 'setStatsArray']),
+    ...mapActions('Learning', ['changeUserWordDifficulty']),
+    ...mapActions('Error', ['setError', 'setInfo']),
 
     onPlayAudio(src) {
       const audio = new Audio(`${dataSrc}${src}`);
@@ -86,9 +98,29 @@ export default {
     onContinue() {
       this.resetGame();
     },
-    onDeleteWord(word) {
-      // TODO delete from dictionary
-      console.log('удаление: ', word);
+    async onDeleteWord(word) {
+      this.isDeleting = true;
+      try {
+        await this.changeUserWordDifficulty({ difficulty: wordGroups.deleted, word });
+        this.changeStatsArray(word);
+        this.setInfo(wordDeletedMassage);
+      } catch (error) {
+        this.setError(error.message);
+      } finally {
+        this.isDeleting = false;
+      }
+    },
+    changeStatsArray(word) {
+      const newStatsArray = this.statsArray.map((item) => {
+        if (item.word === word.word) {
+          return {
+            ...item,
+            userWord: { ...item.userWord.optional, difficulty: wordGroups.deleted },
+          };
+        }
+        return item;
+      });
+      this.setStatsArray(newStatsArray);
     },
   },
 };
@@ -135,6 +167,11 @@ export default {
 .details {
   max-height: 380px;
   overflow-y: scroll;
+
+  &_deleting {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 }
 
 .detail__dont-know,

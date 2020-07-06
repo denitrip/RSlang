@@ -3,7 +3,7 @@
     <a
       href="/english-puzzle-statistic/detail"
       class="statistic__link"
-      v-for="(item, index) in puzzleStats"
+      v-for="(item, index) in statistics.puzzleStats"
       :key="item.date"
       @click.prevent="() => onSetRoundStats(item)"
     >
@@ -25,7 +25,7 @@ import { getWordsByLevelAndRound } from '@/helpers/englishPuzzle.helper';
 export default {
   name: 'EnglishPuzzleStatistic',
   computed: {
-    ...mapState('EnglishPuzzle', ['puzzleStats']),
+    ...mapState('Statistic', ['statistics']),
   },
   methods: {
     ...mapMutations('EnglishPuzzle', ['setCurrentRoundStats', 'setWordsStats']),

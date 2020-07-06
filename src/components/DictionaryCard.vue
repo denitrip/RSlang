@@ -1,6 +1,6 @@
 <template>
   <div class="dictionary-card" :class="{ 'dictionary-card_loading': isWordChanging }">
-    <div class="dictionary-card__wrapper">
+    <div class="dictionary-card__wrapper" v-if="isMainCard">
       <div class="left-column">
         <b-form-checkbox size="lg" :id="word.word" v-model="isSelected" name="checkbox-1">
         </b-form-checkbox>
@@ -26,10 +26,11 @@
           class="icon icon__speak-it--mobile"
           :class="{ 'icon__speak-it_play': isSoundPlay }"
         >
-          <IconBase iconName="sound" width="36" height="30" viewBox="0 0 36 30">
+          <IconBase iconName="sound" width="36" height="30" viewBox="0 0 36 29">
             <IconSpeakIt />
           </IconBase>
         </span>
+        <b-button class="icon__info" variant="success" @click="flipCard">i</b-button>
         <span
           v-show="isLearned || isDeleted"
           @click="changeWordDifficulty(wordGroups.difficult)"
@@ -58,6 +59,34 @@
           </IconBase>
         </span>
       </div>
+    </div>
+    <div class="dictionary-card__back" v-else>
+      <b-form-checkbox size="lg" :id="word.word" v-model="isSelected" name="checkbox-1">
+      </b-form-checkbox>
+      <div class="word_transcription" v-if="settings.isTranscriptionVisible">
+        {{ word.transcription }}
+      </div>
+      <div class="meaning" v-if="settings.isMeaningVisible">
+        <div class="text">{{ word.textMeaning | deleteItalic }}</div>
+        <div class="text-translate">{{ word.textExampleTranslate }}</div>
+      </div>
+      <div class="example" v-if="settings.isExampleVisible">
+        <div class="text">{{ word.textExample | deleteBold }}</div>
+        <div class="text-translate">{{ word.textExampleTranslate }}</div>
+      </div>
+      <div class="progress-date">
+        <div class="text-translate">
+          First {{ new Date(word.userWord.optional.firstLearnedDate).toLocaleString() }}
+        </div>
+        <div class="text-translate">
+          Last {{ new Date(word.userWord.optional.lastLearnedDate).toLocaleString() }}
+        </div>
+        <div class="text-translate">
+          Next {{ new Date(word.userWord.optional.nextLearnedDate).toLocaleString() }}
+        </div>
+      </div>
+      <div class="text">Repeated {{ word.userWord.optional.learnedCount }} times</div>
+      <b-button-close @click="flipCard" class="icon__close">×</b-button-close>
     </div>
   </div>
 </template>
@@ -103,16 +132,26 @@ export default {
       }),
     },
   },
+  filters: {
+    deleteBold(str) {
+      return str.replace(/<b>|<\/b>/g, '');
+    },
+    deleteItalic(str) {
+      return str.replace(/<i>|<\/i>/g, '');
+    },
+  },
   data() {
     return {
       dataSrc,
       wordGroups,
       isSoundPlay: false,
       isWordChanging: false,
+      isMainCard: true,
     };
   },
   computed: {
     ...mapState('Learning', ['userWords']),
+    ...mapState('Settings', ['settings']),
 
     isSelected: {
       get() {
@@ -140,19 +179,23 @@ export default {
   },
   methods: {
     ...mapMutations('Learning', ['setUserWords']),
-    ...mapActions('Learning', ['changeUserWord']),
+    ...mapActions('Learning', ['changeUserWordDifficulty']),
     ...mapActions('Error', ['setError']),
 
     async changeWordDifficulty(difficulty) {
       this.isWordChanging = true;
       try {
-        await this.changeUserWord({
+        await this.changeUserWordDifficulty({
           difficulty,
           word: this.word,
         });
         const newUserWords = this.userWords.map((item) => {
           if (item.word === this.word.word) {
-            return { ...item, selected: false, userWord: { difficulty } };
+            return {
+              ...item,
+              selected: false,
+              userWord: { difficulty, optional: item.userWord.optional },
+            };
           }
           return item;
         });
@@ -171,6 +214,9 @@ export default {
       };
       audio.play();
     },
+    flipCard() {
+      this.isMainCard = !this.isMainCard;
+    },
   },
 };
 </script>
@@ -181,10 +227,41 @@ export default {
   cursor: pointer;
   transition: color 0.3s;
 
+  &__info {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 31px;
+    height: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: $color-ghost;
+    border: none;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+
+    @include media-tablet-extra {
+      margin-left: 14px;
+      background-color: $color-apple;
+    }
+
+    &:hover {
+      background: $color-apple;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 50px;
+    transition: opacity 0.3s;
+  }
+
   &__speak-it {
     margin-left: 25px;
 
-    @include media-mobile {
+    @include media-tablet-extra {
       display: none;
     }
 
@@ -196,7 +273,7 @@ export default {
       display: none;
       color: $color-cornflower-blue;
 
-      @include media-mobile {
+      @include media-tablet-extra {
         display: inline-block;
         margin-left: 0;
       }
@@ -206,7 +283,7 @@ export default {
   &__bucket {
     margin-left: 16px;
 
-    @include media-mobile {
+    @include media-tablet-extra {
       color: $color-wild-watermelon;
     }
   }
@@ -214,7 +291,7 @@ export default {
   &__do-you-know {
     margin-left: 16px;
 
-    @include media-mobile {
+    @include media-tablet-extra {
       color: $color-golden-dream;
     }
   }
@@ -222,21 +299,24 @@ export default {
   &__backup {
     margin-left: 16px;
 
-    @include media-mobile {
+    @include media-tablet-extra {
       color: $color-dodger-blue;
     }
   }
 }
 
 .icons {
-  @include media-mobile {
+  @include media-tablet-extra {
+    margin-top: 10px;
+    margin-bottom: 30px;
     margin-left: 26px;
   }
 }
 
 .dictionary-card {
   width: 100%;
-  height: 106px;
+  height: auto;
+  min-height: 106px;
   margin-top: 8px;
   background-color: $color-white;
   border-radius: 25px;
@@ -248,24 +328,38 @@ export default {
     opacity: 0.6;
   }
 
-  @include media-mobile {
-    height: 171px;
-  }
-
   &__wrapper {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 90%;
-    height: 106px;
+    height: inherit;
+    min-height: inherit;
     margin: auto;
 
-    @include media-mobile {
+    @include media-tablet-extra {
+      flex-direction: column;
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
+      height: max-content;
+      padding: 15px 0;
     }
+  }
+
+  &__back {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    height: max-content;
+    min-height: inherit;
+    padding: 15px 0;
+    margin: auto;
   }
 }
 
@@ -273,7 +367,7 @@ export default {
   display: flex;
   align-items: center;
 
-  @include media-mobile {
+  @include media-tablet-extra {
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -285,16 +379,12 @@ export default {
   margin-left: 24px;
   border-radius: 50%;
   object-fit: cover;
-
-  @include media-mobile {
-    margin-top: 16px;
-  }
 }
 
 .word {
   margin-left: 26px;
 
-  @include media-mobile {
+  @include media-tablet-extra {
     flex-basis: 100%;
     text-align: center;
   }
@@ -304,15 +394,49 @@ export default {
 
     @include font($size: 18px, $height: 22px, $weight: bold);
   }
+
+  &_transcription {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: $color-manatee;
+
+    @include media-tablet-extra {
+      flex-basis: 100%;
+      margin-left: 24px;
+      font-size: 1rem;
+      text-align: center;
+    }
+  }
 }
 
 .custom-checkbox.b-custom-control-lg,
 .input-group-lg .custom-checkbox {
-  @include media-mobile {
-    position: absolute;
-    top: 16px;
+  position: absolute;
+  top: 16px;
+  left: -2.5%;
+
+  @include media-tablet-extra {
     left: 16px;
   }
+}
+
+.text {
+  color: $color-dodger-blue;
+  text-align: center;
+
+  @include media-tablet-extra {
+    flex-basis: 100%;
+    text-align: center;
+  }
+
+  @include font($size: 16px, $height: 16px, $weight: 500);
+}
+
+.text-translate {
+  color: $color-manatee;
+  text-align: center;
+
+  @include font($size: 14px, $height: 16px, $weight: 500);
 }
 
 @media (hover: hover) {
