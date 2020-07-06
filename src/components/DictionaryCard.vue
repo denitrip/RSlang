@@ -63,12 +63,6 @@
     <div class="dictionary-card__back" v-else>
       <b-form-checkbox size="lg" :id="word.word" v-model="isSelected" name="checkbox-1">
       </b-form-checkbox>
-      <!-- <img
-        :src="`${dataSrc}${word.image}`"
-        class="picture"
-        :alt="word.word"
-        v-if="settings.isAssociationVisible"
-      /> -->
       <div class="word_transcription" v-if="settings.isTranscriptionVisible">
         {{ word.transcription }}
       </div>
@@ -234,13 +228,17 @@ export default {
   transition: color 0.3s;
 
   &__info {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 31px;
     height: 30px;
+    font-size: 20px;
     font-weight: bold;
-    line-height: 22px;
     background-color: $color-ghost;
     border: none;
     border-radius: 50%;
+    transition: background-color 0.3s;
 
     @include media-tablet-extra {
       margin-left: 14px;
@@ -257,6 +255,7 @@ export default {
     top: 8px;
     right: 10px;
     font-size: 50px;
+    transition: opacity 0.3s;
   }
 
   &__speak-it {
