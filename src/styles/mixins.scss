@@ -11,6 +11,12 @@
   }
 }
 
+@mixin media-tablet-extra {
+  @media (max-width: $learning-tablet-size) {
+    @content;
+  }
+}
+
 @mixin media-tablet {
   @media (max-width: $tablet-width) {
     @content;
