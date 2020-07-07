@@ -82,10 +82,9 @@ export default {
     },
   },
   actions: {
-    async createUserWord({ rootState }, { difficulty, word }) {
+    async createUserWord({ rootState }, { difficulty, word, nextDate }) {
       const { userId, token } = rootState.Auth.user;
       const date = Date.now();
-      const nextDate = date + 24 * 60 * 60 * 1000;
       const payload = {
         difficulty,
         optional: {
@@ -125,12 +124,11 @@ export default {
         body: JSON.stringify(payload),
       });
     },
-    async learnUserWord({ rootState }, { word }) {
+    async learnUserWord({ rootState }, { difficulty, word, nextDate }) {
       const { userId, token } = rootState.Auth.user;
       const date = Date.now();
-      const nextDate = date + 24 * 60 * 60 * 1000;
       const payload = {
-        difficulty: word.userWord.difficulty,
+        difficulty,
         optional: {
           ...word.userWord.optional,
           lastLearnedDate: date,

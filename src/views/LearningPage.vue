@@ -112,10 +112,10 @@ export default {
     ...mapState('Notification', ['isNotificationShow']),
 
     newWordsComplete() {
-      return this.todayLearnedNewWord === this.settings.wordsPerDay;
+      return this.todayLearnedNewWord >= this.settings.wordsPerDay;
     },
     cardsComplete() {
-      return this.todayLearned === this.settings.maxCardDay;
+      return this.todayLearned >= this.settings.maxCardDay;
     },
   },
   async created() {
