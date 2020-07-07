@@ -5,6 +5,8 @@
         v-if="isStartScreen"
         @startGame="onStartGame"
         :isStartLoading="isStartLoading"
+        :isWordsEmpty="isWordsEmpty"
+        :link="routerConsts.learningPage.path"
       />
     </transition>
     <transition name="fade" mode="out-in">
@@ -17,6 +19,7 @@
 import { mapActions, mapMutations, mapState } from 'vuex';
 import AudiocallStartScreen from '@/components/Audiocall/AudiocallStartScreen.vue';
 import AudiocallGame from '@/components/Audiocall/AudiocallGame.vue';
+import routerConsts from '@/router/routerConsts';
 
 export default {
   name: 'AudiocallHomePage',
@@ -27,10 +30,27 @@ export default {
   data() {
     return {
       isStartLoading: false,
+      isWordsEmpty: false,
+      routerConsts,
     };
   },
   computed: {
     ...mapState('Audiocall', ['isStartScreen']),
+  },
+  async created() {
+    this.isStartLoading = true;
+    try {
+      const words = await this.loadLearnedUserWords();
+      if (words.length) {
+        this.setWords(words);
+      } else {
+        this.isWordsEmpty = true;
+      }
+    } catch (error) {
+      this.setError(error.message);
+    } finally {
+      this.isStartLoading = false;
+    }
   },
   destroyed() {
     this.resetGame();
@@ -44,8 +64,6 @@ export default {
     async onStartGame() {
       this.isStartLoading = true;
       try {
-        const words = await this.loadLearnedUserWords();
-        this.setWords(words);
         await this.startGame();
         this.setIsStartScreen(false);
       } catch (error) {

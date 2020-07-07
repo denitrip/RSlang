@@ -14,11 +14,15 @@
     <button
       class="start-screen__button"
       @click="listeners.startGame"
-      :disabled="props.isStartLoading"
+      :disabled="props.isStartLoading || props.isWordsEmpty"
     >
       <component :is="props.components.AppSpinner" v-if="props.isStartLoading"></component>
       Start
     </button>
+    <div class="words-empty" v-if="props.isWordsEmpty">
+      <p>You have not learned words yet.</p>
+      <router-link class="words-empty__link" :to="props.link">Start learning</router-link>
+    </div>
   </div>
 </template>
 
@@ -31,6 +35,14 @@ export default {
     isStartLoading: {
       type: Boolean,
       default: false,
+    },
+    isWordsEmpty: {
+      type: Boolean,
+      default: false,
+    },
+    link: {
+      type: String,
+      default: '',
     },
     components: {
       type: Object,
@@ -76,6 +88,15 @@ export default {
   @include english-puzzle-button(150px);
 
   margin-top: 20px;
+}
+
+.words-empty {
+  display: flex;
+  margin-top: 20px;
+}
+
+.words-empty__link {
+  margin-left: 10px;
 }
 
 @media screen and (max-width: $puzzle-mobile-size) {
