@@ -10,6 +10,18 @@
         </IconBase>
       </div>
     </div>
+    <div class="game__lives">
+      <span class="hearth__lost" v-for="(item, i) in lost" :key="`${i}-lost`">
+        <IconBase iconName="live" width="24px" height="24px">
+          <IconHearthLost />
+        </IconBase>
+      </span>
+      <span class="hearth" v-for="(item, i) in lives" :key="`${i}-live`">
+        <IconBase iconName="live" width="24px" height="24px">
+          <IconHearth />
+        </IconBase>
+      </span>
+    </div>
   </div>
 </template>
 
@@ -18,19 +30,23 @@ import { mapState, mapMutations } from 'vuex';
 import IconBase from '@/components/IconBase.vue';
 import IconVolume from '@/components/icons/IconVolume.vue';
 import IconVolumeOff from '@/components/icons/IconVolumeOff.vue';
+import IconHearthLost from '@/components/icons/IconHearthLost.vue';
+import IconHearth from '@/components/icons/IconHearth.vue';
 
 export default {
-  name: 'AudiocallGameMenu',
+  name: 'OurGameGameMenu',
   components: {
     IconBase,
     IconVolume,
     IconVolumeOff,
+    IconHearthLost,
+    IconHearth,
   },
   computed: {
-    ...mapState('Audiocall', ['isSound']),
+    ...mapState('OurGame', ['lives', 'lost', 'isSound']),
   },
   methods: {
-    ...mapMutations('Audiocall', ['setIsSound']),
+    ...mapMutations('OurGame', ['setIsSound']),
 
     soundToggle() {
       this.setIsSound(!this.isSound);
@@ -49,6 +65,17 @@ export default {
 
 .game__settings {
   display: flex;
+}
+
+.game__lives {
+  display: flex;
+}
+
+.hearth,
+.hearth__lost {
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
 }
 
 .setting__sound {
