@@ -1,5 +1,6 @@
 <template>
   <div class="game__main">
+    <div class="game__background" :style="[{ backgroundImage }]"></div>
     <main class="speak-it" id="speak-it">
       <div class="wrapper main-wrapper">
         <div class="selected">
@@ -58,7 +59,11 @@ export default {
       'isGameEnd',
       'correctAnswer',
       'pictureSrc',
+      'wallpaperSrc',
     ]),
+    backgroundImage() {
+      return `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${this.wallpaperSrc}')`;
+    },
   },
   methods: {
     ...mapMutations('Speakit', ['setPictureSrc', 'setTranslation']),
@@ -92,6 +97,17 @@ export default {
   @media (max-width: 414px) {
     padding: 0;
   }
+}
+
+.game__background {
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: background 1.5s;
 }
 
 .content {
@@ -138,7 +154,7 @@ export default {
   margin-bottom: 14px;
   font-size: 30px;
   line-height: 40px;
-  color: rgba(14, 30, 37, 0.7);
+  color: white;
   text-align: center;
   background-color: transparent;
   background-image: url('~@/assets/img/speakIt/microphone.svg');
@@ -172,6 +188,7 @@ export default {
   padding: 10px;
   margin: 0 15px 30px 15px;
   cursor: pointer;
+  background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.384);
   border-radius: 10px;
 
@@ -181,7 +198,7 @@ export default {
 
   &_correctWord {
     background-color: $color-apple;
-    opacity: 0.2;
+    opacity: 0.4;
   }
 
   @include media-tablet {

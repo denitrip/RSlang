@@ -17,9 +17,10 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
-import { dataSrc, correctSound } from '@/helpers/constants.helper';
+import { mapState, mapMutations, mapActions } from 'vuex';
+import { dataSrc, correctSound, errorMessage } from '@/helpers/constants.helper';
 import defaultPicture from '@/assets/img/speakIt/do_you_speak.jpg';
+import routerConsts from '@/router/routerConsts';
 
 export default {
   name: 'Speakit',
@@ -49,23 +50,26 @@ export default {
     ]),
   },
   created() {
-    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    /* global SpeechRecognition */
-    this.recognition = new SpeechRecognition();
-    this.recognition.interimResults = true;
-    this.recognition.lang = 'en-En';
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      this.recognition = new SpeechRecognition();
+      this.recognition.interimResults = true;
+      this.recognition.lang = 'en-US';
 
-    this.recognition.addEventListener('result', (e) => {
-      if (e.results[0].isFinal) {
-        const transcript = Array.from(e.results)
-          .map((result) => result[0])
-          .map((result) => result.transcript)
-          .join('');
+      this.recognition.addEventListener('result', (e) => {
+        if (e.results[0].isFinal) {
+          const transcript = Array.from(e.results)
+            .map((result) => result[0])
+            .map((result) => result.transcript)
+            .join('');
 
-        this.setWordRecording(transcript);
-        this.checkAnswer();
-      }
-    });
+          this.setWordRecording(transcript);
+          this.checkAnswer();
+        }
+      });
+    } else {
+      this.setError(errorMessage);
+    }
   },
   methods: {
     ...mapMutations('Speakit', [
@@ -79,44 +83,50 @@ export default {
       'setPictureSrc',
       'setTranslation',
     ]),
-    startGame() {
-      this.recognition.addEventListener('end', this.recognition.start);
-      this.setIsStartGame(true);
+    ...mapActions('Error', ['setError']),
+    startRecognition() {
       this.recognition.start();
     },
+    startGame() {
+      if (this.recognition) {
+        this.recognition.addEventListener('end', this.startRecognition);
+        this.setIsStartGame(true);
+        this.startRecognition();
+      } else {
+        this.setError(errorMessage);
+      }
+    },
     restartGame() {
-      this.recognition.removeEventListener('end', this.recognition.start);
-      this.recognition.stop();
-      this.setIncorrectAnswer([...this.words]);
-      this.correctResult = [];
-      this.setCorrectAnswer([]);
-      this.setPictureSrc(defaultPicture);
-      this.setWordRecording('');
-      this.setTranslation('');
-      this.setIsStartGame(false);
-      this.setIsCorrectWord(false);
-      this.setIsEndGame(false);
+      if (this.recognition) {
+        this.recognition.removeEventListener('end', this.startRecognition);
+        this.recognition.stop();
+        this.setIncorrectAnswer([...this.words]);
+        this.correctResult = [];
+        this.setCorrectAnswer([]);
+        this.setPictureSrc(defaultPicture);
+        this.setWordRecording('');
+        this.setTranslation('');
+        this.setIsStartGame(false);
+        this.setIsCorrectWord(false);
+        this.setIsEndGame(false);
+      } else {
+        this.setError(errorMessage);
+      }
     },
     checkAnswer() {
       const index = this.incorrectAnswer.findIndex(
         (item) => item.word.toLowerCase() === this.wordRecording.toLowerCase(),
       );
       this.words.forEach((item) => {
-        if (
-          item.word.toLowerCase() === this.wordRecording.toLowerCase()
-          && !this.correctResult.includes(item)
-        ) {
+        const isSameWord = item.word.toLowerCase() === this.wordRecording.toLowerCase();
+        if (isSameWord && !this.correctResult.includes(item)) {
           this.onPlaySound(correctSound);
           this.setIsCorrectWord(true);
           this.showPicture(item);
           this.correctResult.push(item);
-          console.log('Correct');
-          console.log(this.correctResult);
           this.setCorrectAnswer(this.correctResult);
           if (index > this.incorrectIndex) {
             this.incorrectAnswer.splice(index, 1);
-            console.log('Incorrect');
-            console.log(this.incorrectAnswer);
           }
           if (this.correctAnswer.length === this.endRound) {
             this.finishGame();
@@ -128,10 +138,13 @@ export default {
       this.setPictureSrc(`${dataSrc}${word.image}`);
     },
     finishGame() {
-      // this.setIsEndGame(true);
-      this.recognition.removeEventListener('end', this.recognition.start);
-      this.recognition.stop();
-      this.$router.push('/speakit-statistic/detail');
+      if (this.recognition) {
+        this.recognition.removeEventListener('end', this.startRecognition);
+        this.recognition.stop();
+        this.$router.push(routerConsts.speakitStatsDetailed.path);
+      } else {
+        this.setError(errorMessage);
+      }
     },
     onPlaySound(src) {
       if (this.isSound) {
@@ -172,8 +185,12 @@ export default {
   border-radius: 10px;
 
   @include media-tablet {
-    margin: 5px 0;
+    margin: 0 10px;
     font-size: 1em;
+  }
+
+  @include media-mobile {
+    margin: 10px 0;
   }
 }
 

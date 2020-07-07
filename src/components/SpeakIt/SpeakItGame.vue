@@ -33,9 +33,21 @@ export default {
   padding: 40px 0;
 }
 
-@media screen and (max-width: $puzzle-mobile-size) {
-  .game__wrapper {
-    padding: 40px 5px;
-  }
+.game__image {
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position-x: left;
+  background-position-y: 100%;
+  transition: background 1.5s;
 }
+
+// @media screen and (max-width: $puzzle-mobile-size) {
+//   .game__wrapper {
+//     padding: 40px 5px;
+//   }
+// }
 </style>

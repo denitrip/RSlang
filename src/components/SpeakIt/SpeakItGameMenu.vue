@@ -1,23 +1,30 @@
 <template>
   <div class="game__menu">
-    <div class="level">
-      <label class="level__label">Level</label>
-      <select :value="selectedLevel" @change="onSetSelectedLevel" class="level__select">
-        <option v-for="i in 6" :value="i" :key="`${i}level`">
-          {{ i }}
-        </option>
-      </select>
-      <label class="round__label">Round</label>
-      <select :value="selectedRound" @change="onSetSelectedRound" class="round__select">
-        <option
-          :class="{ round_complete: i }"
-          v-for="(i, index) in completeRoundsArray"
-          :value="index + 1"
-          :key="`${index + 1}round`"
-        >
-          {{ index + 1 }}
-        </option>
-      </select>
+    <div class="game__levels">
+      <button class="change-picture" title="Change wallpaper" @click="changePicture">
+        <IconBase icon-name="Change wallpaper" width="20px" height="20px">
+          <IconChange />
+        </IconBase>
+      </button>
+      <div class="level">
+        <label class="level__label">Level</label>
+        <select :value="selectedLevel" @change="onSetSelectedLevel" class="level__select">
+          <option v-for="i in 6" :value="i" :key="`${i}level`">
+            {{ i }}
+          </option>
+        </select>
+        <label class="round__label">Round</label>
+        <select :value="selectedRound" @change="onSetSelectedRound" class="round__select">
+          <option
+            :class="{ round_complete: i }"
+            v-for="(i, index) in completeRoundsArray"
+            :value="index + 1"
+            :key="`${index + 1}round`"
+          >
+            {{ index + 1 }}
+          </option>
+        </select>
+      </div>
     </div>
     <div class="score">
       <div
@@ -33,13 +40,18 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
+import { dataSrc } from '@/helpers/constants.helper';
 import AppSpinner from '@/components/AppSpinner.vue';
 import defaultPicture from '@/assets/img/speakIt/do_you_speak.jpg';
+import IconChange from '@/components/icons/IconChange.vue';
+import IconBase from '@/components/IconBase.vue';
 
 export default {
   name: 'SpeakItGameMenu',
   components: {
     AppSpinner,
+    IconBase,
+    IconChange,
   },
   data() {
     return {
@@ -58,6 +70,7 @@ export default {
       'words',
       'pictureSrc',
       'correctAnswer',
+      'wallpaperIndex',
     ]),
 
     completeRoundsArray() {
@@ -78,6 +91,8 @@ export default {
       'setIncorrectAnswer',
       'setIsStartGame',
       'setPictureSrc',
+      'setWallpaperSrc',
+      'setWallpaperIndex',
     ]),
     ...mapActions('Speakit', ['getRoundsCount', 'resetGame']),
     ...mapActions('Error', ['setError']),
@@ -114,6 +129,17 @@ export default {
         this.isGameLoading = false;
       }
     },
+
+    changePicture() {
+      if (this.wallpaperIndex < 8) {
+        this.setWallpaperIndex(this.wallpaperIndex + 1);
+      } else {
+        this.setWallpaperIndex(0);
+      }
+      const imageUrl = `${dataSrc}speakit/speakit-${this.wallpaperIndex}.jpg`;
+
+      this.setWallpaperSrc(imageUrl);
+    },
   },
 };
 </script>
@@ -122,16 +148,57 @@ export default {
 .game__menu {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 5px 40px;
+
+  @include media-tablet {
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+.game__levels {
+  display: flex;
+  align-items: center;
+  padding: 5px 40px;
+
+  @include media-tablet {
+    justify-content: center;
+    padding: 5px 0;
+  }
+}
+
+.level {
+  display: flex;
+}
+
+.change-picture {
+  @include english-puzzle-button(40px);
+
+  margin: 0 10px;
 }
 
 .level__label,
 .round__label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 40px;
   margin-right: 10px;
+  font-size: 1.5em;
+  color: white;
+  background: $color-dodger-blue;
+  border: 0.5px solid black;
+  border-radius: 5px;
+
+  @include media-tablet {
+    margin: 0;
+    font-size: 1em;
+  }
 
   @include media-mobile {
-    margin-right: 5px;
+    width: 60px;
+    margin: 0;
   }
 }
 
@@ -139,7 +206,7 @@ export default {
   margin-left: 30px;
 
   @include media-mobile {
-    margin-left: 15px;
+    margin-left: 5px;
   }
 }
 
@@ -147,6 +214,7 @@ export default {
 .round__select {
   width: 50px;
   margin-left: 5px;
+  font-size: 1.2rem;
 }
 
 .round_complete {
@@ -157,7 +225,12 @@ export default {
 .score {
   display: flex;
   justify-content: flex-end;
+  width: 100%;
   height: 40px;
+
+  @include media-tablet {
+    justify-content: center;
+  }
 
   &__star {
     width: 40px;
@@ -168,6 +241,12 @@ export default {
 }
 
 @media screen and (max-width: $puzzle-mobile-size) {
+  .game__levels {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+  }
+
   .game__menu {
     flex-direction: column;
     padding: 5px 0;

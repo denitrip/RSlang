@@ -59,6 +59,7 @@ export default {
 
 <style lang="scss" scoped>
 .speakIt {
+  position: relative;
   width: 100%;
   height: 100%;
 }

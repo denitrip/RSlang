@@ -15,11 +15,6 @@
               </span>
               <p class="detail__words">{{ item.word }} - {{ item.wordTranslate }}</p>
             </div>
-            <span class="detail__delete" @click="onDeleteWord(item)">
-              <icon-base icon-name="delete" width="20px" height="20px" viewBox="0 0 24 30">
-                <icon-bucket />
-              </icon-base>
-            </span>
           </div>
         </div>
         <div class="detail__know">
@@ -34,11 +29,6 @@
               </span>
               <p class="detail__words">{{ item.word }} - {{ item.wordTranslate }}</p>
             </div>
-            <span class="detail__delete" @click="onDeleteWord(item)">
-              <icon-base icon-name="delete" width="20px" height="20px" viewBox="0 0 24 30">
-                <icon-bucket />
-              </icon-base>
-            </span>
           </div>
         </div>
       </div>
@@ -60,14 +50,12 @@ import { dataSrc } from '@/helpers/constants.helper';
 import defaultPicture from '@/assets/img/speakIt/do_you_speak.jpg';
 import IconBase from '@/components/IconBase.vue';
 import IconVolume from '@/components/icons/IconVolume.vue';
-import IconBucket from '@/components/icons/IconBucket.vue';
 
 export default {
   name: 'SpeakitStatisticDetail',
   components: {
     IconBase,
     IconVolume,
-    IconBucket,
   },
   data() {
     return {
@@ -133,10 +121,6 @@ export default {
       } finally {
         this.isStartLoading = false;
       }
-    },
-    onDeleteWord(word) {
-      // TODO delete from dictionary
-      console.log('удаление: ', word);
     },
   },
 };
@@ -210,13 +194,7 @@ export default {
   display: flex;
 }
 
-.detail__delete {
-  display: none;
-  margin-right: 10px;
-}
-
-.detail__speech,
-.detail__delete {
+.detail__speech {
   color: $color-ghost;
   cursor: pointer;
   background-color: transparent;
@@ -237,12 +215,6 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
-
-  &:hover {
-    .detail__delete {
-      display: block;
-    }
-  }
 }
 
 .detail__words {

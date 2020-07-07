@@ -23,6 +23,9 @@ export default {
     currentRoundStats: null,
     isStartScreen: true,
     pictureSrc: defaultPicture,
+    wallpaperIndex: 0,
+    wallpaperSrc:
+      'https://raw.githubusercontent.com/arcanar7/rslang-data/master/speakit/speakit-0.jpg',
   },
   mutations: {
     setSelectedLevel(state, payload) {
@@ -75,6 +78,12 @@ export default {
     },
     setIsCorrectWord(state, payload) {
       state.isCorrectWord = payload;
+    },
+    setWallpaperIndex(state, payload) {
+      state.wallpaperIndex = payload;
+    },
+    setWallpaperSrc(state, payload) {
+      state.wallpaperSrc = payload;
     },
   },
   actions: {
