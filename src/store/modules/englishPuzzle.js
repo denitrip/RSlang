@@ -1,4 +1,4 @@
-import { application, apiAddress, dataSrc } from '@/helpers/constants.helper';
+import { application, apiAddress, dataSrc, maxRoundStatsCount } from '@/helpers/constants.helper';
 import {
   shuffle,
   checkIsSentenceInArray,
@@ -280,6 +280,9 @@ export default {
       const { learnedWords, stats, puzzleStats } = rootState.Statistic.statistics;
       const currentRoundStats = new CurrentRoundStats(selectedLevel, selectedRound, sentenceArray);
       puzzleStats.push(currentRoundStats);
+      if (puzzleStats.length > maxRoundStatsCount) {
+        puzzleStats.shift();
+      }
       commit('setCurrentRoundStats', currentRoundStats);
       commit('Statistic/setStatistics', { learnedWords, stats, puzzleStats }, { root: true });
       await dispatch('Statistic/sendStatistic', null, { root: true });

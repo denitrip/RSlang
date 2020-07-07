@@ -20,3 +20,4 @@ export const keys = {
   enter: 'Enter',
 };
 export const wordDeletedMassage = 'Word deleted successfully';
+export const maxRoundStatsCount = 10;

@@ -44,10 +44,4 @@ export default {
   background-position-y: 100%;
   transition: background 1.5s;
 }
-
-// @media screen and (max-width: $puzzle-mobile-size) {
-//   .game__wrapper {
-//     padding: 40px 5px;
-//   }
-// }
 </style>
