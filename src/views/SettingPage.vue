@@ -143,12 +143,14 @@
     </div>
     <div class="footer">
       <b-button
-        class="setting__save footer__btn"
+        class="footer__btn"
         variant="primary"
         @click="saveSettings"
         :disabled="isSaveLoading"
-        >Save Settings <AppSpinner v-if="isSaveLoading"></AppSpinner
-      ></b-button>
+      >
+        Save Settings
+        <AppSpinner v-if="isSaveLoading" />
+      </b-button>
     </div>
   </div>
 </template>
@@ -156,7 +158,10 @@
 <script>
 import { mapMutations, mapActions, mapState } from 'vuex';
 import AppSpinner from '@/components/AppSpinner.vue';
-import { setLocalStorageUserSettings } from '@/helpers/localStorage.helper';
+import {
+  setLocalStorageUserSettings,
+  getLocalStorageUserSettings,
+} from '@/helpers/localStorage.helper';
 
 export default {
   name: 'SettingPage',
@@ -185,8 +190,13 @@ export default {
   computed: {
     ...mapState('Settings', ['settings']),
   },
-  beforeMount() {
-    this.settingsData = this.settings;
+  created() {
+    const settings = getLocalStorageUserSettings();
+    if (settings) {
+      this.settingsData = settings;
+    } else {
+      this.settingsData = this.settings;
+    }
   },
   methods: {
     ...mapMutations('Settings', ['setSettings']),
@@ -329,9 +339,10 @@ export default {
 .footer {
   display: flex;
   justify-content: flex-end;
+  padding: 5px 60px 20px 0;
 
   &__btn {
-    margin: 5px 60px 5px 0;
+    @include english-puzzle-button(150px);
   }
 }
 </style>
