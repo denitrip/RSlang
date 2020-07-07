@@ -57,7 +57,6 @@
           :style="[{ width: `${word.word.length * 18}px` }]"
           v-model="answer"
           v-focus
-          :disabled="isCompleteState"
         />
         <div
           class="text-error"
@@ -82,7 +81,12 @@
     </form>
     <transition name="fade" mode="out-in">
       <div class="buttons-wrapper" v-if="isCompleteState">
-        <button class="learning__button" v-if="settings.isRepeatVisible" :disabled="isWordLoading">
+        <button
+          class="learning__button"
+          v-if="settings.isRepeatVisible"
+          :disabled="isWordLoading"
+          @click="onRepeatClick"
+        >
           Repeat
         </button>
         <button
@@ -93,10 +97,20 @@
         >
           Difficult
         </button>
-        <button class="learning__button" v-if="settings.isGoodVisible" :disabled="isWordLoading">
+        <button
+          class="learning__button"
+          v-if="settings.isGoodVisible"
+          :disabled="isWordLoading"
+          @click="onGoodClick"
+        >
           Good
         </button>
-        <button class="learning__button" v-if="settings.isEasyVisible" :disabled="isWordLoading">
+        <button
+          class="learning__button"
+          v-if="settings.isEasyVisible"
+          :disabled="isWordLoading"
+          @click="onEasyClick"
+        >
           Easy
         </button>
         <button
@@ -206,6 +220,7 @@ export default {
       'setTodayLearnedNewWord',
       'setLearnedWordsCount',
       'setIsMainPage',
+      'setWords',
     ]),
     ...mapActions('Learning', ['createUserWord', 'learnUserWord']),
     ...mapActions('Error', ['setError']),
@@ -226,28 +241,48 @@ export default {
         this.checkCard();
       }
     },
+    getDayTimestamp(n) {
+      return Date.now() + n * 60 * 60 * 1000;
+    },
+    nextDateRepeat() {
+      const twoHours = 2;
+      return this.getDayTimestamp(twoHours);
+    },
+    nextDateNorm() {
+      const oneDay = 24;
+      return this.getDayTimestamp(oneDay);
+    },
+    nextDateGood() {
+      const twoDays = 48;
+      return this.getDayTimestamp(twoDays);
+    },
+    nextDateEasy() {
+      const fiveDays = 120;
+      return this.getDayTimestamp(fiveDays);
+    },
     nextCard() {
       if (this.isNewWords) {
-        this.nextNewWord(wordGroups.learned);
+        this.nextNewWord(wordGroups.learned, this.nextDateNorm());
       } else if (this.isDifficultWords) {
-        this.nextWord(wordGroups.difficult);
+        this.nextWord(wordGroups.difficult, this.nextDateNorm());
       } else if (this.isLearnedWords) {
-        this.nextWord(wordGroups.learned);
+        this.nextWord(wordGroups.learned, this.nextDateNorm());
       }
     },
-    controlsNextCard(difficult) {
+    controlsNextCard(difficulty, nextDate = this.nextDateNorm()) {
       if (this.isNewWords) {
-        this.nextNewWord(difficult);
+        this.nextNewWord(difficulty, nextDate);
       } else {
-        this.nextWord(difficult);
+        this.nextWord(difficulty, nextDate);
       }
     },
-    async nextNewWord(difficulty) {
+    async nextNewWord(difficulty, nextDate) {
       this.isWordLoading = true;
       try {
         await this.createUserWord({
           difficulty,
           word: this.words[this.index],
+          nextDate,
         });
         await this.updateStatistic();
       } catch (error) {
@@ -259,12 +294,13 @@ export default {
         this.setTodayLearnedNewWord(this.todayLearnedNewWord + 1);
       }
     },
-    async nextWord(difficulty) {
+    async nextWord(difficulty, nextDate) {
       this.isWordLoading = true;
       try {
         await this.learnUserWord({
           difficulty,
           word: this.words[this.index],
+          nextDate,
         });
         await this.updateStatistic();
       } catch (error) {
@@ -272,6 +308,21 @@ export default {
       } finally {
         this.nextRound();
       }
+    },
+    onGoodClick() {
+      this.controlsNextCard(wordGroups.learned, this.nextDateGood());
+    },
+    onEasyClick() {
+      this.controlsNextCard(wordGroups.learned, this.nextDateEasy());
+    },
+    onRepeatClick() {
+      this.repeatWord();
+      this.controlsNextCard(wordGroups.learned, this.nextDateRepeat());
+    },
+    repeatWord() {
+      const newWordsArray = [...this.words];
+      newWordsArray.push(this.word);
+      this.setWords(newWordsArray);
     },
     checkCard() {
       if (this.answer.toLowerCase() === this.word.word.toLowerCase()) {
@@ -282,6 +333,7 @@ export default {
         this.isError = true;
         this.isErrorAnswer = true;
         this.repaintWord();
+        this.repeatWord();
       }
     },
     recordStatistic() {
