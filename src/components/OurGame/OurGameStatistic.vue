@@ -2,7 +2,7 @@
   <section class="statistic__wrapper">
     <h1 class="statistic__title">Game statistic</h1>
     <div class="statistic__detail">
-      <div class="details" :class="[{ details_deleting: isDeleting }]">
+      <div class="details">
         <div class="detail__dont-know">
           <span>I don' know </span>
           <span class="detail__dont-know-count">{{ dontKnowArray.length }}</span>
@@ -15,15 +15,6 @@
               </span>
               <p class="detail__words">{{ item.word }} - {{ item.wordTranslate }}</p>
             </div>
-            <span
-              class="detail__delete"
-              @click="onDeleteWord(item)"
-              v-if="item.userWord.difficulty !== wordGroups.deleted"
-            >
-              <icon-base icon-name="delete" width="20px" height="20px" viewBox="0 0 24 30">
-                <icon-bucket />
-              </icon-base>
-            </span>
           </div>
         </div>
         <div class="detail__know">
@@ -38,15 +29,6 @@
               </span>
               <p class="detail__words">{{ item.word }} - {{ item.wordTranslate }}</p>
             </div>
-            <span
-              class="detail__delete"
-              @click="onDeleteWord(item)"
-              v-if="item.userWord.difficulty !== wordGroups.deleted"
-            >
-              <icon-base icon-name="delete" width="20px" height="20px" viewBox="0 0 24 30">
-                <icon-bucket />
-              </icon-base>
-            </span>
           </div>
         </div>
       </div>
@@ -61,26 +43,18 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
-import { dataSrc, wordGroups, wordDeletedMassage } from '@/helpers/constants.helper';
+import { dataSrc } from '@/helpers/constants.helper';
 import IconBase from '@/components/IconBase.vue';
 import IconVolume from '@/components/icons/IconVolume.vue';
-import IconBucket from '@/components/icons/IconBucket.vue';
 
 export default {
-  name: 'SavannahStatistic',
+  name: 'OurGameStatistic',
   components: {
     IconBase,
     IconVolume,
-    IconBucket,
-  },
-  data() {
-    return {
-      wordGroups,
-      isDeleting: false,
-    };
   },
   computed: {
-    ...mapState('Savannah', ['statsArray']),
+    ...mapState('OurGame', ['statsArray']),
 
     knowArray() {
       return this.statsArray.filter((item) => item.correct);
@@ -91,7 +65,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('Savannah', ['resetGame', 'setStatsArray']),
+    ...mapMutations('OurGame', ['resetGame', 'setStatsArray']),
     ...mapActions('Learning', ['changeUserWordDifficulty']),
     ...mapActions('Error', ['setError', 'setInfo']),
 
@@ -101,30 +75,6 @@ export default {
     },
     onContinue() {
       this.resetGame();
-    },
-    async onDeleteWord(word) {
-      this.isDeleting = true;
-      try {
-        await this.changeUserWordDifficulty({ difficulty: wordGroups.deleted, word });
-        this.changeStatsArray(word);
-        this.setInfo(wordDeletedMassage);
-      } catch (error) {
-        this.setError(error.message);
-      } finally {
-        this.isDeleting = false;
-      }
-    },
-    changeStatsArray(word) {
-      const newStatsArray = this.statsArray.map((item) => {
-        if (item.word === word.word) {
-          return {
-            ...item,
-            userWord: { ...item.userWord.optional, difficulty: wordGroups.deleted },
-          };
-        }
-        return item;
-      });
-      this.setStatsArray(newStatsArray);
     },
   },
 };
@@ -171,11 +121,6 @@ export default {
 .details {
   max-height: 380px;
   overflow-y: scroll;
-
-  &_deleting {
-    pointer-events: none;
-    opacity: 0.5;
-  }
 }
 
 .detail__dont-know,
@@ -203,13 +148,7 @@ export default {
   display: flex;
 }
 
-.detail__delete {
-  display: none;
-  margin-right: 10px;
-}
-
-.detail__speech,
-.detail__delete {
+.detail__speech {
   color: $color-ghost;
   cursor: pointer;
   background-color: transparent;

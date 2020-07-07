@@ -17,6 +17,7 @@ import EnglishPuzzleStatsDetail from '@/components/EnglishPuzzle/EnglishPuzzleSt
 import SavannahPage from '@/views/Savannah/SavannahPage.vue';
 import SpeakItPage from '@/views/SpeakIt/SpeakItPage.vue';
 import AudiocallPage from '@/views/Audiocall/AudiocallPage.vue';
+import OurGamePage from '@/views/OurGame/OurGamePage.vue';
 
 Vue.use(VueRouter);
 
@@ -72,6 +73,7 @@ const routes = [
       {
         path: routerConsts.speakItPage.path,
         name: routerConsts.speakItPage.name,
+        beforeEnter: AuthGuard,
         component: SpeakItPage,
       },
       {
@@ -96,12 +98,20 @@ const routes = [
       {
         path: routerConsts.savannahPage.path,
         name: routerConsts.savannahPage.name,
+        beforeEnter: AuthGuard,
         component: SavannahPage,
       },
       {
         path: routerConsts.audiocallPage.path,
         name: routerConsts.audiocallPage.name,
+        beforeEnter: AuthGuard,
         component: AudiocallPage,
+      },
+      {
+        path: routerConsts.ourGamePage.path,
+        name: routerConsts.ourGamePage.name,
+        beforeEnter: AuthGuard,
+        component: OurGamePage,
       },
     ],
   },
