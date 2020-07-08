@@ -98,6 +98,7 @@
           <h3>display settings</h3>
           <b-form-checkbox
             class="setting__checkbox"
+            :class="{ setting__checkbox_disable: isLastCheckbox && settingsData.isWordVisible }"
             name="checkbox-translation"
             v-model="settingsData.isWordVisible"
           >
@@ -105,6 +106,7 @@
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
+            :class="{ setting__checkbox_disable: isLastCheckbox && settingsData.isMeaningVisible }"
             name="checkbox-meaining"
             v-model="settingsData.isMeaningVisible"
           >
@@ -112,6 +114,7 @@
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
+            :class="{ setting__checkbox_disable: isLastCheckbox && settingsData.isExampleVisible }"
             name="checkbox-example"
             v-model="settingsData.isExampleVisible"
           >
@@ -189,6 +192,20 @@ export default {
   },
   computed: {
     ...mapState('Settings', ['settings']),
+    isLastCheckbox() {
+      const array = [];
+      if (this.settingsData.isWordVisible) {
+        array.push(1);
+      }
+      if (this.settingsData.isMeaningVisible) {
+        array.push(1);
+      }
+      if (this.settingsData.isExampleVisible) {
+        array.push(1);
+      }
+
+      return array.length === 1;
+    },
   },
   created() {
     const settings = getLocalStorageUserSettings();
@@ -333,6 +350,11 @@ export default {
 
   &__checkbox {
     margin-bottom: 12px;
+
+    &_disable {
+      pointer-events: none;
+      opacity: 0.5;
+    }
   }
 }
 
