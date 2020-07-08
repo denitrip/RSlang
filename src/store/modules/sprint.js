@@ -8,6 +8,10 @@ export default {
     wordsArray: [],
     isSound: true,
     isGameEnd: false,
+    timerDuration: 60,
+    timerSize: 120,
+    timerSteps: 3,
+    attemptSeries: 4,
   },
   mutations: {
     setIsStartScreen(state, payload) {

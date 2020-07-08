@@ -5,9 +5,9 @@
     <div class="game" v-if="!isGameEnd">
       <div class="game__timer">
         <circular-count-down-timer
-          :initial-value="60"
-          :steps="6"
-          :size="120"
+          :initial-value="timerDuration"
+          :steps="timerSteps"
+          :size="timerSize"
           :align="'center'"
           :second-label="''"
           @finish="finished"
@@ -21,7 +21,7 @@
 
       <div class="game__series">
         <b-icon
-          v-for="i in 4"
+          v-for="i in attemptSeries"
           :key="i"
           icon="circle-fill"
           :variant="i <= series ? 'success' : 'secondary'"
@@ -121,7 +121,15 @@ export default {
     IconVolume,
   },
   computed: {
-    ...mapState('Sprint', ['wordsArray', 'isSound', 'isGameEnd']),
+    ...mapState('Sprint', [
+      'wordsArray',
+      'isSound',
+      'isGameEnd',
+      'timerDuration',
+      'timerSize',
+      'timerSteps',
+      'attemptSeries',
+    ]),
   },
   created() {
     window.addEventListener('keydown', this.onKeyDown);
@@ -249,7 +257,7 @@ export default {
   width: 50%;
   height: 100%;
   max-height: 600px;
-  padding: 3%;
+  padding: 5%;
   margin: auto;
   font-size: 20px;
   font-weight: 500;
@@ -335,7 +343,7 @@ export default {
   justify-content: space-between;
   width: 50%;
   height: 100%;
-  min-height: 360px;
+  min-height: 400px;
   max-height: 600px;
   padding: 5%;
   margin: auto;
