@@ -250,7 +250,6 @@ export default {
   .statistic__detail {
     padding: 0;
   }
-
   .detail__buttons {
     justify-content: center;
   }

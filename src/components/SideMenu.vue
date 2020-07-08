@@ -18,6 +18,7 @@
           :key="item.name"
           :to="item.route"
           active-class="active-link"
+          @click.native="closeMobileMenu"
         >
           <IconBase :iconName="item.name" width="34px" height="34px" :viewBox="item.icon.viewbox">
             <component :is="`Icon${item.icon.name}`" />
@@ -121,6 +122,11 @@ export default {
 
     openMenu() {
       this.isOpen = !this.isOpen;
+    },
+    closeMobileMenu() {
+      if (document.documentElement.clientWidth < 761) {
+        this.isOpen = false;
+      }
     },
     onLogout() {
       this.logoutUser();
@@ -350,7 +356,7 @@ export default {
   .menu-open {
     position: fixed;
     left: 0;
-    z-index: 2;
+    z-index: 20;
     width: 100vw;
   }
 }
@@ -372,7 +378,7 @@ export default {
     }
 
     .menu__burger {
-      z-index: 1;
+      z-index: 19;
       width: 60px;
     }
   }

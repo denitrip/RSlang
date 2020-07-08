@@ -29,6 +29,7 @@ const routes = [
     name: routerConsts.homePage.name,
     beforeEnter: AuthGuard,
     component: HomePage,
+    redirect: routerConsts.learningPage.path,
     children: [
       {
         path: routerConsts.miniGamesPage.path,
@@ -143,7 +144,11 @@ const routes = [
     name: routerConsts.signUpPage.name,
     component: LoginPage,
   },
-  { path: '*', redirect: '/' },
+  {
+    path: '*',
+    beforeEnter: AuthGuard,
+    redirect: routerConsts.learningPage.path,
+  },
 ];
 
 const router = new VueRouter({
