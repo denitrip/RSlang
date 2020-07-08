@@ -5,7 +5,7 @@
     <div class="game" v-if="!isGameEnd">
       <div class="game__timer">
         <circular-count-down-timer
-          :initial-value="60"
+          :initial-value="6"
           :steps="6"
           :size="120"
           :align="'center'"
@@ -92,22 +92,28 @@ export default {
     ...mapState('Sprint', ['wordsArray']),
   },
   methods: {
+    checkAnswer(answer) {
+      const word = this.wordsArray[this.index];
+      const check = word.wordTranslate === word.option;
+      if (check === answer) {
+        this.points += this.price;
+      } else {
+        this.price = 10;
+      }
+
+      this.index += 1;
+      if (this.index === this.wordsArray.length) {
+        this.finished();
+      }
+    },
     finished() {
-      console.log('timer end');
+      this.isGameEnd = true;
     },
     correctBtn() {
-      console.log('correct', this.index);
-      this.index += 1;
-      this.points += 10;
+      this.checkAnswer(true);
     },
     wrongBtn() {
-      console.log('wrong');
-    },
-    testData() {
-      console.log(this.wordsArray);
-      this.wordsArray.forEach((el) => {
-        console.log(el.word, el.wordTranslate, el.option);
-      });
+      this.checkAnswer(false);
     },
   },
 };
