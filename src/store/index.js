@@ -11,6 +11,7 @@ import Audiocall from '@/store/modules/audiocall';
 import Learning from '@/store/modules/learning';
 import Notification from '@/store/modules/notification';
 import Sprint from '@/store/modules/sprint';
+import Speakit from '@/store/modules/speakit';
 
 Vue.use(Vuex);
 
@@ -27,5 +28,6 @@ export default new Vuex.Store({
     Learning,
     Notification,
     Sprint,
+    Speakit,
   },
 });

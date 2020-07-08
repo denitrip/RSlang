@@ -15,7 +15,10 @@ import EnglishPuzzleStatisticPage from '@/views/EnglishPuzzle/EnglishPuzzleStati
 import EnglishPuzzleStats from '@/components/EnglishPuzzle/EnglishPuzzleStatistic.vue';
 import EnglishPuzzleStatsDetail from '@/components/EnglishPuzzle/EnglishPuzzleStatisticDetail.vue';
 import SavannahPage from '@/views/Savannah/SavannahPage.vue';
-import SpeakItPage from '@/views/SpeakIt/SpeakItPage.vue';
+import SpeakitPage from '@/views/SpeakIt/SpeakItPage.vue';
+import SpeakitStatisticPage from '@/views/SpeakIt/SpeakItStatisticPage.vue';
+import SpeakitStatistic from '@/components/SpeakIt/SpeakItStatistic.vue';
+import SpeakitStatisticDetail from '@/components/SpeakIt/SpeakItStatisticDetail.vue';
 import AudiocallPage from '@/views/Audiocall/AudiocallPage.vue';
 import SprintPage from '@/views/Sprint/SprintPage.vue';
 
@@ -27,6 +30,7 @@ const routes = [
     name: routerConsts.homePage.name,
     beforeEnter: AuthGuard,
     component: HomePage,
+    redirect: routerConsts.learningPage.path,
     children: [
       {
         path: routerConsts.miniGamesPage.path,
@@ -71,9 +75,29 @@ const routes = [
         component: StatisticPage,
       },
       {
-        path: routerConsts.speakItPage.path,
-        name: routerConsts.speakItPage.name,
-        component: SpeakItPage,
+        path: routerConsts.speakitPage.path,
+        name: routerConsts.speakitPage.name,
+        beforeEnter: AuthGuard,
+        component: SpeakitPage,
+      },
+      {
+        path: routerConsts.SpeakitStatisticPage.path,
+        component: SpeakitStatisticPage,
+        beforeEnter: AuthGuard,
+        children: [
+          {
+            path: routerConsts.speakitStats.path,
+            name: routerConsts.speakitStats.name,
+            beforeEnter: AuthGuard,
+            component: SpeakitStatistic,
+          },
+          {
+            path: routerConsts.speakitStatsDetailed.path,
+            name: routerConsts.speakitStatsDetailed.name,
+            beforeEnter: AuthGuard,
+            component: SpeakitStatisticDetail,
+          },
+        ],
       },
       {
         path: routerConsts.EnglishPuzzleStatisticPage.path,
@@ -126,7 +150,11 @@ const routes = [
     name: routerConsts.signUpPage.name,
     component: LoginPage,
   },
-  { path: '*', redirect: '/' },
+  {
+    path: '*',
+    beforeEnter: AuthGuard,
+    redirect: routerConsts.learningPage.path,
+  },
 ];
 
 const router = new VueRouter({

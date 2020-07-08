@@ -1,28 +1,28 @@
 <template>
   <div class="speakIt">
     <transition name="fade" mode="out-in">
-      <SpeakItStartScreen
+      <SpeakitStartScreen
         v-if="isStartScreen"
         @startGame="onStartGame"
         :isStartLoading="isStartLoading"
       />
     </transition>
     <transition name="fade" mode="out-in">
-      <SpeakItGame v-if="!isStartScreen" />
+      <SpeakitGame v-if="!isStartScreen" />
     </transition>
   </div>
 </template>
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
-import SpeakItStartScreen from '@/components/SpeakIt/SpeakItStartScreen.vue';
-import SpeakItGame from '@/components/SpeakIt/SpeakItGame.vue';
+import SpeakitStartScreen from '@/components/SpeakIt/SpeakItStartScreen.vue';
+import SpeakitGame from '@/components/SpeakIt/SpeakItGame.vue';
 
 export default {
-  name: 'HomePage',
+  name: 'SpeakitPage',
   components: {
-    SpeakItStartScreen,
-    SpeakItGame,
+    SpeakitStartScreen,
+    SpeakitGame,
   },
   data() {
     return {
@@ -30,21 +30,22 @@ export default {
     };
   },
   computed: {
-    ...mapState('SpeakIt', ['isStartScreen']),
-    ...mapState('Auth', ['user']),
+    ...mapState('Speakit', ['isStartScreen', 'words']),
   },
   destroyed() {
     this.resetGame();
   },
   methods: {
     ...mapActions('Error', ['setError']),
-    ...mapActions('SpeakIt', ['startGame']),
-    ...mapMutations('SpeakIt', ['setIsStartScreen', 'resetGame']),
+    ...mapActions('Speakit', ['getWords', 'resetGame']),
+    ...mapMutations('Speakit', ['setIsStartScreen', 'setIncorrectAnswer']),
 
     async onStartGame() {
       this.isStartLoading = true;
       try {
-        await this.startGame();
+        await this.getWords();
+        await this.resetGame();
+        this.setIncorrectAnswer([...this.words]);
         this.setIsStartScreen(false);
       } catch (error) {
         this.setError(error.message);
@@ -58,6 +59,7 @@ export default {
 
 <style lang="scss" scoped>
 .speakIt {
+  position: relative;
   width: 100%;
   height: 100%;
 }

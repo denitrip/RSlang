@@ -4,7 +4,6 @@
       {{ currentRoute }}
     </div>
     <div class="user-section">
-      <!-- <img src="../assets/img/header/notifications_image.png" alt="#" /> -->
       <router-link :to="routerConsts.settings.path"
         ><img src="../assets/img/header/settings_image.png" alt="#" class="rot"
       /></router-link>
@@ -12,9 +11,6 @@
         <div class="user-name" :title="email">
           {{ email }}
         </div>
-        <!--<div class="user-level">
-          Level 3
-        </div>-->
       </div>
       <div class="user-avatar">
         <img src="../assets/img/header/user_image.png" alt="#" />
