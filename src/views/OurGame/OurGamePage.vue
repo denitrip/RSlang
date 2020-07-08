@@ -17,6 +17,7 @@
 import { mapActions, mapMutations, mapState } from 'vuex';
 import OurGameStartScreen from '@/components/OurGame/OurGameStartScreen.vue';
 import OurGameGame from '@/components/OurGame/OurGameGame.vue';
+import getRandomWordsArray from '@/helpers/arrays.helper';
 
 export default {
   name: 'OurGameHomePage',
@@ -37,14 +38,15 @@ export default {
   },
   methods: {
     ...mapActions('Error', ['setError']),
-    ...mapActions('OurGame', ['startGame']),
-    ...mapActions('Learning', ['loadLearnedUserWords']),
+    ...mapActions('OurGame', ['startGame', 'getWordsByGroup']),
     ...mapMutations('OurGame', ['setIsStartScreen', 'resetGame', 'setWords']),
 
     async onStartGame() {
       this.isStartLoading = true;
       try {
-        const words = await this.loadLearnedUserWords();
+        const wordsCount = 15;
+        const allWordsArray = await this.getWordsByGroup();
+        const words = getRandomWordsArray(allWordsArray, wordsCount);
         this.setWords(words);
         await this.startGame();
         this.setIsStartScreen(false);

@@ -14,6 +14,7 @@ export default {
       learnedWords: 0,
       stats: [],
       puzzleStats: [],
+      ourGameStats: [],
     },
     longTermStatistic: [
       {
@@ -93,11 +94,13 @@ export default {
           learnedWords: answer.learnedWords,
           stats: JSON.parse(answer.optional.stats),
           puzzleStats: JSON.parse(answer.optional.puzzleStats),
+          ourGameStats: JSON.parse(answer.optional.ourGameStats),
         });
         commit('setStatistics', {
           learnedWords: answer.learnedWords,
           stats: JSON.parse(answer.optional.stats),
           puzzleStats: JSON.parse(answer.optional.puzzleStats),
+          ourGameStats: JSON.parse(answer.optional.ourGameStats),
         });
       } else if (response.status === 404) {
         await dispatch('sendStatistic');
@@ -106,15 +109,15 @@ export default {
       }
     },
     async sendStatistic({ state, rootState }) {
-      const { token } = rootState.Auth.user;
-      const { userId } = rootState.Auth.user;
+      const { token, userId } = rootState.Auth.user;
       const { statistics } = state;
       const URL = `${apiAddress}users/${userId}/statistics`;
       const stats = JSON.stringify(statistics.stats);
       const puzzleStats = JSON.stringify(statistics.puzzleStats);
+      const ourGameStats = JSON.stringify(statistics.ourGameStats);
       const payload = JSON.stringify({
         learnedWords: statistics.learnedWords,
-        optional: { stats, puzzleStats },
+        optional: { stats, puzzleStats, ourGameStats },
       });
       const response = await fetch(URL, {
         method: 'PUT',
@@ -132,7 +135,7 @@ export default {
     },
     async updateStatistic({ state, commit, dispatch }) {
       const { statistics } = state;
-      const { stats, puzzleStats } = statistics;
+      const { stats, puzzleStats, ourGameStats } = statistics;
       let { learnedWords } = statistics;
       const today = new Date();
       const label = today.toLocaleDateString();
@@ -144,7 +147,7 @@ export default {
         stats.push({ label, value: 1 });
       }
 
-      commit('setStatistics', { learnedWords, stats, puzzleStats });
+      commit('setStatistics', { learnedWords, stats, puzzleStats, ourGameStats });
       await dispatch('sendStatistic');
     },
   },

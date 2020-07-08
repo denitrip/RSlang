@@ -10,6 +10,11 @@
     </p>
     <p>1. Click on it with the mouse;</p>
     <p>2. Use the keys 1, 2, 3, 4, 5.</p>
+    <p>
+      The game has 6 difficulty levels. For each correct answer 10 points are awarded. For each
+      incorrect answer 5 points are removed. For each difficulty level an additional 10 points are
+      awarded. When you reach 10 correct answers, you go to the next level of difficulty.
+    </p>
     <button
       class="start-screen__button"
       @click="listeners.startGame"

@@ -1,8 +1,16 @@
 <template>
   <section class="statistic__wrapper">
     <h1 class="statistic__title">Game statistic</h1>
+    <h2 class="statistic__score" v-if="isTableShow">Result Table</h2>
+    <h2 class="statistic__score" v-else>Score: {{ score }}</h2>
     <div class="statistic__detail">
-      <div class="details" :class="[{ details_deleting: isDeleting }]">
+      <div class="statistic__table" v-if="isTableShow">
+        <div class="table__item" v-for="(item, index) in statistics.ourGameStats" :key="index">
+          {{ index + 1 }}. {{ item.score }} - {{ item.date | toDate }}
+          <hr />
+        </div>
+      </div>
+      <div class="details" v-else>
         <div class="detail__dont-know">
           <span>I don' know </span>
           <span class="detail__dont-know-count">{{ dontKnowArray.length }}</span>
@@ -15,11 +23,6 @@
               </span>
               <p class="detail__words">{{ item.word }} - {{ item.wordTranslate }}</p>
             </div>
-            <span class="detail__delete" @click="onDeleteWord(item)">
-              <icon-base icon-name="delete" width="20px" height="20px" viewBox="0 0 24 30">
-                <icon-bucket />
-              </icon-base>
-            </span>
           </div>
         </div>
         <div class="detail__know">
@@ -34,21 +37,15 @@
               </span>
               <p class="detail__words">{{ item.word }} - {{ item.wordTranslate }}</p>
             </div>
-            <span
-              class="detail__delete"
-              @click="onDeleteWord(item)"
-              v-if="item.userWord.difficulty !== wordGroups.deleted"
-            >
-              <icon-base icon-name="delete" width="20px" height="20px" viewBox="0 0 24 30">
-                <icon-bucket />
-              </icon-base>
-            </span>
           </div>
         </div>
       </div>
       <div class="detail__buttons">
         <button class="detail__button-continue" @click="onContinue">
           Continue
+        </button>
+        <button class="detail__button-table" @click="onShowTable" v-if="!isTableShow">
+          Result table
         </button>
       </div>
     </div>
@@ -57,26 +54,24 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
-import { dataSrc, wordGroups, wordDeletedMassage } from '@/helpers/constants.helper';
+import { dataSrc } from '@/helpers/constants.helper';
 import IconBase from '@/components/IconBase.vue';
 import IconVolume from '@/components/icons/IconVolume.vue';
-import IconBucket from '@/components/icons/IconBucket.vue';
 
 export default {
-  name: 'AudiocallStatistic',
+  name: 'OurGameStatistic',
   components: {
     IconBase,
     IconVolume,
-    IconBucket,
   },
   data() {
     return {
-      wordGroups,
-      isDeleting: false,
+      isTableShow: false,
     };
   },
   computed: {
-    ...mapState('Audiocall', ['statsArray']),
+    ...mapState('OurGame', ['statsArray', 'score']),
+    ...mapState('Statistic', ['statistics']),
 
     knowArray() {
       return this.statsArray.filter((item) => item.correct);
@@ -86,8 +81,11 @@ export default {
       return this.statsArray.filter((item) => !item.correct);
     },
   },
+  destroyed() {
+    this.isTableShow = false;
+  },
   methods: {
-    ...mapMutations('Audiocall', ['resetGame', 'setStatsArray']),
+    ...mapMutations('OurGame', ['resetGame', 'setStatsArray']),
     ...mapActions('Learning', ['changeUserWordDifficulty']),
     ...mapActions('Error', ['setError', 'setInfo']),
 
@@ -98,29 +96,8 @@ export default {
     onContinue() {
       this.resetGame();
     },
-    async onDeleteWord(word) {
-      this.isDeleting = true;
-      try {
-        await this.changeUserWordDifficulty({ difficulty: wordGroups.deleted, word });
-        this.changeStatsArray(word);
-        this.setInfo(wordDeletedMassage);
-      } catch (error) {
-        this.setError(error.message);
-      } finally {
-        this.isDeleting = false;
-      }
-    },
-    changeStatsArray(word) {
-      const newStatsArray = this.statsArray.map((item) => {
-        if (item.word === word.word) {
-          return {
-            ...item,
-            userWord: { ...item.userWord.optional, difficulty: wordGroups.deleted },
-          };
-        }
-        return item;
-      });
-      this.setStatsArray(newStatsArray);
+    onShowTable() {
+      this.isTableShow = true;
     },
   },
 };
@@ -138,7 +115,8 @@ export default {
   box-shadow: 0 0 10px $overlay-color;
 }
 
-.statistic__title {
+.statistic__title,
+.statistic__score {
   color: $color-dodger-blue;
 }
 
@@ -167,11 +145,6 @@ export default {
 .details {
   max-height: 380px;
   overflow-y: scroll;
-
-  &_deleting {
-    pointer-events: none;
-    opacity: 0.5;
-  }
 }
 
 .detail__dont-know,
@@ -199,13 +172,7 @@ export default {
   display: flex;
 }
 
-.detail__delete {
-  display: none;
-  margin-right: 10px;
-}
-
-.detail__speech,
-.detail__delete {
+.detail__speech {
   color: $color-ghost;
   cursor: pointer;
   background-color: transparent;
@@ -241,14 +208,36 @@ export default {
 
 .detail__buttons {
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
   margin-top: 40px;
 }
 
-.detail__button-continue {
+.detail__button-continue,
+.detail__button-table {
   @include english-puzzle-button(150px);
 
   margin-bottom: 10px;
+}
+
+.table__item {
+  font-size: 20px;
+  font-weight: 500;
+  color: $color-dodger-blue;
+  text-shadow: 1px 1px 1px $color-black;
+
+  &:nth-child(1) {
+    color: $color-golden-dream;
+  }
+
+  &:nth-child(2) {
+    color: $color-ghost;
+  }
+
+  &:nth-child(3) {
+    color: $color-dwarf-bronze;
+  }
 }
 
 @media screen and (max-width: $puzzle-mobile-size) {

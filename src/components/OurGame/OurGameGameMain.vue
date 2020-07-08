@@ -2,29 +2,40 @@
   <div class="game__main">
     <div class="game__image"></div>
     <div class="game__words" v-if="!isGameEnd">
-      <div
-        class="question"
-        :class="[{ question_correct: isCheck && isCorrect }]"
-        :key="words[wordNumber].word"
-      >
+      <div class="question__word">
         {{ words[wordNumber].word }}
       </div>
+      <p class="question__text-example">{{ words[wordNumber].textExample | deleteBold }}</p>
+      <p
+        class="score__change"
+        :class="[{ score__change_correct: isCorrect }, { score__change_incorrect: isIncorrect }]"
+      >
+        {{ changeScoreValue }}
+      </p>
       <div class="attempt-words">
-        <span class="attempt-words__word" v-for="(item, i) in wordsArray[wordNumber]" :key="i">
-          <button
+        <div class="loading" v-if="isStartLoading">
+          <h2>Level: {{ group + 1 }}</h2>
+          <AppSpinner size="lds-spinner_large" colorName="color-dodger-blue" />
+        </div>
+        <span
+          class="attempt-words__word"
+          v-for="(item, i) in wordsArray[wordNumber]"
+          :key="i"
+          :class="[{ 'attempt-words__word_disabled': isStartLoading }]"
+        >
+          <img
             class="answer"
             :class="[
               { answer_correct: item && isCheck && item.word === words[wordNumber].word },
               { answer_incorrect: item && isCheck && item.word !== words[wordNumber].word },
             ]"
-            :disabled="isCheck"
+            :src="`${dataSrc}${item.image}`"
+            :alt="words[wordNumber].word"
             @click="checkAnswer(i)"
-          >
-            {{ i + 1 }}. {{ isModeEnRu ? item && item.wordTranslate : item && item.word }}
-          </button>
+          />
         </span>
       </div>
-      <b-progress height="16px" :max="wordsLength" class="game__progress-bar mb-3">
+      <b-progress height="16px" :max="statsArrayLength" class="game__progress-bar">
         <b-progress-bar
           height="16px"
           show-value
@@ -46,17 +57,24 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
 import OurGameStatistic from '@/components/OurGame/OurGameStatistic.vue';
-import { correctSound, errorSound, keys } from '@/helpers/constants.helper';
+import { correctSound, errorSound, keys, dataSrc } from '@/helpers/constants.helper';
+import getRandomWordsArray from '@/helpers/arrays.helper';
+import AppSpinner from '@/components/AppSpinner.vue';
 
 export default {
   name: 'OurGameGameMain',
   components: {
     OurGameStatistic,
+    AppSpinner,
   },
   data() {
     return {
       isCheck: false,
       isCorrect: false,
+      isIncorrect: false,
+      isStartLoading: false,
+      changeScoreValue: '+10',
+      dataSrc,
     };
   },
   computed: {
@@ -69,11 +87,15 @@ export default {
       'lives',
       'lost',
       'isSound',
-      'wallpaperSrc',
-      'isModeEnRu',
+      'group',
+      'score',
+      'correctAnswerCountInGroup',
     ]),
     wordsLength() {
       return this.words.length;
+    },
+    statsArrayLength() {
+      return this.statsArray.length;
     },
     correctAnswersCount() {
       return this.statsArray.filter((item) => item.correct).length || 0;
@@ -95,8 +117,13 @@ export default {
       'setLost',
       'setLives',
       'setIsGameEnd',
+      'setGroup',
+      'setScore',
+      'setCorrectAnswerCountInGroup',
+      'setWords',
     ]),
-    ...mapActions('Learning', ['changeDateUserWord']),
+    ...mapActions('Error', ['setError']),
+    ...mapActions('OurGame', ['startGame', 'getWordsByGroup', 'saveStats']),
 
     checkAnswer(index) {
       const question = this.words[this.wordNumber].word;
@@ -108,12 +135,12 @@ export default {
       }
     },
     onCorrectAnswer() {
-      const nextDate = Date.now() + 24 * 60 * 60 * 1000;
-      this.changeDateUserWord({ word: this.words[this.wordNumber], nextDate });
       this.onPlaySound(correctSound);
       this.setStatsArray([...this.statsArray, { ...this.words[this.wordNumber], correct: true }]);
       this.isCheck = true;
       this.isCorrect = true;
+      this.calculateScore();
+      this.setCorrectAnswerCountInGroup(this.correctAnswerCountInGroup + 1);
       setTimeout(() => {
         this.isCorrect = false;
         this.isCheck = false;
@@ -121,23 +148,65 @@ export default {
       }, 1500);
     },
     onIncorrectAnswer() {
-      const nextDate = Date.now() + 22 * 60 * 60 * 1000;
-      this.changeDateUserWord({ word: this.words[this.wordNumber], nextDate });
       this.onPlaySound(errorSound);
       this.setStatsArray([...this.statsArray, { ...this.words[this.wordNumber], correct: false }]);
       this.setLost([...this.lost, this.lives.pop()]);
       this.setLives(this.lives);
       this.isCheck = true;
+      this.isIncorrect = true;
+      this.minusScore();
       setTimeout(() => {
+        this.isIncorrect = false;
         this.isCheck = false;
         this.onCheckGameOver();
       }, 1500);
     },
+    calculateScore() {
+      const answerValue = 10;
+      const levelCoefficient = this.group * answerValue;
+      const scoreValue = answerValue + levelCoefficient;
+      this.changeScoreValue = `+${scoreValue}`;
+      this.setScore(this.score + scoreValue);
+    },
+    minusScore() {
+      const scoreValue = -5;
+      this.changeScoreValue = scoreValue;
+      this.setScore(this.score + scoreValue);
+    },
     onCheckGameOver() {
+      const maxGroupCount = 5;
+      const maxCorrectAnswer = 10;
       if (this.lives.length === 0 || this.wordNumber === this.wordsLength - 1) {
-        this.setIsGameEnd(true);
+        this.gameOver();
+      } else if (this.correctAnswerCountInGroup >= maxCorrectAnswer && this.group < maxGroupCount) {
+        this.levelUp();
       } else {
         this.setWordNumber(this.wordNumber + 1);
+      }
+    },
+    async gameOver() {
+      try {
+        await this.saveStats();
+        this.setIsGameEnd(true);
+      } catch (error) {
+        this.setError(error.message);
+      }
+    },
+    async levelUp() {
+      this.setGroup(this.group + 1);
+      this.setCorrectAnswerCountInGroup(0);
+      this.isStartLoading = true;
+      try {
+        const wordsCount = 15;
+        const allWordsArray = await this.getWordsByGroup();
+        const words = getRandomWordsArray(allWordsArray, wordsCount);
+        this.setWords(words);
+        await this.startGame();
+        this.setWordNumber(0);
+      } catch (error) {
+        this.setError(error.message);
+      } finally {
+        this.isStartLoading = false;
       }
     },
     onAnimationEnd() {
@@ -207,45 +276,113 @@ export default {
   height: 100%;
 }
 
+.question__word {
+  font-size: 40px;
+  text-shadow: 3px 3px 2px $color-black;
+}
+
+.question__text-example {
+  font-size: 20px;
+  text-align: center;
+  text-shadow: 3px 3px 2px $color-black;
+}
+
+.score__change {
+  font-size: 30px;
+  text-align: center;
+  text-shadow: 3px 3px 2px $color-black;
+  opacity: 0;
+
+  &_correct {
+    color: $color-apple;
+    animation: emersion 2s linear;
+  }
+
+  &_incorrect {
+    color: $color-red-orange;
+    animation: emersion 2s linear;
+  }
+}
+
 .attempt-words {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   margin: 40px 0;
+  transition: opacity 0.3s;
 }
 
 .attempt-words__word {
+  display: flex;
+  justify-content: center;
   margin-bottom: 20px;
-  word-break: break-all;
+
+  &_disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.5;
+  }
 }
 
 .attempt-words__word + .attempt-words__word {
-  margin-left: 10px;
+  margin-left: 20px;
 }
 
 .answer {
-  padding: 5px 10px;
-  font-size: 20px;
-  color: $color-white;
-  background-color: transparent;
+  width: 250px;
+  height: 200px;
+  object-fit: cover;
+  cursor: pointer;
   border: 1px solid transparent;
   border-radius: 10px;
-  outline: none;
-  transition: border-color 0.4s, background-color 0.4s;
+  box-shadow: 0 0 15px $overlay-color;
+  transition: border-color 0.4s;
+
+  &_correct,
+  &_incorrect {
+    pointer-events: none;
+    cursor: default;
+  }
 
   &_correct {
-    background-color: $color-apple;
+    box-shadow: 0 0 15px $color-apple;
   }
 
   &_incorrect {
-    background-color: $color-chestnut;
+    box-shadow: 0 0 15px $color-chestnut;
   }
 }
 
 .game__progress-bar {
   width: 100%;
   max-width: 320px;
-  margin-top: 40px;
+  overflow: visible;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes emersion {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 @media (hover: hover) {
@@ -257,6 +394,22 @@ export default {
 @media screen and (max-width: $mobile-big-width) {
   .game__main {
     height: calc(100% - 114px);
+  }
+}
+
+@media screen and (max-width: $learning-tablet-size) {
+  .attempt-words__word {
+    width: 50%;
+  }
+
+  .attempt-words__word + .attempt-words__word {
+    margin-left: 0;
+  }
+}
+
+@media screen and (max-width: $puzzle-mobile-size) {
+  .attempt-words__word {
+    width: 100%;
   }
 }
 </style>

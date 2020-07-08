@@ -1,5 +1,6 @@
 import { shuffle } from '@/helpers/englishPuzzle.helper';
 import getRandomWord from '@/helpers/savannah.helper';
+import { apiAddress, application, maxRoundStatsCount } from '@/helpers/constants.helper';
 
 export default {
   namespaced: true,
@@ -13,6 +14,9 @@ export default {
     statsArray: [],
     isGameEnd: false,
     words: [],
+    group: 0,
+    score: 0,
+    correctAnswerCountInGroup: 0,
   },
   mutations: {
     setIsStartScreen(state, payload) {
@@ -42,6 +46,15 @@ export default {
     setWords(state, payload) {
       state.words = payload;
     },
+    setGroup(state, payload) {
+      state.group = payload;
+    },
+    setScore(state, payload) {
+      state.score = payload;
+    },
+    setCorrectAnswerCountInGroup(state, payload) {
+      state.correctAnswerCountInGroup = payload;
+    },
     resetGame(state) {
       state.isStartScreen = true;
       state.lives = new Array(5);
@@ -50,6 +63,9 @@ export default {
       state.wordsArray = [];
       state.statsArray = [];
       state.isGameEnd = false;
+      state.group = 0;
+      state.score = 0;
+      state.correctAnswerCountInGroup = 0;
     },
   },
   actions: {
@@ -58,15 +74,48 @@ export default {
       const { default: book1 } = await import('@/data/book1.js');
       const { default: book2 } = await import('@/data/book2.js');
       const { default: book3 } = await import('@/data/book3.js');
-      const { default: book4 } = await import('@/data/book4.js');
       const wordsArray = words.map((item) => {
         const randomWord1 = getRandomWord(item, book1);
         const randomWord2 = getRandomWord(item, book2);
         const randomWord3 = getRandomWord(item, book3);
-        const randomWord4 = getRandomWord(item, book4);
-        return shuffle([item, randomWord1, randomWord2, randomWord3, randomWord4]);
+        return shuffle([item, randomWord1, randomWord2, randomWord3]);
       });
       commit('setWordsArray', wordsArray);
+    },
+    async getWordsByGroup({ state, rootState }) {
+      const { userId, token } = rootState.Auth.user;
+      const { group } = state;
+      const response = await fetch(
+        `${apiAddress}users/${userId}/aggregatedWords?group=${group}&wordsPerPage=600`,
+        {
+          method: 'GET',
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: application,
+            'Content-Type': application,
+          },
+        },
+      );
+      const groupWords = await response.json();
+      return groupWords[0].paginatedResults;
+    },
+    async saveStats({ state, commit, dispatch, rootState }) {
+      const { score } = state;
+      const { learnedWords, stats, puzzleStats, ourGameStats } = rootState.Statistic.statistics;
+
+      ourGameStats.push({ score, date: Date.now() });
+      ourGameStats.sort((a, b) => b.score - a.score);
+      if (ourGameStats.length > maxRoundStatsCount) {
+        ourGameStats.shift();
+      }
+
+      commit(
+        'Statistic/setStatistics',
+        { learnedWords, stats, puzzleStats, ourGameStats },
+        { root: true },
+      );
+      await dispatch('Statistic/sendStatistic', null, { root: true });
     },
   },
 };

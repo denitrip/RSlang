@@ -15,7 +15,11 @@
               </span>
               <p class="detail__words">{{ item.word }} - {{ item.wordTranslate }}</p>
             </div>
-            <span class="detail__delete" @click="onDeleteWord(item)">
+            <span
+              class="detail__delete"
+              @click="onDeleteWord(item)"
+              v-if="item.userWord.difficulty !== wordGroups.deleted"
+            >
               <icon-base icon-name="delete" width="20px" height="20px" viewBox="0 0 24 30">
                 <icon-bucket />
               </icon-base>

@@ -9,6 +9,8 @@
           <IconVolumeOff />
         </IconBase>
       </div>
+      <p class="level">Level: {{ group + 1 }}</p>
+      <p class="score">Score: {{ score }}</p>
     </div>
     <div class="game__lives">
       <span class="hearth__lost" v-for="(item, i) in lost" :key="`${i}-lost`">
@@ -43,7 +45,7 @@ export default {
     IconHearth,
   },
   computed: {
-    ...mapState('OurGame', ['lives', 'lost', 'isSound']),
+    ...mapState('OurGame', ['lives', 'lost', 'isSound', 'group', 'score']),
   },
   methods: {
     ...mapMutations('OurGame', ['setIsSound']),
@@ -86,9 +88,29 @@ export default {
   transition: color 0.3s;
 }
 
+.level {
+  margin-right: 10px;
+}
+
 @media (hover: hover) {
   .setting__sound:hover {
     color: $color-dodger-blue;
+  }
+}
+
+@media screen and (max-width: $puzzle-mobile-size) {
+  .game__menu {
+    padding: 40px 10px 0 10px;
+  }
+}
+
+@media screen and (max-width: $mobile-big-width) {
+  .game__menu {
+    flex-direction: column;
+  }
+
+  .game__settings {
+    margin-bottom: 10px;
   }
 }
 </style>
