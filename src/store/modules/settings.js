@@ -26,6 +26,13 @@ export default {
         },
         completeRounds: [],
       },
+      speakitSettings: {
+        lastRound: {
+          lvl: 0,
+          page: 0,
+        },
+        completeRounds: [],
+      },
     },
   },
   mutations: {

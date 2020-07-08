@@ -1,9 +1,9 @@
 <template>
   <div class="statistic__all">
     <a
-      href="/english-puzzle-statistic/detail"
+      href="/speakit-statistic/detail"
       class="statistic__link"
-      v-for="(item, index) in puzzleStats"
+      v-for="(item, index) in statistics.speakitStats"
       :key="item.date"
       @click.prevent="() => onSetRoundStats(item)"
     >
@@ -26,10 +26,10 @@ import routerConsts from '@/router/routerConsts';
 export default {
   name: 'SpeakitStatistic',
   computed: {
-    ...mapState('EnglishPuzzle', ['puzzleStats']),
+    ...mapState('Statistic', ['statistics']),
   },
   methods: {
-    ...mapMutations('EnglishPuzzle', ['setCurrentRoundStats', 'setWordsStats']),
+    ...mapMutations('Speakit', ['setCurrentRoundStats', 'setWordsStats']),
     ...mapActions('Error', ['setError']),
 
     async onSetRoundStats(round) {
@@ -40,7 +40,7 @@ export default {
         });
         this.setWordsStats(words);
         this.setCurrentRoundStats(round);
-        this.$router.push(routerConsts.EnglishPuzzleStatisticPage.path);
+        this.$router.push(routerConsts.speakitStatsDetailed.path);
       } catch (error) {
         this.setError(error.message);
       }

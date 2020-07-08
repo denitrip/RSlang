@@ -14,6 +14,7 @@ export default {
       learnedWords: 0,
       stats: [],
       puzzleStats: [],
+      speakitStats: [],
     },
     longTermStatistic: [
       {
@@ -93,11 +94,13 @@ export default {
           learnedWords: answer.learnedWords,
           stats: JSON.parse(answer.optional.stats),
           puzzleStats: JSON.parse(answer.optional.puzzleStats),
+          speakitStats: JSON.parse(answer.optional.speakitStats),
         });
         commit('setStatistics', {
           learnedWords: answer.learnedWords,
           stats: JSON.parse(answer.optional.stats),
           puzzleStats: JSON.parse(answer.optional.puzzleStats),
+          speakitStats: JSON.parse(answer.optional.speakitStats),
         });
       } else if (response.status === 404) {
         await dispatch('sendStatistic');
@@ -112,9 +115,10 @@ export default {
       const URL = `${apiAddress}users/${userId}/statistics`;
       const stats = JSON.stringify(statistics.stats);
       const puzzleStats = JSON.stringify(statistics.puzzleStats);
+      const speakitStats = JSON.stringify(statistics.speakitStats);
       const payload = JSON.stringify({
         learnedWords: statistics.learnedWords,
-        optional: { stats, puzzleStats },
+        optional: { stats, puzzleStats, speakitStats },
       });
       const response = await fetch(URL, {
         method: 'PUT',
@@ -132,7 +136,7 @@ export default {
     },
     async updateStatistic({ state, commit, dispatch }) {
       const { statistics } = state;
-      const { stats, puzzleStats } = statistics;
+      const { stats, puzzleStats, speakitStats } = statistics;
       let { learnedWords } = statistics;
       const today = new Date();
       const label = today.toLocaleDateString();
@@ -144,7 +148,7 @@ export default {
         stats.push({ label, value: 1 });
       }
 
-      commit('setStatistics', { learnedWords, stats, puzzleStats });
+      commit('setStatistics', { learnedWords, stats, puzzleStats, speakitStats });
       await dispatch('sendStatistic');
     },
   },
