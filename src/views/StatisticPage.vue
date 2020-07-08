@@ -13,17 +13,17 @@ import { mapState } from 'vuex';
 export default {
   name: 'statisticPage',
   computed: {
-    ...mapState('Statistic', ['longTermStatistic']),
+    ...mapState('Statistic', ['statistics']),
   },
   extends: Line,
   mounted() {
     this.renderChart(
       {
-        labels: this.longTermStatistic.map((el) => el.label),
+        labels: this.statistics.stats.map((el) => el.label),
         datasets: [
           {
-            label: `Total: ${this.longTermStatistic.reduce((sum, el) => sum + el.value, 0)}`,
-            data: this.longTermStatistic.map((el) => el.value),
+            label: 'Learned Words',
+            data: this.statistics.stats.map((el) => el.value),
             backgroundColor: [
               'rgba(54, 162, 235, 0.5)',
               'rgba(255, 99, 132, 0.5)',
@@ -39,6 +39,23 @@ export default {
       {
         responsive: true,
         maintainAspectRatio: false,
+        title: {
+          display: true,
+          text: `Total: ${this.statistics.stats.reduce((sum, el) => sum + el.value, 0)}`,
+        },
+        legend: {
+          display: false,
+        },
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+                stepSize: 1,
+              },
+            },
+          ],
+        },
       },
     );
   },
