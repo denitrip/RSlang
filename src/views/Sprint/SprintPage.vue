@@ -35,11 +35,13 @@ export default {
   methods: {
     ...mapActions('Error', ['setError']),
     ...mapActions('Sprint', ['startGame']),
+    ...mapActions('Learning', ['getAllUserWords']),
     ...mapMutations('Sprint', ['setIsStartScreen', 'resetGame']),
 
     async onStartGame() {
       this.isStartLoading = true;
       try {
+        await this.getAllUserWords();
         await this.startGame();
         this.setIsStartScreen(false);
       } catch (error) {

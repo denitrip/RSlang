@@ -1,26 +1,11 @@
+import { shuffle } from '@/helpers/englishPuzzle.helper';
+import getRandomWord from '@/helpers/sprint.helper';
+
 export default {
   namespaced: true,
   state: {
     isStartScreen: true,
     wordsArray: [],
-    words: [
-      {
-        word: 'peace',
-        translate: 'мир',
-      },
-      {
-        word: 'door',
-        translate: 'дверь',
-      },
-      {
-        word: 'ball',
-        translate: 'мяч',
-      },
-      {
-        word: 'sea',
-        translate: 'море',
-      },
-    ],
   },
   mutations: {
     setIsStartScreen(state, payload) {
@@ -30,16 +15,15 @@ export default {
       state.wordsArray = payload;
     },
   },
-
+  methods: {},
   actions: {
-    async startGame({ state, commit }) {
-      //   const { words } = state;
-      //   const { default: book1 } = await import('@/data/book1.js');
-      //   const wordsArray = words.map((item) => {
-      //     const randomWord1 = getRandomWord(item, book1);
-      //     return shuffle([item, randomWord1, randomWord2, randomWord3]);
-      //   });
-      commit('setWordsArray', state.words);
+    async startGame({ commit, rootState }) {
+      const { userWords } = rootState.Learning;
+
+      let wordsArray = shuffle([...userWords]);
+      wordsArray = wordsArray.map((item) => getRandomWord(item, userWords));
+
+      commit('setWordsArray', wordsArray);
     },
   },
 };
