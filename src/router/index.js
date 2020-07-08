@@ -26,7 +26,7 @@ const routes = [
     name: routerConsts.homePage.name,
     beforeEnter: AuthGuard,
     component: HomePage,
-    redirect: '/learning',
+    redirect: routerConsts.learningPage.path,
     children: [
       {
         path: routerConsts.miniGamesPage.path,
@@ -124,7 +124,7 @@ const routes = [
   {
     path: '*',
     beforeEnter: AuthGuard,
-    redirect: '/learning',
+    redirect: routerConsts.learningPage.path,
   },
 ];
 
