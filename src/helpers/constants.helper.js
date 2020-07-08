@@ -21,3 +21,4 @@ export const keys = {
   right: 'ArrowRight',
 };
 export const wordDeletedMassage = 'Word deleted successfully';
+export const maxRoundStatsCount = 10;
