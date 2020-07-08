@@ -1,7 +1,7 @@
 export default {
   homePage: {
     path: '/',
-    name: 'home',
+    name: 'Home',
   },
   loginPage: {
     path: '/login',
