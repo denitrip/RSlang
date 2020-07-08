@@ -5,7 +5,7 @@
     <div class="game" v-if="!isGameEnd">
       <div class="game__timer">
         <circular-count-down-timer
-          :initial-value="6"
+          :initial-value="60"
           :steps="6"
           :size="120"
           :align="'center'"
@@ -14,22 +14,39 @@
         ></circular-count-down-timer>
       </div>
 
-      <div class="game__progress">
-        <p class="game__point">{{ points }}</p>
-        <div class="game__series">
-          <b-icon icon="check-circle-fill" variant="success" scale="1.3"></b-icon>
-          <b-icon icon="dash-circle-fill" variant="danger" scale="1.3"></b-icon>
-          <b-icon icon="circle-fill" variant="secondary" scale="1.3"></b-icon>
-          <b-icon icon="circle-fill" variant="secondary" scale="1.3"></b-icon>
-        </div>
+      <div class="game__point">
+        <p>Points: {{ points }}</p>
+        <p v-if="showPlusPoints">+{{ price }}</p>
       </div>
+
+      <div class="game__series">
+        <b-icon
+          v-for="i in 4"
+          :key="i"
+          icon="circle-fill"
+          :variant="i <= series ? 'success' : 'secondary'"
+          scale="1.3"
+        ></b-icon>
+      </div>
+
       <p class="game__word">{{ wordsArray[index].word }} - {{ wordsArray[index].option }}</p>
       <div class="game__answer">
-        <b-button variant="success" @click="correctBtn">
+        <b-button
+          class="button"
+          :class="{ button_active: isPressLeft }"
+          variant="success"
+          @click="correctBtn"
+          @keyup.left="correctBtn"
+        >
           <b-icon icon="arrow-left"></b-icon>
           Correct</b-button
         >
-        <b-button variant="danger" @click="wrongBtn">
+        <b-button
+          class="button"
+          :class="{ button_active: isPressRight }"
+          variant="danger"
+          @click="wrongBtn"
+        >
           Wrong
           <b-icon icon="arrow-right"></b-icon>
         </b-button>
@@ -38,30 +55,38 @@
 
     <div class="statistic" v-else>
       <h1 class="statistic__title">Game statistic</h1>
-      <div class="statistic__dont-know">
-        <div class="statistic__category">
-          <span>I don't know</span>
-          <span class="count">5</span>
+      <h3 class="statistic__points">Points: {{ points }}</h3>
+      <div class="statistic__data">
+        <div class="statistic__dont-know">
+          <div class="statistic__category">
+            <span class="statistic__name">I don't know</span>
+            <span class="count">{{ dontKnowWords.length }}</span>
+          </div>
+          <div class="words" v-for="item in dontKnowWords" :key="item.word">
+            <span @click="onPlayAudio(item.audio)">
+              <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
+                <icon-volume />
+              </icon-base>
+            </span>
+            <p class="words__detail">{{ item.word }} - {{ item.wordTranslate }}</p>
+          </div>
         </div>
-        <div class="words">
-          <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
-            <icon-volume />
-          </icon-base>
-          <p class="detail__words">{{ wordsArray[index].word }} - {{ wordsArray[index].option }}</p>
+        <div class="statistic__know">
+          <div class="statistic__category">
+            <span class="statistic__name">I know</span>
+            <span class="count">{{ knowWords.length }}</span>
+          </div>
+          <div class="words" v-for="item in knowWords" :key="item.word">
+            <span @click="onPlayAudio(item.audio)">
+              <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
+                <icon-volume />
+              </icon-base>
+            </span>
+            <p class="words__detail">{{ item.word }} - {{ item.wordTranslate }}</p>
+          </div>
         </div>
       </div>
-      <div class="statistic__know">
-        <div class="statistic__category">
-          <span>I know</span>
-          <span class="count">6</span>
-        </div>
-        <div class="words">
-          <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
-            <icon-volume />
-          </icon-base>
-          <p class="detail__words">{{ wordsArray[index].word }} - {{ wordsArray[index].option }}</p>
-        </div>
-      </div>
+
       <button class="statistic__button-continue" @click="onContinue">
         Continue
       </button>
@@ -70,7 +95,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
+import { dataSrc, keys, correctSound, errorSound } from '@/helpers/constants.helper';
 import IconBase from '@/components/IconBase.vue';
 import IconVolume from '@/components/icons/IconVolume.vue';
 
@@ -81,7 +107,13 @@ export default {
       index: 0,
       points: 0,
       price: 10,
-      isGameEnd: false,
+      series: 0,
+
+      showPlusPoints: false,
+      isPressLeft: false,
+      isPressRight: false,
+      knowWords: [],
+      dontKnowWords: [],
     };
   },
   components: {
@@ -89,31 +121,101 @@ export default {
     IconVolume,
   },
   computed: {
-    ...mapState('Sprint', ['wordsArray']),
+    ...mapState('Sprint', ['wordsArray', 'isSound', 'isGameEnd']),
+  },
+  created() {
+    window.addEventListener('keydown', this.onKeyDown);
+  },
+  destroyed() {
+    window.removeEventListener('keydown', this.onKeyDown);
   },
   methods: {
+    ...mapMutations('Sprint', ['resetGame', 'setIsGameEnd']),
+
+    onPlayAudio(src) {
+      const audio = new Audio(`${dataSrc}${src}`);
+      audio.play();
+    },
+
+    onPlaySound(src) {
+      if (this.isSound) {
+        const audio = new Audio(src);
+        audio.play();
+      }
+    },
+
     checkAnswer(answer) {
       const word = this.wordsArray[this.index];
       const check = word.wordTranslate === word.option;
+
       if (check === answer) {
         this.points += this.price;
+        this.series += 1;
+        this.knowWords.push(word);
+        this.onPlaySound(correctSound);
+        this.setShowPlusPoints();
+
+        if (this.series > 3) {
+          this.bonus();
+          this.series = 0;
+        }
       } else {
+        this.dontKnowWords.push(word);
         this.price = 10;
+        this.series = 0;
+        this.onPlaySound(errorSound);
       }
 
-      this.index += 1;
-      if (this.index === this.wordsArray.length) {
+      if (this.index + 1 < this.wordsArray.length) {
+        this.index += 1;
+      } else {
         this.finished();
       }
     },
+    bonus() {
+      this.price *= 2;
+    },
     finished() {
-      this.isGameEnd = true;
+      window.removeEventListener('keydown', this.onKeyDown);
+      this.setIsGameEnd(true);
     },
     correctBtn() {
+      this.isPressLeft = true;
       this.checkAnswer(true);
+      setTimeout(() => {
+        this.isPressLeft = false;
+      }, 350);
     },
     wrongBtn() {
+      this.isPressRight = true;
       this.checkAnswer(false);
+      setTimeout(() => {
+        this.isPressRight = false;
+      }, 350);
+    },
+    onContinue() {
+      this.resetGame();
+    },
+    setShowPlusPoints() {
+      this.showPlusPoints = !this.showPlusPoints;
+      setTimeout(() => {
+        this.showPlusPoints = !this.showPlusPoints;
+      }, 1000);
+    },
+
+    onKeyDown(event) {
+      if (!event.repeat) {
+        switch (event.key) {
+          case keys.left:
+            this.correctBtn();
+            break;
+          case keys.right:
+            this.wrongBtn();
+            break;
+          default:
+            break;
+        }
+      }
     },
   },
 };
@@ -145,7 +247,8 @@ export default {
   align-items: center;
   justify-content: space-between;
   width: 50%;
-  height: max-content;
+  height: 100%;
+  max-height: 600px;
   padding: 3%;
   margin: auto;
   font-size: 20px;
@@ -154,13 +257,28 @@ export default {
   border: 1px solid $color-black;
   border-radius: 6px;
 
+  &__data {
+    width: 80%;
+    overflow-y: scroll;
+  }
+
   &__title {
     color: $color-dodger-blue;
   }
 
+  &__points {
+    margin-top: 12px;
+  }
+
   &__category {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    margin-top: 12px;
+  }
+
+  &__name {
+    margin-right: 12px;
+    text-decoration: underline;
   }
 
   &__dont-know {
@@ -176,14 +294,37 @@ export default {
   }
 
   &__button-continue {
+    margin-top: 24px;
+
     @include english-puzzle-button(150px);
   }
 
   .count {
+    height: max-content;
     padding: 2px 8px;
     margin-left: 5px;
     color: $color-white;
     border-radius: 10px;
+  }
+
+  .words {
+    display: flex;
+    justify-content: left;
+    margin-top: 5px;
+
+    &__detail {
+      margin-left: 16px;
+    }
+  }
+}
+
+.button {
+  border: 1px solid transparent;
+  transition: opacity 0.2s, border-color 0.2s;
+
+  &_active {
+    border: 1px solid $color-shuttle-gray;
+    opacity: 0.5;
   }
 }
 
@@ -193,8 +334,10 @@ export default {
   align-items: center;
   justify-content: space-between;
   width: 50%;
-  height: 50%;
-  padding: 3%;
+  height: 100%;
+  min-height: 360px;
+  max-height: 600px;
+  padding: 5%;
   margin: auto;
   font-size: 20px;
   font-weight: 500;
@@ -202,11 +345,10 @@ export default {
   border: 1px solid $color-black;
   border-radius: 6px;
 
-  &__timer {
-    position: fixed;
-  }
-
   &__point {
+    display: inline-flex;
+    justify-content: space-between;
+    width: max-content;
     font-size: 24px;
     color: $color-apple;
   }
@@ -220,25 +362,33 @@ export default {
   &__series {
     display: flex;
     justify-content: space-between;
-    width: 30%;
+    width: 200px;
     padding: 7px;
   }
 
   &__word {
-    margin-top: 80px;
+    margin-top: 15px;
+    text-align: center;
   }
 
   &__word,
   &__translation {
     padding-top: 5%;
-    text-decoration: underline;
+    font-size: 30px;
   }
 
   &__answer {
     display: flex;
     justify-content: space-between;
     width: 210px;
-    padding-top: 5%;
+    padding-top: 7%;
+  }
+}
+
+@media screen and (max-width: $tablet-width) {
+  .statistic,
+  .game {
+    width: 95%;
   }
 }
 </style>
