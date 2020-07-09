@@ -32,9 +32,6 @@ export default {
   computed: {
     ...mapState('Speakit', ['isStartScreen', 'words']),
   },
-  destroyed() {
-    this.resetGame();
-  },
   methods: {
     ...mapActions('Error', ['setError']),
     ...mapActions('Speakit', ['getWords', 'resetGame']),
