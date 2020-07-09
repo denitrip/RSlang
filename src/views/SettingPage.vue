@@ -193,18 +193,8 @@ export default {
   computed: {
     ...mapState('Settings', ['settings']),
     isLastCheckbox() {
-      const array = [];
-      if (this.settingsData.isWordVisible) {
-        array.push(1);
-      }
-      if (this.settingsData.isMeaningVisible) {
-        array.push(1);
-      }
-      if (this.settingsData.isExampleVisible) {
-        array.push(1);
-      }
-
-      return array.length === 1;
+      const count = Number(this.settingsData.isExampleVisible) + Number(this.settingsData.isMeaningVisible) + Number(this.settingsData.isWordVisible);
+      return count === 1;
     },
   },
   created() {
