@@ -1,28 +1,29 @@
 <template>
-  <div class="sprint">
+  <div class="our-game">
     <transition name="fade" mode="out-in">
-      <SprintStartScreen
+      <OurGameStartScreen
         v-if="isStartScreen"
         @startGame="onStartGame"
         :isStartLoading="isStartLoading"
       />
     </transition>
     <transition name="fade" mode="out-in">
-      <SprintGame v-if="!isStartScreen" />
+      <OurGameGame v-if="!isStartScreen" />
     </transition>
   </div>
 </template>
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
-import SprintStartScreen from '@/components/Sprint/SprintStartScreen.vue';
-import SprintGame from '@/components/Sprint/SprintGame.vue';
+import OurGameStartScreen from '@/components/OurGame/OurGameStartScreen.vue';
+import OurGameGame from '@/components/OurGame/OurGameGame.vue';
+import getRandomWordsArray from '@/helpers/arrays.helper';
 
 export default {
-  name: 'SprintHomePage',
+  name: 'OurGameHomePage',
   components: {
-    SprintStartScreen,
-    SprintGame,
+    OurGameStartScreen,
+    OurGameGame,
   },
   data() {
     return {
@@ -30,21 +31,23 @@ export default {
     };
   },
   computed: {
-    ...mapState('Sprint', ['isStartScreen']),
+    ...mapState('OurGame', ['isStartScreen']),
   },
   destroyed() {
     this.resetGame();
   },
   methods: {
     ...mapActions('Error', ['setError']),
-    ...mapActions('Sprint', ['startGame']),
-    ...mapActions('Learning', ['getAllUserWords']),
-    ...mapMutations('Sprint', ['setIsStartScreen', 'resetGame']),
+    ...mapActions('OurGame', ['startGame', 'getWordsByGroup']),
+    ...mapMutations('OurGame', ['setIsStartScreen', 'resetGame', 'setWords']),
 
     async onStartGame() {
       this.isStartLoading = true;
       try {
-        await this.getAllUserWords();
+        const wordsCount = 15;
+        const allWordsArray = await this.getWordsByGroup();
+        const words = getRandomWordsArray(allWordsArray, wordsCount);
+        this.setWords(words);
         await this.startGame();
         this.setIsStartScreen(false);
       } catch (error) {
@@ -58,8 +61,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.sprint {
-  position: relative;
+.our-game {
   width: 100%;
   height: 100%;
 }

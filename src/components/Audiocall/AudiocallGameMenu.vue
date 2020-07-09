@@ -27,7 +27,7 @@ export default {
     IconVolumeOff,
   },
   computed: {
-    ...mapState('Audiocall', ['lives', 'lost', 'isSound']),
+    ...mapState('Audiocall', ['isSound']),
   },
   methods: {
     ...mapMutations('Audiocall', ['setIsSound']),

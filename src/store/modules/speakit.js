@@ -126,18 +126,15 @@ export default {
     },
     async saveStats({ state, commit, dispatch, rootState }) {
       const { selectedLevel, selectedRound, wordsArray } = state;
-      const { learnedWords, stats, speakitStats, puzzleStats } = rootState.Statistic.statistics;
+      const { statistics } = rootState.Statistic;
+      const { speakitStats } = statistics;
       const currentRoundStats = new CurrentRoundStats(selectedLevel, selectedRound, wordsArray);
       speakitStats.push(currentRoundStats);
       if (speakitStats.length > maxRoundStatsCount) {
         speakitStats.shift();
       }
       commit('setCurrentRoundStats', currentRoundStats);
-      commit(
-        'Statistic/setStatistics',
-        { learnedWords, stats, speakitStats, puzzleStats },
-        { root: true },
-      );
+      commit('Statistic/setStatistics', { ...statistics, speakitStats }, { root: true });
       await dispatch('Statistic/sendStatistic', null, { root: true });
     },
     getSettings({ state, commit, rootState }) {

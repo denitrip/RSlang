@@ -29,8 +29,8 @@ export default {
       },
       {
         icon: 'Poker',
-        title: 'My game',
-        link: 'my-game',
+        title: 'Our game',
+        link: 'our-game',
       },
     ],
   },

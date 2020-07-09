@@ -15,7 +15,7 @@
       </div>
 
       <div class="game__point">
-        <p>Points: {{ points }}</p>
+        <p>Points: {{ score }}</p>
         <p v-if="showPlusPoints">+{{ price }}</p>
       </div>
 
@@ -55,8 +55,15 @@
 
     <div class="statistic" v-else>
       <h1 class="statistic__title">Game statistic</h1>
-      <h3 class="statistic__points">Points: {{ points }}</h3>
-      <div class="statistic__data">
+      <h3 class="statistic__points" v-if="isTableShow">Result table</h3>
+      <h3 class="statistic__points" v-else>Points: {{ score }}</h3>
+      <div class="statistic__table" v-if="isTableShow">
+        <div class="table__item" v-for="(item, index) in statistics.sprintStats" :key="index">
+          {{ index + 1 }}. {{ item.score }} - {{ item.date | toDate }}
+          <hr />
+        </div>
+      </div>
+      <div class="statistic__data" v-else>
         <div class="statistic__dont-know">
           <div class="statistic__category">
             <span class="statistic__name">I don't know</span>
@@ -87,15 +94,20 @@
         </div>
       </div>
 
-      <button class="statistic__button-continue" @click="onContinue">
-        Continue
-      </button>
+      <div class="detail-buttons">
+        <button class="statistic__button-continue" @click="onContinue">
+          Continue
+        </button>
+        <button class="statistic__button-continue" v-if="!isTableShow" @click="onShowTable">
+          Result table
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 import { dataSrc, keys, correctSound, errorSound } from '@/helpers/constants.helper';
 import IconBase from '@/components/IconBase.vue';
 import IconVolume from '@/components/icons/IconVolume.vue';
@@ -105,13 +117,13 @@ export default {
   data() {
     return {
       index: 0,
-      points: 0,
       price: 10,
       series: 0,
 
       showPlusPoints: false,
       isPressLeft: false,
       isPressRight: false,
+      isTableShow: false,
       knowWords: [],
       dontKnowWords: [],
     };
@@ -129,16 +141,25 @@ export default {
       'timerSize',
       'timerSteps',
       'attemptSeries',
+      'score',
     ]),
+    ...mapState('Statistic', ['statistics']),
   },
   created() {
     window.addEventListener('keydown', this.onKeyDown);
   },
   destroyed() {
+    this.isTableShow = false;
     window.removeEventListener('keydown', this.onKeyDown);
   },
   methods: {
-    ...mapMutations('Sprint', ['resetGame', 'setIsGameEnd']),
+    ...mapMutations('Sprint', ['resetGame', 'setIsGameEnd', 'setScore']),
+    ...mapActions('Sprint', ['saveStats']),
+    ...mapActions('Error', ['setError']),
+
+    onShowTable() {
+      this.isTableShow = true;
+    },
 
     onPlayAudio(src) {
       const audio = new Audio(`${dataSrc}${src}`);
@@ -157,7 +178,7 @@ export default {
       const check = word.wordTranslate === word.option;
 
       if (check === answer) {
-        this.points += this.price;
+        this.setScore(this.score + this.price);
         this.series += 1;
         this.knowWords.push(word);
         this.onPlaySound(correctSound);
@@ -183,9 +204,14 @@ export default {
     bonus() {
       this.price *= 2;
     },
-    finished() {
-      window.removeEventListener('keydown', this.onKeyDown);
-      this.setIsGameEnd(true);
+    async finished() {
+      try {
+        await this.saveStats();
+        window.removeEventListener('keydown', this.onKeyDown);
+        this.setIsGameEnd(true);
+      } catch (error) {
+        this.setError(error.message);
+      }
     },
     correctBtn() {
       this.isPressLeft = true;
@@ -255,9 +281,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   width: 50%;
-  height: 100%;
-  max-height: 600px;
-  padding: 5%;
+  padding: 20px 30px;
   margin: auto;
   font-size: 20px;
   font-weight: 500;
@@ -272,6 +296,7 @@ export default {
 
   &__title {
     color: $color-dodger-blue;
+    text-align: center;
   }
 
   &__points {
@@ -342,10 +367,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   width: 50%;
-  height: 100%;
-  min-height: 400px;
-  max-height: 600px;
-  padding: 5%;
+  padding: 20px 30px;
   margin: auto;
   font-size: 20px;
   font-weight: 500;
@@ -393,10 +415,39 @@ export default {
   }
 }
 
+.table__item {
+  font-size: 20px;
+  font-weight: 500;
+  color: $color-dodger-blue;
+  text-shadow: 1px 1px 1px $color-black;
+
+  &:nth-child(1) {
+    color: $color-golden-dream;
+  }
+
+  &:nth-child(2) {
+    color: $color-ghost;
+  }
+
+  &:nth-child(3) {
+    color: $color-dwarf-bronze;
+  }
+}
+
+.detail-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  margin-top: 40px;
+}
+
 @media screen and (max-width: $tablet-width) {
   .statistic,
   .game {
     width: 95%;
+    padding: 20px 10px;
   }
 }
 </style>

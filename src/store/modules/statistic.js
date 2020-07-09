@@ -14,42 +14,10 @@ export default {
       learnedWords: 0,
       stats: [],
       puzzleStats: [],
+      ourGameStats: [],
       speakitStats: [],
+      sprintStats: [],
     },
-    longTermStatistic: [
-      {
-        label: 'Day 1',
-        value: 6,
-      },
-      {
-        label: 'Day 2',
-        value: 19,
-      },
-      {
-        label: 'Day 3',
-        value: 3,
-      },
-      {
-        label: 'Day 4',
-        value: 5,
-      },
-      {
-        label: 'Day 5',
-        value: 7,
-      },
-      {
-        label: 'Day 6',
-        value: 3,
-      },
-      {
-        label: 'Day 7',
-        value: 6,
-      },
-      {
-        label: 'Day 8',
-        value: 8,
-      },
-    ],
   },
   mutations: {
     setIsShortTermStatisticShow(state, payload) {
@@ -76,8 +44,7 @@ export default {
   },
   actions: {
     async receiveStatistic({ rootState, commit, dispatch }) {
-      const { token } = rootState.Auth.user;
-      const { userId } = rootState.Auth.user;
+      const { token, userId } = rootState.Auth.user;
       const URL = `${apiAddress}users/${userId}/statistics`;
       const response = await fetch(URL, {
         method: 'GET',
@@ -90,18 +57,16 @@ export default {
       });
       if (response.ok) {
         const answer = await response.json();
-        setLocalStorageUserStatistic({
+        const statistic = {
           learnedWords: answer.learnedWords,
           stats: JSON.parse(answer.optional.stats),
           puzzleStats: JSON.parse(answer.optional.puzzleStats),
+          ourGameStats: JSON.parse(answer.optional.ourGameStats),
           speakitStats: JSON.parse(answer.optional.speakitStats),
-        });
-        commit('setStatistics', {
-          learnedWords: answer.learnedWords,
-          stats: JSON.parse(answer.optional.stats),
-          puzzleStats: JSON.parse(answer.optional.puzzleStats),
-          speakitStats: JSON.parse(answer.optional.speakitStats),
-        });
+          sprintStats: JSON.parse(answer.optional.sprintStats),
+        };
+        setLocalStorageUserStatistic(statistic);
+        commit('setStatistics', statistic);
       } else if (response.status === 404) {
         await dispatch('sendStatistic');
       } else {
@@ -109,16 +74,17 @@ export default {
       }
     },
     async sendStatistic({ state, rootState }) {
-      const { token } = rootState.Auth.user;
-      const { userId } = rootState.Auth.user;
+      const { token, userId } = rootState.Auth.user;
       const { statistics } = state;
       const URL = `${apiAddress}users/${userId}/statistics`;
       const stats = JSON.stringify(statistics.stats);
       const puzzleStats = JSON.stringify(statistics.puzzleStats);
       const speakitStats = JSON.stringify(statistics.speakitStats);
+      const sprintStats = JSON.stringify(statistics.sprintStats);
+      const ourGameStats = JSON.stringify(statistics.ourGameStats);
       const payload = JSON.stringify({
         learnedWords: statistics.learnedWords,
-        optional: { stats, puzzleStats, speakitStats },
+        optional: { stats, puzzleStats, speakitStats, ourGameStats, sprintStats },
       });
       const response = await fetch(URL, {
         method: 'PUT',
@@ -136,7 +102,7 @@ export default {
     },
     async updateStatistic({ state, commit, dispatch }) {
       const { statistics } = state;
-      const { stats, puzzleStats, speakitStats } = statistics;
+      const { stats } = statistics;
       let { learnedWords } = statistics;
       const today = new Date();
       const label = today.toLocaleDateString();
@@ -148,7 +114,7 @@ export default {
         stats.push({ label, value: 1 });
       }
 
-      commit('setStatistics', { learnedWords, stats, puzzleStats, speakitStats });
+      commit('setStatistics', { ...statistics, learnedWords, stats });
       await dispatch('sendStatistic');
     },
   },

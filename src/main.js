@@ -2,6 +2,7 @@ import Vue from 'vue';
 import router from '@/router';
 import store from '@/store';
 import App from '@/App.vue';
+import filters from '@/helpers/filters.helper';
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue/dist/bootstrap-vue.esm';
 import CircularCountDownTimer from 'vue-circular-count-down-timer';
 
@@ -14,13 +15,7 @@ Vue.use(CircularCountDownTimer);
 
 Vue.config.productionTip = false;
 
-Vue.mixin({
-  filters: {
-    deleteBold(str) {
-      return str.replace(/<b>|<\/b>/g, '');
-    },
-  },
-});
+Vue.mixin({ filters });
 
 new Vue({
   router,

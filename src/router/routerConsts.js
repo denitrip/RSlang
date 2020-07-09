@@ -79,6 +79,10 @@ export default {
     path: '/audiocall',
     name: 'audiocall',
   },
+  ourGamePage: {
+    path: '/our-game',
+    name: 'ourGame',
+  },
   sprintPage: {
     path: '/sprint',
     name: 'sprint',

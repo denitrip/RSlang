@@ -132,14 +132,6 @@ export default {
       }),
     },
   },
-  filters: {
-    deleteBold(str) {
-      return str.replace(/<b>|<\/b>/g, '');
-    },
-    deleteItalic(str) {
-      return str.replace(/<i>|<\/i>/g, '');
-    },
-  },
   data() {
     return {
       dataSrc,

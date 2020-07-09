@@ -16,7 +16,7 @@
               <icon-volume />
             </icon-base>
           </span>
-          <p class="detail__words">{{ wordsStats[item.id].textExample | removeTags }}</p>
+          <p class="detail__words">{{ wordsStats[item.id].textExample | deleteBold }}</p>
         </div>
       </div>
       <div class="detail__know">
@@ -28,7 +28,7 @@
               <icon-volume />
             </icon-base>
           </span>
-          <p class="detail__words">{{ wordsStats[item.id].textExample | removeTags }}</p>
+          <p class="detail__words">{{ wordsStats[item.id].textExample | deleteBold }}</p>
         </div>
       </div>
     </div>
@@ -115,11 +115,6 @@ export default {
       } finally {
         this.isStartLoading = false;
       }
-    },
-  },
-  filters: {
-    removeTags(value) {
-      return value.replace(/<b>|<\/b>/g, '');
     },
   },
 };

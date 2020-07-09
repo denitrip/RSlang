@@ -102,7 +102,7 @@ export default {
     background-color: $color-malibu;
   }
 
-  &_my-game {
+  &_our-game {
     background-color: $color-dodger-blue;
   }
 }
