@@ -18,6 +18,8 @@ export const keys = {
   four: '4',
   five: '5',
   enter: 'Enter',
+  left: 'ArrowLeft',
+  right: 'ArrowRight',
 };
 export const wordDeletedMassage = 'Word deleted successfully';
 export const maxRoundStatsCount = 10;

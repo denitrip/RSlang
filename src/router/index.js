@@ -20,6 +20,7 @@ import SpeakitStatisticPage from '@/views/SpeakIt/SpeakItStatisticPage.vue';
 import SpeakitStatistic from '@/components/SpeakIt/SpeakItStatistic.vue';
 import SpeakitStatisticDetail from '@/components/SpeakIt/SpeakItStatisticDetail.vue';
 import AudiocallPage from '@/views/Audiocall/AudiocallPage.vue';
+import SprintPage from '@/views/Sprint/SprintPage.vue';
 
 Vue.use(VueRouter);
 
@@ -126,6 +127,11 @@ const routes = [
         path: routerConsts.audiocallPage.path,
         name: routerConsts.audiocallPage.name,
         component: AudiocallPage,
+      },
+      {
+        path: routerConsts.sprintPage.path,
+        name: routerConsts.sprintPage.name,
+        component: SprintPage,
       },
     ],
   },
