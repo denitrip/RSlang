@@ -32,6 +32,9 @@ export default {
   computed: {
     ...mapState('Sprint', ['isStartScreen']),
   },
+  destroyed() {
+    this.resetGame();
+  },
   methods: {
     ...mapActions('Error', ['setError']),
     ...mapActions('Sprint', ['startGame']),
