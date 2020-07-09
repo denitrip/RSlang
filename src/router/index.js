@@ -20,6 +20,7 @@ import SpeakitStatisticPage from '@/views/SpeakIt/SpeakItStatisticPage.vue';
 import SpeakitStatistic from '@/components/SpeakIt/SpeakItStatistic.vue';
 import SpeakitStatisticDetail from '@/components/SpeakIt/SpeakItStatisticDetail.vue';
 import AudiocallPage from '@/views/Audiocall/AudiocallPage.vue';
+import OurGamePage from '@/views/OurGame/OurGamePage.vue';
 import SprintPage from '@/views/Sprint/SprintPage.vue';
 
 Vue.use(VueRouter);
@@ -121,16 +122,25 @@ const routes = [
       {
         path: routerConsts.savannahPage.path,
         name: routerConsts.savannahPage.name,
+        beforeEnter: AuthGuard,
         component: SavannahPage,
       },
       {
         path: routerConsts.audiocallPage.path,
         name: routerConsts.audiocallPage.name,
+        beforeEnter: AuthGuard,
         component: AudiocallPage,
+      },
+      {
+        path: routerConsts.ourGamePage.path,
+        name: routerConsts.ourGamePage.name,
+        beforeEnter: AuthGuard,
+        component: OurGamePage,
       },
       {
         path: routerConsts.sprintPage.path,
         name: routerConsts.sprintPage.name,
+        beforeEnter: AuthGuard,
         component: SprintPage,
       },
     ],
