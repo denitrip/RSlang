@@ -10,6 +10,7 @@ import Statistic from '@/store/modules/statistic';
 import Audiocall from '@/store/modules/audiocall';
 import Learning from '@/store/modules/learning';
 import Notification from '@/store/modules/notification';
+import OurGame from '@/store/modules/ourGame';
 import Sprint from '@/store/modules/sprint';
 import Speakit from '@/store/modules/speakit';
 
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     Audiocall,
     Learning,
     Notification,
+    OurGame,
     Sprint,
     Speakit,
   },

@@ -167,16 +167,6 @@ export default {
       },
     },
   },
-  filters: {
-    deleteItalic(str) {
-      return str.replace(/<i>|<\/i>/g, '');
-    },
-    deleteWord(str) {
-      const start = str.indexOf('<');
-      const finish = str.lastIndexOf('>') + 1;
-      return `${str.slice(0, start)}[...]${str.slice(finish)}`;
-    },
-  },
   data() {
     return {
       wordGroups,

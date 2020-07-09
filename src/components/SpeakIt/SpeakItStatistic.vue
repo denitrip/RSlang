@@ -46,36 +46,6 @@ export default {
       }
     },
   },
-  filters: {
-    toDate(value) {
-      const options = {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: 'numeric',
-        minute: 'numeric',
-      };
-      return new Date(value).toLocaleString('en-US', options);
-    },
-    knowStats(array) {
-      let know = 0;
-      array.forEach((item) => {
-        if (item.know) {
-          know += 1;
-        }
-      });
-      return know;
-    },
-    dontKnowStats(array) {
-      let iDontKnow = 0;
-      array.forEach((item) => {
-        if (!item.know) {
-          iDontKnow += 1;
-        }
-      });
-      return iDontKnow;
-    },
-  },
 };
 </script>
 
