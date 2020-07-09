@@ -1,5 +1,6 @@
 import { shuffle } from '@/helpers/englishPuzzle.helper';
 import getRandomWord from '@/helpers/sprint.helper';
+import { maxRoundStatsCount } from '@/helpers/constants.helper';
 
 export default {
   namespaced: true,
@@ -12,6 +13,7 @@ export default {
     timerSize: 120,
     timerSteps: 3,
     attemptSeries: 4,
+    score: 0,
   },
   mutations: {
     setIsStartScreen(state, payload) {
@@ -26,12 +28,15 @@ export default {
     resetGame(state) {
       state.isStartScreen = true;
       state.isGameEnd = false;
+      state.score = 0;
     },
     setIsSound(state, payload) {
       state.isSound = payload;
     },
+    setScore(state, payload) {
+      state.score = payload;
+    },
   },
-  methods: {},
   actions: {
     async startGame({ commit, rootState }) {
       const { userWords } = rootState.Learning;
@@ -40,6 +45,20 @@ export default {
       wordsArray = wordsArray.map((item) => getRandomWord(item, userWords));
 
       commit('setWordsArray', wordsArray);
+    },
+    async saveStats({ state, commit, dispatch, rootState }) {
+      const { score } = state;
+      const { statistics } = rootState.Statistic;
+      const { sprintStats } = statistics;
+
+      sprintStats.push({ score, date: Date.now() });
+      sprintStats.sort((a, b) => b.score - a.score);
+      if (sprintStats.length > maxRoundStatsCount) {
+        sprintStats.shift();
+      }
+
+      commit('Statistic/setStatistics', { ...statistics, sprintStats }, { root: true });
+      await dispatch('Statistic/sendStatistic', null, { root: true });
     },
   },
 };

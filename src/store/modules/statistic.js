@@ -16,6 +16,7 @@ export default {
       puzzleStats: [],
       ourGameStats: [],
       speakitStats: [],
+      sprintStats: [],
     },
   },
   mutations: {
@@ -62,6 +63,7 @@ export default {
           puzzleStats: JSON.parse(answer.optional.puzzleStats),
           ourGameStats: JSON.parse(answer.optional.ourGameStats),
           speakitStats: JSON.parse(answer.optional.speakitStats),
+          sprintStats: JSON.parse(answer.optional.sprintStats),
         };
         setLocalStorageUserStatistic(statistic);
         commit('setStatistics', statistic);
@@ -78,10 +80,11 @@ export default {
       const stats = JSON.stringify(statistics.stats);
       const puzzleStats = JSON.stringify(statistics.puzzleStats);
       const speakitStats = JSON.stringify(statistics.speakitStats);
+      const sprintStats = JSON.stringify(statistics.sprintStats);
       const ourGameStats = JSON.stringify(statistics.ourGameStats);
       const payload = JSON.stringify({
         learnedWords: statistics.learnedWords,
-        optional: { stats, puzzleStats, speakitStats, ourGameStats },
+        optional: { stats, puzzleStats, speakitStats, ourGameStats, sprintStats },
       });
       const response = await fetch(URL, {
         method: 'PUT',
