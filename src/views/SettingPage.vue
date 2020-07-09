@@ -312,10 +312,11 @@ export default {
       background-color: $color-wild-sand;
       border: none;
       border-radius: 50%;
+      transition: color 0.3s, background-color 0.3s;
     }
 
     .counter__control:hover {
-      color: white;
+      color: $color-white;
       background-color: $color-dodger-blue;
     }
 
