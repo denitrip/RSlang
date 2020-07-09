@@ -1,9 +1,11 @@
 <template>
   <div class="statistic">
     <h1 class="statistic__title">Statistic</h1>
-    <transition name="fade" mode="out-in">
-      <router-view />
-    </transition>
+    <section class="statistic__wrapper wrapper">
+      <transition name="fade" mode="out-in">
+        <router-view />
+      </transition>
+    </section>
   </div>
 </template>
 
@@ -25,6 +27,15 @@ export default {
   background-image: url('~@/assets/img/speakIt/bgSpeakIt.png');
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.statistic__wrapper {
+  max-width: 600px;
+  padding: 20px;
+  margin-top: 10px;
+  background-color: $color-wild-sand;
+  border-radius: 10px;
+  box-shadow: 0 0 10px $overlay-color;
 }
 
 .statistic__title {
