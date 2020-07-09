@@ -102,7 +102,8 @@ export default {
     },
     async saveStats({ state, commit, dispatch, rootState }) {
       const { score } = state;
-      const { learnedWords, stats, puzzleStats, ourGameStats } = rootState.Statistic.statistics;
+      const { statistics } = rootState.Statistic;
+      const { ourGameStats } = statistics;
 
       ourGameStats.push({ score, date: Date.now() });
       ourGameStats.sort((a, b) => b.score - a.score);
@@ -110,11 +111,7 @@ export default {
         ourGameStats.shift();
       }
 
-      commit(
-        'Statistic/setStatistics',
-        { learnedWords, stats, puzzleStats, ourGameStats },
-        { root: true },
-      );
+      commit('Statistic/setStatistics', { ...statistics, ourGameStats }, { root: true });
       await dispatch('Statistic/sendStatistic', null, { root: true });
     },
   },

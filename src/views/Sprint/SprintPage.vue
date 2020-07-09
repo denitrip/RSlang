@@ -1,28 +1,28 @@
 <template>
-  <div class="speakIt">
+  <div class="sprint">
     <transition name="fade" mode="out-in">
-      <SpeakitStartScreen
+      <SprintStartScreen
         v-if="isStartScreen"
         @startGame="onStartGame"
         :isStartLoading="isStartLoading"
       />
     </transition>
     <transition name="fade" mode="out-in">
-      <SpeakitGame v-if="!isStartScreen" />
+      <SprintGame v-if="!isStartScreen" />
     </transition>
   </div>
 </template>
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
-import SpeakitStartScreen from '@/components/SpeakIt/SpeakItStartScreen.vue';
-import SpeakitGame from '@/components/SpeakIt/SpeakItGame.vue';
+import SprintStartScreen from '@/components/Sprint/SprintStartScreen.vue';
+import SprintGame from '@/components/Sprint/SprintGame.vue';
 
 export default {
-  name: 'SpeakitPage',
+  name: 'SprintHomePage',
   components: {
-    SpeakitStartScreen,
-    SpeakitGame,
+    SprintStartScreen,
+    SprintGame,
   },
   data() {
     return {
@@ -30,22 +30,19 @@ export default {
     };
   },
   computed: {
-    ...mapState('Speakit', ['isStartScreen', 'words']),
-  },
-  destroyed() {
-    this.resetGame();
+    ...mapState('Sprint', ['isStartScreen']),
   },
   methods: {
     ...mapActions('Error', ['setError']),
-    ...mapActions('Speakit', ['getWords', 'resetGame']),
-    ...mapMutations('Speakit', ['setIsStartScreen', 'setIncorrectAnswer']),
+    ...mapActions('Sprint', ['startGame']),
+    ...mapActions('Learning', ['getAllUserWords']),
+    ...mapMutations('Sprint', ['setIsStartScreen', 'resetGame']),
 
     async onStartGame() {
       this.isStartLoading = true;
       try {
-        await this.getWords();
-        await this.resetGame();
-        this.setIncorrectAnswer([...this.words]);
+        await this.getAllUserWords();
+        await this.startGame();
         this.setIsStartScreen(false);
       } catch (error) {
         this.setError(error.message);
@@ -58,7 +55,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.speakIt {
+.sprint {
   position: relative;
   width: 100%;
   height: 100%;

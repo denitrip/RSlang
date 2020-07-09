@@ -1,7 +1,7 @@
 export default {
   homePage: {
     path: '/',
-    name: 'home',
+    name: 'Home',
   },
   loginPage: {
     path: '/login',
@@ -59,9 +59,21 @@ export default {
     path: '/savannah',
     name: 'savannah',
   },
-  speakItPage: {
-    path: '/speak-It',
-    name: 'speakIt',
+  speakitPage: {
+    path: '/speak-it',
+    name: 'speakit',
+  },
+  SpeakitStatisticPage: {
+    path: '/speakit-statistic',
+    name: 'speakitStatistic',
+  },
+  speakitStats: {
+    path: '',
+    name: 'speakStats',
+  },
+  speakitStatsDetailed: {
+    path: '/speakit-statistic/detail',
+    name: 'speakitStatsDetail',
   },
   audiocallPage: {
     path: '/audiocall',
@@ -70,5 +82,9 @@ export default {
   ourGamePage: {
     path: '/our-game',
     name: 'ourGame',
+  },
+  sprintPage: {
+    path: '/sprint',
+    name: 'sprint',
   },
 };
