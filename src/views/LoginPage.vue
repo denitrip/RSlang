@@ -141,17 +141,19 @@ $mobile-small-width: 320px;
 .wrapper {
   @extend %flex-column;
 
-  width: 80vw;
+  width: 100%;
+  max-width: $content-width;
   height: 100vh;
+  padding: 20px;
   margin: 0 auto;
 
-  @media screen and (max-width: $content-width) {
-    width: 90vw;
-  }
+  // @media screen and (max-width: $content-width) {
+  //   width: 90vw;
+  // }
 
-  @media screen and (max-width: $tablet-width) {
-    width: 95vw;
-  }
+  // @media screen and (max-width: $tablet-width) {
+  //   width: 95vw;
+  // }
 }
 
 a:hover {
@@ -276,6 +278,12 @@ header {
   }
 }
 
+.header_buttons {
+  @media screen and (max-width: $mobile-big-width) {
+    flex-direction: column;
+  }
+}
+
 .header_buttons,
 .main_buttons {
   @extend %flex-row;
@@ -293,8 +301,8 @@ header {
   }
 
   @media screen and (max-width: $mobile-big-width) {
-    width: 85px;
     height: 50px;
+    margin-bottom: 10px;
     line-height: 46px;
   }
 }
@@ -318,6 +326,7 @@ header {
   @media screen and (max-width: $tablet-width) {
     width: 94vw;
     font-size: 38px;
+    text-align: center;
   }
 
   @media screen and (max-width: $mobile-big-width) {
@@ -328,6 +337,10 @@ header {
 .subtitle {
   margin-bottom: 32px;
   line-height: 30px;
+
+  @media screen and (max-width: $tablet-width) {
+    text-align: center;
+  }
 }
 
 .footer {
