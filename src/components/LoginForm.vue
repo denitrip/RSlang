@@ -386,4 +386,10 @@ export default {
 .signup {
   text-align: center;
 }
+
+@media screen and (max-width: $mobile-big-width) {
+  .login {
+    padding: 20px;
+  }
+}
 </style>
