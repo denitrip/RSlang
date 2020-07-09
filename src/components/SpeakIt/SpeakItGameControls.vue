@@ -27,7 +27,6 @@ export default {
       endRound: 10,
       dataSrc,
       recognition: null,
-      defaultPicture,
     };
   },
   computed: {
@@ -44,6 +43,19 @@ export default {
       'isSound',
       'wordsArray',
     ]),
+  },
+  destroyed() {
+    this.recognition.removeEventListener('end', this.startRecognition);
+    this.recognition.stop();
+    this.setIncorrectAnswer([...this.words]);
+    this.setCorrectAnswer([]);
+    this.setPictureSrc(defaultPicture);
+    this.setWordRecording('');
+    this.setTranslation('');
+    this.setIsStartGame(false);
+    this.setIsCorrectWord(false);
+    this.setIsEndGame(false);
+    this.setIsStartScreen(true);
   },
   created() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -78,6 +90,7 @@ export default {
       'setPictureSrc',
       'setWordsArray',
       'setTranslation',
+      'setIsStartScreen',
     ]),
     ...mapActions('Speakit', ['saveStats', 'onSetCompleteRounds', 'saveSettings']),
     ...mapActions('Error', ['setError']),

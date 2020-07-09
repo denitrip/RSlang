@@ -144,6 +144,8 @@ export default {
 .audioRecording {
   margin: 20px 0;
   font-size: 30px;
+  color: $color-white;
+  text-shadow: 3px 3px 2px $color-black;
 }
 
 .audioRecording {
