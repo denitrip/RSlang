@@ -175,7 +175,7 @@ export default {
       }
     },
     onKeyDown(event) {
-      if (!event.repeat) {
+      if (!event.repeat && !this.isCheck && !this.isGameEnd) {
         switch (event.key) {
           case keys.one:
             this.checkAnswer(0);

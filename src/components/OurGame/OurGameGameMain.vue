@@ -143,7 +143,6 @@ export default {
       this.setCorrectAnswerCountInGroup(this.correctAnswerCountInGroup + 1);
       setTimeout(() => {
         this.isCorrect = false;
-        this.isCheck = false;
         this.onCheckGameOver();
       }, 1500);
     },
@@ -157,7 +156,6 @@ export default {
       this.minusScore();
       setTimeout(() => {
         this.isIncorrect = false;
-        this.isCheck = false;
         this.onCheckGameOver();
       }, 1500);
     },
@@ -181,6 +179,7 @@ export default {
       } else if (this.correctAnswerCountInGroup >= maxCorrectAnswer && this.group < maxGroupCount) {
         this.levelUp();
       } else {
+        this.isCheck = false;
         this.setWordNumber(this.wordNumber + 1);
       }
     },
@@ -206,6 +205,7 @@ export default {
       } catch (error) {
         this.setError(error.message);
       } finally {
+        this.isCheck = false;
         this.isStartLoading = false;
       }
     },
