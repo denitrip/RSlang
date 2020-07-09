@@ -21,7 +21,7 @@
             </span>
             <span class="icon-circle icon-circle_blue">
               <span class="icon icon_linkedin">
-                <IconBase width="15" height="14" viewBox="0 0 15 14" icon-color="white">
+                <IconBase width="20" height="19" viewBox="0 0 15 18" icon-color="white">
                   <IconLinkedin />
                 </IconBase>
               </span>
