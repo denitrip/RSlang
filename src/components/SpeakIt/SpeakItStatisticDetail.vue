@@ -1,47 +1,49 @@
 <template>
-  <section class="statistic__wrapper">
-    <h1 class="statistic__title">Raund statistic</h1>
-    <div class="statistic__detail">
-      <div class="details">
-        <div class="detail__dont-know">
-          <span>I don' know </span>
-          <span class="detail__dont-know-count">{{ incorrectAnswer.length }}</span>
-          <div class="detail__sentence" v-for="item in incorrectAnswer" :key="item.word">
-            <div class="detail__wrap">
-              <span class="detail__speech" @click="onPlayAudio(item.audio)">
-                <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
-                  <icon-volume />
-                </icon-base>
-              </span>
-              <p class="detail__words">{{ item.word }} - {{ item.wordTranslate }}</p>
-            </div>
-          </div>
-        </div>
-        <div class="detail__know">
-          <span>I know </span>
-          <span class="detail__know-count">{{ correctAnswer.length }}</span>
-          <div class="detail__sentence" v-for="item in correctAnswer" :key="`${item.word}`">
-            <div class="detail__wrap">
-              <span class="detail__speech" @click="onPlayAudio(item.audio)">
-                <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
-                  <icon-volume />
-                </icon-base>
-              </span>
-              <p class="detail__words">{{ item.word }} - {{ item.wordTranslate }}</p>
-            </div>
+  <div class="statistic__detail">
+    <div class="details">
+      <div class="detail__dont-know">
+        <span>I don' know </span>
+        <span class="detail__dont-know-count">{{ incorrectAnswer.length }}</span>
+        <div class="detail__sentence" v-for="item in incorrectAnswer" :key="item.word">
+          <div class="detail__wrap">
+            <span class="detail__speech" @click="onPlayAudio(item.audio)">
+              <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
+                <icon-volume />
+              </icon-base>
+            </span>
+            <p class="detail__words">{{ item.word }} - {{ item.wordTranslate }}</p>
           </div>
         </div>
       </div>
-      <div class="detail__buttons">
-        <button class="detail__button" @click="onResetGame" :disabled="isStartLoading">
-          Restart Round
-        </button>
-        <button class="detail__button" @click="onNextRound" :disabled="isStartLoading">
-          Next Round
-        </button>
+      <div class="detail__know">
+        <span>I know </span>
+        <span class="detail__know-count">{{ correctAnswer.length }}</span>
+        <div class="detail__sentence" v-for="item in correctAnswer" :key="`${item.word}`">
+          <div class="detail__wrap">
+            <span class="detail__speech" @click="onPlayAudio(item.audio)">
+              <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
+                <icon-volume />
+              </icon-base>
+            </span>
+            <p class="detail__words">{{ item.word }} - {{ item.wordTranslate }}</p>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+    <div class="detail__buttons">
+      <button class="detail__button" @click="onResetGame" :disabled="isStartLoading">
+        Restart Round
+      </button>
+      <button
+        class="detail__button button__next-button"
+        @click="onNextRound"
+        :disabled="isStartLoading"
+      >
+        Next Round
+      </button>
+      <button class="detail__button" @click="onStatistic">Statistic</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -50,6 +52,7 @@ import { dataSrc } from '@/helpers/constants.helper';
 import defaultPicture from '@/assets/img/speakIt/do_you_speak.jpg';
 import IconBase from '@/components/IconBase.vue';
 import IconVolume from '@/components/icons/IconVolume.vue';
+import routerConsts from '@/router/routerConsts';
 
 export default {
   name: 'SpeakitStatisticDetail',
@@ -94,6 +97,9 @@ export default {
       const audio = new Audio(`${dataSrc}${audioSrc}`);
       audio.play();
     },
+    onStatistic() {
+      this.$router.push(routerConsts.SpeakitStatisticPage.path);
+    },
     onNextRound() {
       if (this.isLastRound) {
         this.setSelectedLevel(Number(this.selectedLevel) + 1);
@@ -115,7 +121,7 @@ export default {
         this.setPictureSrc(defaultPicture);
         this.setWordRecording('');
         this.setTranslation('');
-        this.$router.push('/speak-it');
+        this.$router.push(routerConsts.speakitPage.path);
       } catch (error) {
         this.setError(error.message);
       } finally {
@@ -127,17 +133,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.statistic__wrapper {
-  width: 100%;
-  max-width: 600px;
-  padding: 20px 30px;
-  margin-top: 10px;
-  text-align: center;
-  background-color: $color-wild-sand;
-  border-radius: 10px;
-  box-shadow: 0 0 10px $overlay-color;
-}
-
 .statistic__title {
   color: $color-dodger-blue;
 }
@@ -172,6 +167,18 @@ export default {
 .detail__dont-know,
 .detail__know {
   margin-top: 20px;
+}
+
+.button__next-button {
+  margin: 0 10px;
+
+  @include media-tablet {
+    margin: 0 5px;
+  }
+
+  @include media-mobile {
+    margin: 0;
+  }
 }
 
 .detail__dont-know-count,
@@ -226,6 +233,11 @@ export default {
   display: flex;
   justify-content: space-around;
   margin-top: 40px;
+
+  @include media-mobile {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .detail__button {
@@ -238,9 +250,8 @@ export default {
   .statistic__detail {
     padding: 0;
   }
-
-  .statistic__wrapper {
-    padding: 20px 10px;
+  .detail__buttons {
+    justify-content: center;
   }
 }
 </style>

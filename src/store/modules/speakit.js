@@ -1,5 +1,5 @@
-import { application, apiAddress } from '@/helpers/constants.helper';
-import { getWordsByLevelAndRound } from '@/helpers/englishPuzzle.helper';
+import { application, apiAddress, maxRoundStatsCount } from '@/helpers/constants.helper';
+import { getWordsByLevelAndRound, CurrentRoundStats } from '@/helpers/englishPuzzle.helper';
 import defaultPicture from '@/assets/img/speakIt/do_you_speak.jpg';
 
 export default {
@@ -16,9 +16,11 @@ export default {
     wordRecording: '',
     translation: '',
     words: null,
+    wordsArray: [],
     wordsStats: null,
     correctAnswer: [],
     incorrectAnswer: [],
+    speakitStats: [],
     isRoundComplete: false,
     currentRoundStats: null,
     isStartScreen: true,
@@ -55,11 +57,17 @@ export default {
     setIncorrectAnswer(state, payload) {
       state.incorrectAnswer = payload;
     },
+    setWordsArray(state, payload) {
+      state.wordsArray = payload;
+    },
     setWordRecording(state, payload) {
       state.wordRecording = payload;
     },
     setTranslation(state, payload) {
       state.translation = payload;
+    },
+    setSpeakitStats(state, payload) {
+      state.speakitStats = payload;
     },
     setCorrectAnswer(state, payload) {
       state.correctAnswer = payload;
@@ -115,6 +123,56 @@ export default {
     },
     async resetGame({ dispatch }) {
       await dispatch('getWords');
+    },
+    async saveStats({ state, commit, dispatch, rootState }) {
+      const { selectedLevel, selectedRound, wordsArray } = state;
+      const { learnedWords, stats, speakitStats, puzzleStats } = rootState.Statistic.statistics;
+      const currentRoundStats = new CurrentRoundStats(selectedLevel, selectedRound, wordsArray);
+      speakitStats.push(currentRoundStats);
+      if (speakitStats.length > maxRoundStatsCount) {
+        speakitStats.shift();
+      }
+      commit('setCurrentRoundStats', currentRoundStats);
+      commit(
+        'Statistic/setStatistics',
+        { learnedWords, stats, speakitStats, puzzleStats },
+        { root: true },
+      );
+      await dispatch('Statistic/sendStatistic', null, { root: true });
+    },
+    getSettings({ state, commit, rootState }) {
+      const { roundCount } = state;
+      const { settings } = rootState.Settings;
+      const { completeRounds, lastRound } = settings.speakitSettings;
+
+      if (lastRound.page === roundCount) {
+        commit('setSelectedLevel', Number(lastRound.lvl) + 1);
+        commit('setSelectedRound', 1);
+      } else {
+        commit('setSelectedRound', Number(lastRound.page) + 1);
+      }
+      commit('setCompleteRounds', completeRounds);
+    },
+    async saveSettings({ state, commit, dispatch, rootState }) {
+      const { completeRounds, selectedLevel, selectedRound } = state;
+      const { settings } = rootState.Settings;
+      const lastRound = { lvl: Number(selectedLevel), page: Number(selectedRound) };
+      commit(
+        'Settings/setSettings',
+        { ...settings, speakitSettings: { lastRound, completeRounds } },
+        { root: true },
+      );
+      await dispatch('Settings/sendSettings', null, { root: true });
+    },
+    onSetCompleteRounds({ state, commit }) {
+      const { completeRounds, selectedLevel, selectedRound } = state;
+      const isNotComplete = !completeRounds.find(
+        (item) => item.lvl === selectedLevel && item.page === selectedRound,
+      );
+      if (isNotComplete) {
+        completeRounds.push({ lvl: selectedLevel, page: selectedRound });
+        commit('setCompleteRounds', completeRounds);
+      }
     },
   },
   getters: {

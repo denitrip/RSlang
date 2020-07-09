@@ -5,11 +5,7 @@
       <button class="button speak-button recording" :disabled="isStartGame" @click="startGame">
         Speak please
       </button>
-      <button
-        class="button finish-button"
-        :disabled="isGameEnd || isRoundComplete"
-        @click="finishGame"
-      >
+      <button class="button finish-button" :disabled="isGameEnd" @click="finishGame">
         Finish
       </button>
     </div>
@@ -39,7 +35,6 @@ export default {
       'words',
       'isStartGame',
       'isGameEnd',
-      'isRoundComplete',
       'correctAnswer',
       'incorrectAnswer',
       'isResetGame',
@@ -47,6 +42,7 @@ export default {
       'isCorrectWord',
       'pictureSrc',
       'isSound',
+      'wordsArray',
     ]),
   },
   created() {
@@ -74,15 +70,16 @@ export default {
   methods: {
     ...mapMutations('Speakit', [
       'setIsStartGame',
-      'setIsRoundComplete',
       'setIsEndGame',
       'setCorrectAnswer',
       'setIncorrectAnswer',
       'setWordRecording',
       'setIsCorrectWord',
       'setPictureSrc',
+      'setWordsArray',
       'setTranslation',
     ]),
+    ...mapActions('Speakit', ['saveStats', 'onSetCompleteRounds', 'saveSettings']),
     ...mapActions('Error', ['setError']),
     startRecognition() {
       this.recognition.start();
@@ -137,14 +134,24 @@ export default {
     showPicture(word) {
       this.setPictureSrc(`${dataSrc}${word.image}`);
     },
-    finishGame() {
+    async finishGame() {
       if (this.recognition) {
         this.recognition.removeEventListener('end', this.startRecognition);
         this.recognition.stop();
+        this.onSetCompleteRounds();
+        this.setWordsArray(this.addWordsToStatisticArray());
+        await this.saveStats();
+        await this.saveSettings();
         this.$router.push(routerConsts.speakitStatsDetailed.path);
       } else {
         this.setError(errorMessage);
       }
+    },
+    addWordsToStatisticArray() {
+      const arrForWords = [];
+      this.correctAnswer.forEach((item) => arrForWords.push({ id: item.word, know: true }));
+      this.incorrectAnswer.forEach((item) => arrForWords.push({ id: item.word, know: false }));
+      return arrForWords;
     },
     onPlaySound(src) {
       if (this.isSound) {
