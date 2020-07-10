@@ -5,23 +5,23 @@ export default {
   },
   loginPage: {
     path: '/login',
-    name: 'login',
+    name: 'Login',
   },
   welcomePage: {
     path: '/welcome',
-    name: 'welcome',
+    name: 'Welcome',
   },
   signUpPage: {
-    path: '/signUp',
-    name: 'signUp',
+    path: '/sign-up',
+    name: 'Sign Up',
   },
   miniGamesPage: {
-    path: '/miniGames',
-    name: 'Mini games',
+    path: '/mini-games',
+    name: 'Mini Games',
   },
   ourTeamPage: {
-    path: '/ourTeam',
-    name: 'Our team',
+    path: '/our-team',
+    name: 'Our Team',
   },
   learningPage: {
     path: '/learning',
@@ -41,50 +41,50 @@ export default {
   },
   englishPuzzlePage: {
     path: '/english-puzzle',
-    name: 'englishPuzzle',
+    name: 'English Puzzle',
   },
   EnglishPuzzleStatisticPage: {
     path: '/english-puzzle-statistic',
-    name: 'englishPuzzleStatistic',
+    name: 'English Puzzle Statistic',
   },
   englishPuzzleStats: {
     path: '',
-    name: 'englishPuzzleStats',
+    name: 'English Puzzle Stats',
   },
   englishPuzzleStatsDetailed: {
     path: '/english-puzzle-statistic/detail',
-    name: 'englishPuzzleStatsDetail',
+    name: 'English Puzzle Stats Detail',
   },
   savannahPage: {
     path: '/savannah',
-    name: 'savannah',
+    name: 'Savannah',
   },
   speakitPage: {
     path: '/speak-it',
-    name: 'speakit',
+    name: 'Speakit',
   },
   SpeakitStatisticPage: {
     path: '/speakit-statistic',
-    name: 'speakitStatistic',
+    name: 'Speakit Statistic',
   },
   speakitStats: {
     path: '',
-    name: 'speakStats',
+    name: 'Speak Stats',
   },
   speakitStatsDetailed: {
     path: '/speakit-statistic/detail',
-    name: 'speakitStatsDetail',
+    name: 'Speakit Stats Detail',
   },
   audiocallPage: {
     path: '/audiocall',
-    name: 'audiocall',
+    name: 'Audiocall',
   },
   ourGamePage: {
     path: '/our-game',
-    name: 'ourGame',
+    name: 'Our Game',
   },
   sprintPage: {
     path: '/sprint',
-    name: 'sprint',
+    name: 'Sprint',
   },
 };

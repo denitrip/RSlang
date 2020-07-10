@@ -110,6 +110,7 @@ img.rot:hover {
   font-weight: bold;
   line-height: 44px;
   color: $color-gigas;
+  text-transform: capitalize;
 
   @include media-tablet {
     justify-content: center;
