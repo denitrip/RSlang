@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="video-overlay" @click="close" v-if="isVideoShow"></div>
+    <transition name="fade">
+      <div class="video-overlay" @click="close" v-if="isVideoShow"></div>
+    </transition>
     <div class="video" v-if="isVideoShow">
       <iframe
         src="https://www.youtube.com/embed/fFIW-p53gB8"
@@ -9,6 +11,7 @@
         allowfullscreen
       ></iframe>
     </div>
+
     <button @click="open" class=" button button--bordered">Watch video</button>
   </div>
 </template>
@@ -39,14 +42,13 @@ export default {
 <style lang="scss" scoped>
 .video {
   position: fixed;
-  top: calc(50% - 200px);
-  left: calc(50% - 217px);
-  z-index: 10;
+  top: calc(50% - 158px);
+  left: calc(50% - 281px);
+  z-index: 100;
   display: flex;
   flex-direction: column;
-  background: $color-white;
-  border: 1px solid $color-black;
-  box-shadow: 1px 5px 14px $box-shadow-one-color;
+  width: 100%;
+  max-width: 560px;
 }
 
 .video-overlay {
@@ -60,7 +62,7 @@ export default {
 }
 
 iframe {
-  width: 560px;
+  width: 100%;
   height: 315px;
 }
 
@@ -90,20 +92,16 @@ iframe {
   border: 1px solid $color-dodger-blue;
 }
 
-.button--bordered:hover {
-  color: $color-cornflower-blue;
-  border: 1px solid $color-cornflower-blue;
+@media (hover: hover) {
+  .button--bordered:hover {
+    color: $color-cornflower-blue;
+    border: 1px solid $color-cornflower-blue;
+  }
 }
 
 @media screen and (max-width: $puzzle-mobile-size) {
   .video {
     left: 0;
-    width: 100%;
-  }
-
-  iframe {
-    width: 100%;
-    max-width: '560px';
   }
 }
 </style>

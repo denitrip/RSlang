@@ -21,7 +21,7 @@
             Settings
           </button>
         </router-link>
-        <router-link :to="routerConsts.learningPage.path" style="color: white;">
+        <router-link :to="routerConsts.learningPage.path">
           <button class="Primary-2" @click="close">
             Learn more
           </button>
@@ -59,7 +59,7 @@ export default {
   position: fixed;
   top: calc(50% - 200px);
   left: calc(50% - 217px);
-  z-index: 10;
+  z-index: 100;
   display: flex;
   flex-direction: column;
   max-width: 434px;
@@ -99,11 +99,14 @@ export default {
   font-weight: normal;
   line-height: 24px;
   color: $color-pickled-bluewood;
+  text-align: justify;
 }
 
 .buttons-wrapper {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
   margin-top: 17px;
 }
 
@@ -114,39 +117,62 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 21px;
-  height: 22px;
-  color: $color-white;
-  background: $color-manatee;
-  border: 1px solid $color-manatee;
+  width: 30px;
+  height: 30px;
+  font-size: 30px;
+  color: $color-manatee;
+  background-color: transparent;
+  border: 1px solid transparent;
   border-radius: 50%;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.Primary-1 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 55px;
-  padding: 18px 40px;
-  color: $color-dodger-blue;
-  background: $color-white;
-  border: 1px solid $color-dodger-blue;
-  border-radius: 20px;
-  outline: none;
-}
-
+.Primary-1,
 .Primary-2 {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 55px;
   padding: 18px 40px;
-  margin-left: 8px;
-  color: $color-white;
-  background: $color-dodger-blue;
   border: 1px solid $color-dodger-blue;
   border-radius: 20px;
   outline: none;
+}
+
+.Primary-1 {
+  color: $color-dodger-blue;
+  background-color: $color-white;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.Primary-2 {
+  margin-left: 8px;
+  color: $color-white;
+  background-color: $color-dodger-blue;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+@media (hover: hover) {
+  .text {
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .Primary-1:hover {
+    color: $color-malibu;
+    border-color: $color-malibu;
+  }
+
+  .Primary-2:hover {
+    background-color: $color-malibu;
+    border-color: $color-malibu;
+  }
+
+  .close-button:hover {
+    color: $color-white;
+    background-color: $color-manatee;
+  }
 }
 
 @media screen and (max-width: $puzzle-mobile-size) {

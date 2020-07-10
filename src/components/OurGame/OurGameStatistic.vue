@@ -179,11 +179,6 @@ export default {
   border: none;
   transition: color 0.3s;
 
-  &:hover {
-    color: $color-dodger-blue;
-    background: transparent;
-  }
-
   &_playing {
     color: $color-dodger-blue;
   }
@@ -193,12 +188,6 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
-
-  &:hover {
-    .detail__delete {
-      display: block;
-    }
-  }
 }
 
 .detail__words {
@@ -237,6 +226,19 @@ export default {
 
   &:nth-child(3) {
     color: $color-dwarf-bronze;
+  }
+}
+
+@media (hover: hover) {
+  .detail__speech:hover {
+    color: $color-dodger-blue;
+    background: transparent;
+  }
+
+  .detail__sentence:hover {
+    .detail__delete {
+      display: block;
+    }
   }
 }
 
