@@ -1,5 +1,5 @@
 <template functional>
-  <div class="game__wrapper">
+  <div class="game__wrapper" key="SpeakitGame">
     <component :is="props.components.SpeakitGameMenu"></component>
     <component :is="props.components.SpeakitGameMain"></component>
     <component :is="props.components.SpeakitGameControls"></component>

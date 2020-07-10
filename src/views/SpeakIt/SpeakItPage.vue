@@ -6,9 +6,7 @@
         @startGame="onStartGame"
         :isStartLoading="isStartLoading"
       />
-    </transition>
-    <transition name="fade" mode="out-in">
-      <SpeakitGame v-if="!isStartScreen" />
+      <SpeakitGame v-else />
     </transition>
   </div>
 </template>

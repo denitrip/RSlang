@@ -6,9 +6,7 @@
         @startGame="onStartGame"
         :isStartLoading="isStartLoading"
       />
-    </transition>
-    <transition name="fade" mode="out-in">
-      <EnglishPuzzleGame v-if="!isStartScreen" />
+      <EnglishPuzzleGame v-else />
     </transition>
   </div>
 </template>

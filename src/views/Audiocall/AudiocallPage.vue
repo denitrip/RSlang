@@ -8,9 +8,7 @@
         :isWordsEmpty="isWordsEmpty"
         :link="routerConsts.learningPage.path"
       />
-    </transition>
-    <transition name="fade" mode="out-in">
-      <AudiocallGame v-if="!isStartScreen" />
+      <AudiocallGame v-else />
     </transition>
   </div>
 </template>

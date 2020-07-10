@@ -1,5 +1,5 @@
 <template functional>
-  <div class="start-screen">
+  <div class="start-screen" key="audiocall-start-screen">
     <h1 class="start-screen__title">audiocall</h1>
     <h3 class="start-screen__description">
       The “Audiocall” mini-game is a training that develops speech and translation skills.
