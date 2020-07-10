@@ -34,6 +34,7 @@
         <b-button
           class="button"
           :class="{ button_active: isPressLeft }"
+          :disabled="isCheck"
           variant="success"
           @click="correctBtn"
           @keyup.left="correctBtn"
@@ -44,6 +45,7 @@
         <b-button
           class="button"
           :class="{ button_active: isPressRight }"
+          :disabled="isCheck"
           variant="danger"
           @click="wrongBtn"
         >
@@ -124,6 +126,7 @@ export default {
       isPressLeft: false,
       isPressRight: false,
       isTableShow: false,
+      isCheck: false,
       knowWords: [],
       dontKnowWords: [],
     };
@@ -194,9 +197,9 @@ export default {
         this.series = 0;
         this.onPlaySound(errorSound);
       }
-
       if (this.index + 1 < this.wordsArray.length) {
         this.index += 1;
+        this.isCheck = false;
       } else {
         this.finished();
       }
@@ -214,6 +217,7 @@ export default {
       }
     },
     correctBtn() {
+      this.isCheck = true;
       this.isPressLeft = true;
       this.checkAnswer(true);
       setTimeout(() => {
@@ -221,6 +225,7 @@ export default {
       }, 350);
     },
     wrongBtn() {
+      this.isCheck = true;
       this.isPressRight = true;
       this.checkAnswer(false);
       setTimeout(() => {
@@ -238,7 +243,7 @@ export default {
     },
 
     onKeyDown(event) {
-      if (!event.repeat) {
+      if (!event.repeat && !this.isCheck) {
         switch (event.key) {
           case keys.left:
             this.correctBtn();
@@ -291,6 +296,7 @@ export default {
 
   &__data {
     width: 80%;
+    max-height: 380px;
     overflow-y: scroll;
   }
 
@@ -356,7 +362,14 @@ export default {
   transition: opacity 0.2s, border-color 0.2s;
 
   &_active {
+    cursor: default !important;
     border: 1px solid $color-shuttle-gray;
+    opacity: 0.5;
+  }
+
+  &:disabled {
+    pointer-events: none;
+    cursor: default !important;
     opacity: 0.5;
   }
 }

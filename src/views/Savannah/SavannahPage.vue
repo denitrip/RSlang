@@ -8,9 +8,7 @@
         :isWordsEmpty="isWordsEmpty"
         :link="routerConsts.learningPage.path"
       />
-    </transition>
-    <transition name="fade" mode="out-in">
-      <SavannahGame v-if="!isStartScreen" />
+      <SavannahGame v-else />
     </transition>
   </div>
 </template>

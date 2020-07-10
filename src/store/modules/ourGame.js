@@ -108,7 +108,7 @@ export default {
       ourGameStats.push({ score, date: Date.now() });
       ourGameStats.sort((a, b) => b.score - a.score);
       if (ourGameStats.length > maxRoundStatsCount) {
-        ourGameStats.shift();
+        ourGameStats.pop();
       }
 
       commit('Statistic/setStatistics', { ...statistics, ourGameStats }, { root: true });

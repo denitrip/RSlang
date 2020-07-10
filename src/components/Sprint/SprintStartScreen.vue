@@ -1,5 +1,5 @@
 <template functional>
-  <div class="start-screen">
+  <div class="start-screen" key="sprint-start-screen">
     <h1 class="start-screen__title">sprint</h1>
     <h3 class="start-screen__description">
       The “Sprint” mini-game is a simulator for repetition of learned words from your dictionary.
@@ -18,6 +18,10 @@
       <component :is="props.components.AppSpinner" v-if="props.isStartLoading"></component>
       Start
     </button>
+    <div class="words-empty" v-if="props.isWordsEmpty">
+      <p>You have not learned words yet.</p>
+      <router-link class="words-empty__link" :to="props.link">Start learning</router-link>
+    </div>
   </div>
 </template>
 
@@ -30,6 +34,14 @@ export default {
     isStartLoading: {
       type: Boolean,
       default: false,
+    },
+    isWordsEmpty: {
+      type: Boolean,
+      default: false,
+    },
+    link: {
+      type: String,
+      default: '',
     },
     components: {
       type: Object,
@@ -75,6 +87,15 @@ export default {
   @include english-puzzle-button(150px);
 
   margin-top: 20px;
+}
+
+.words-empty {
+  display: flex;
+  margin-top: 20px;
+}
+
+.words-empty__link {
+  margin-left: 10px;
 }
 
 @media screen and (max-width: $puzzle-mobile-size) {

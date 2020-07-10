@@ -1,5 +1,5 @@
 <template functional>
-  <div class="start-screen">
+  <div class="start-screen" key="englishPuzzle-start-screen">
     <h1 class="start-screen__title">english puzzle</h1>
     <h3 class="start-screen__description">
       Click on words, collect phrases. Words can be drag and drop. Select tooltips in the menu.

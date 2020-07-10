@@ -1,5 +1,5 @@
 <template functional>
-  <div class="game__wrapper">
+  <div class="game__wrapper" key="audiocall-game">
     <component :is="props.components.AudiocallGameMenu"></component>
     <component :is="props.components.AudiocallGameMain"></component>
   </div>

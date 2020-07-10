@@ -38,7 +38,7 @@ export default {
     },
   },
   actions: {
-    async startGame({ commit, rootState }) {
+    startGame({ commit, rootState }) {
       const { userWords } = rootState.Learning;
 
       let wordsArray = shuffle([...userWords]);
@@ -54,7 +54,7 @@ export default {
       sprintStats.push({ score, date: Date.now() });
       sprintStats.sort((a, b) => b.score - a.score);
       if (sprintStats.length > maxRoundStatsCount) {
-        sprintStats.shift();
+        sprintStats.pop();
       }
 
       commit('Statistic/setStatistics', { ...statistics, sprintStats }, { root: true });
