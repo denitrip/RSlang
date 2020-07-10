@@ -208,11 +208,6 @@ export default {
   border: none;
   transition: color 0.3s;
 
-  &:hover {
-    color: $color-dodger-blue;
-    background: transparent;
-  }
-
   &_playing {
     color: $color-dodger-blue;
   }
@@ -246,10 +241,18 @@ export default {
   margin-bottom: 10px;
 }
 
+@media (hover: hover) {
+  .detail__speech:hover {
+    color: $color-dodger-blue;
+    background: transparent;
+  }
+}
+
 @media screen and (max-width: $puzzle-mobile-size) {
   .statistic__detail {
     padding: 0;
   }
+
   .detail__buttons {
     justify-content: center;
   }

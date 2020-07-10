@@ -5,58 +5,79 @@
         <img src="~@/assets/images/Logo.png" alt="logo" class="logo" width="118" height="72" />
       </router-link>
       <ul class="header_buttons">
-        <router-link :to="routerConsts.loginPage.path">
-          <li
-            v-if="isWelcomePage || isSignUp"
-            class="header_buttons-button button button--bordered"
+        <transition name="fade" mode="out-in">
+          <router-link
+            v-if="isSignUp"
+            :to="routerConsts.loginPage.path"
+            :key="routerConsts.loginPage.path"
           >
-            Log In
-          </li>
-        </router-link>
-        <router-link :to="routerConsts.signUpPage.path">
-          <li v-if="isWelcomePage || isLogIn" class="header_buttons-button button button--filled">
-            Sign Up
-          </li>
-        </router-link>
+            <li class="header_buttons-button button button--bordered">
+              Log In
+            </li>
+          </router-link>
+          <router-link
+            v-if="isLogIn"
+            :to="routerConsts.signUpPage.path"
+            :key="routerConsts.signUpPage.path"
+          >
+            <li class="header_buttons-button button button--filled">
+              Sign Up
+            </li>
+          </router-link>
+          <div class="header_buttons" v-if="isWelcomePage">
+            <router-link :to="routerConsts.loginPage.path" :key="routerConsts.loginPage.path">
+              <li class="header_buttons-button button button--bordered">
+                Log In
+              </li>
+            </router-link>
+            <router-link :to="routerConsts.signUpPage.path" :key="routerConsts.signUpPage.path">
+              <li class="header_buttons-button button button--filled">
+                Sign Up
+              </li>
+            </router-link>
+          </div>
+        </transition>
       </ul>
     </header>
-    <main v-if="isWelcomePage" class="main-welcome">
-      <div class="main-descr">
-        <p class="title">Learn new words every day with RSlang</p>
-        <p class="subtitle">
-          An application for learning foreign words with interval repetition techniques, tracking
-          individual progress and mini-games
+    <transition name="fade" mode="out-in">
+      <main v-if="isWelcomePage" class="main-welcome" key="main-welcome">
+        <div class="main-descr">
+          <p class="title">Learn new words every day with RSlang</p>
+          <p class="subtitle">
+            An application for learning foreign words with interval repetition techniques, tracking
+            individual progress and mini-games
+          </p>
+          <ul class="main_buttons">
+            <li class="main_buttons-button">
+              <router-link :to="routerConsts.signUpPage.path" class="StartLearning"
+                ><button class="button button--filled">Start learning</button></router-link
+              >
+            </li>
+            <li class="main_buttons-button">
+              <WatchVideo />
+            </li>
+          </ul>
+        </div>
+        <img src="~@/assets/images/welcome-bg.png" alt class="main-image" />
+      </main>
+      <main v-if="isLogIn" class="main-login" key="main-login">
+        <p class="title">
+          <span class="text-colored">We miss you,</span> are you ready to continue training?
         </p>
-        <ul class="main_buttons">
-          <li class="main_buttons-button">
-            <router-link :to="routerConsts.signUpPage.path" class="StartLearning"
-              ><button class="button button--filled">Start learning</button></router-link
-            >
-          </li>
-          <li class="main_buttons-button">
-            <WatchVideo />
-          </li>
-        </ul>
-      </div>
-      <img src="~@/assets/images/welcome-bg.png" alt class="main-image" />
-    </main>
-    <main v-if="isLogIn" class="main-login">
-      <p class="title">
-        <span class="text-colored">We miss you,</span> are you ready to continue training?
-      </p>
-      <div class="form-wrapper form-wrapper--login">
-        <loginForm />
-      </div>
-    </main>
-    <main v-if="isSignUp" class="main-signup">
-      <p class="title">
-        Let’s start our jorney with
-        <span class="text-colored">RSlang!</span>
-      </p>
-      <div class="form-wrapper form-wrapper--signup">
-        <loginForm />
-      </div>
-    </main>
+        <div class="form-wrapper form-wrapper--login">
+          <loginForm />
+        </div>
+      </main>
+      <main v-if="isSignUp" class="main-signup" key="main-signup">
+        <p class="title">
+          Let’s start our jorney with
+          <span class="text-colored">RSlang!</span>
+        </p>
+        <div class="form-wrapper form-wrapper--signup">
+          <loginForm />
+        </div>
+      </main>
+    </transition>
     <footer>
       <ul class="footer_features">
         <li class="footer_features-feature">
@@ -133,11 +154,6 @@ export default {
   flex-direction: row;
 }
 
-$content-width: 1197px;
-$tablet-width: 768px;
-$mobile-big-width: 514px;
-$mobile-small-width: 320px;
-
 .wrapper {
   @extend %flex-column;
 
@@ -146,18 +162,6 @@ $mobile-small-width: 320px;
   height: 100vh;
   padding: 20px;
   margin: 0 auto;
-
-  // @media screen and (max-width: $content-width) {
-  //   width: 90vw;
-  // }
-
-  // @media screen and (max-width: $tablet-width) {
-  //   width: 95vw;
-  // }
-}
-
-a:hover {
-  text-decoration: none;
 }
 
 main {
@@ -223,7 +227,6 @@ header {
 
   align-items: center;
   justify-content: space-between;
-  margin-top: 10px;
 }
 
 .button {
@@ -235,6 +238,7 @@ header {
   white-space: nowrap;
   cursor: pointer;
   border-radius: 20px;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 
   @media screen and (max-width: $tablet-width) {
     font-size: 18px;
@@ -245,28 +249,15 @@ header {
   }
 }
 
-.button:first-child {
-  margin-right: 16px;
-}
-
 .button--bordered {
   color: $color-dodger-blue;
   border: 1px solid $color-dodger-blue;
-}
-
-.button--bordered:hover {
-  color: $color-cornflower-blue;
-  border: 1px solid $color-cornflower-blue;
 }
 
 .button--filled {
   color: $color-white;
   background-color: $color-dodger-blue;
   border: 1px solid $color-dodger-blue;
-}
-
-.button--filled:hover {
-  background-color: $color-cornflower-blue;
 }
 
 .main-image {
@@ -279,9 +270,26 @@ header {
 }
 
 .header_buttons {
-  @media screen and (max-width: $mobile-big-width) {
-    flex-direction: column;
+  a:first-child {
+    .button {
+      margin-right: 16px;
+    }
   }
+
+  @media screen and (max-width: $puzzle-mobile-size) {
+    flex-direction: column;
+
+    a:first-child {
+      .button {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
+.main_buttons {
+  justify-content: center;
 }
 
 .header_buttons,
@@ -296,11 +304,8 @@ header {
   width: 175px;
   height: 59px;
 
-  @media screen and (max-width: $tablet-width) {
-    width: 100px;
-  }
-
   @media screen and (max-width: $mobile-big-width) {
+    width: 150px;
     height: 50px;
     margin-bottom: 10px;
     line-height: 46px;
@@ -311,6 +316,10 @@ header {
   width: 45%;
   height: 59px;
   line-height: 56px;
+
+  @media screen and (max-width: $mobile-big-width) {
+    width: 120px;
+  }
 }
 
 .main-descr {
@@ -401,5 +410,21 @@ header {
 
 .StartLearning {
   color: $color-white;
+}
+
+@media (hover: hover) {
+  a:hover {
+    text-decoration: none;
+  }
+
+  .button--bordered:hover {
+    color: $color-malibu;
+    border-color: $color-malibu;
+  }
+
+  .button--filled:hover {
+    background-color: $color-malibu;
+    border-color: $color-malibu;
+  }
 }
 </style>

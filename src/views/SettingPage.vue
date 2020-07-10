@@ -193,7 +193,10 @@ export default {
   computed: {
     ...mapState('Settings', ['settings']),
     isLastCheckbox() {
-      const count = Number(this.settingsData.isExampleVisible) + Number(this.settingsData.isMeaningVisible) + Number(this.settingsData.isWordVisible);
+      const isExampleVisible = Number(this.settingsData.isExampleVisible);
+      const isMeaningVisible = Number(this.settingsData.isMeaningVisible);
+      const isWordVisible = Number(this.settingsData.isWordVisible);
+      const count = isExampleVisible + isMeaningVisible + isWordVisible;
       return count === 1;
     },
   },
@@ -322,11 +325,6 @@ export default {
       transition: color 0.3s, background-color 0.3s;
     }
 
-    .counter__control:hover {
-      color: $color-white;
-      background-color: $color-dodger-blue;
-    }
-
     .counter__input {
       font-size: 1.25rem;
       font-weight: bold;
@@ -356,6 +354,13 @@ export default {
 
   &__btn {
     @include english-puzzle-button(150px);
+  }
+}
+
+@media (hover: hover) {
+  .counter__control:hover {
+    color: $color-white;
+    background-color: $color-dodger-blue;
   }
 }
 </style>

@@ -25,13 +25,11 @@ export default {
     try {
       const { user, email } = getLocalStorageData();
 
-      if (user) {
+      if (user && email && user.expDate > Date.now()) {
         this.setUser(user);
+        this.setEmail(email);
         await this.receiveSettings();
         await this.receiveStatistic();
-      }
-      if (email) {
-        this.setEmail(email);
       }
     } catch (error) {
       this.setError(error.message);

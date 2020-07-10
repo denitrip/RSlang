@@ -21,6 +21,7 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
 import { getWordsByLevelAndRound } from '@/helpers/englishPuzzle.helper';
+import routerConsts from '@/router/routerConsts';
 
 export default {
   name: 'EnglishPuzzleStatistic',
@@ -39,7 +40,7 @@ export default {
         });
         this.setWordsStats(words);
         this.setCurrentRoundStats(round);
-        this.$router.push('/english-puzzle-statistic/detail');
+        this.$router.push(routerConsts.englishPuzzleStatsDetailed.path);
       } catch (error) {
         this.setError(error.message);
       }
