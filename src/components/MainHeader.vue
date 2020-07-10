@@ -12,20 +12,27 @@
           {{ email }}
         </div>
       </div>
-      <div class="user-avatar">
-        <img src="../assets/img/header/user_image.png" alt="#" />
+      <div class="logout" @click="onLogout">
+        <IconBase iconName="Log Out" width="34px" height="34px" viewBox="0 0 36 26">
+          <IconLogOut />
+        </IconBase>
       </div>
     </div>
   </header>
 </template>
 
 <script>
+import IconBase from '@/components/IconBase.vue';
+import IconLogOut from '@/components/icons/IconLogOut.vue';
 import routerConsts from '@/router/routerConsts';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'MainHeader',
-  components: {},
+  components: {
+    IconBase,
+    IconLogOut,
+  },
   data() {
     return {
       currentRoute: this.$router.currentRoute.name,
@@ -38,6 +45,13 @@ export default {
   watch: {
     $route(to) {
       this.currentRoute = to.name;
+    },
+  },
+  methods: {
+    ...mapActions('Auth', ['logoutUser']),
+    onLogout() {
+      this.logoutUser();
+      this.$router.push(routerConsts.welcomePage.path);
     },
   },
 };
@@ -61,7 +75,6 @@ export default {
 img.rot {
   width: 20px;
   height: 20px;
-  margin-left: 16px;
 }
 
 img.rot:hover {
@@ -75,6 +88,15 @@ img.rot:hover {
 
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.logout {
+  color: $color-black;
+
+  &:hover {
+    color: $color-dodger-blue;
+    cursor: pointer;
   }
 }
 
@@ -127,12 +149,6 @@ img.rot:hover {
   white-space: nowrap;
 }
 
-.user-avatar img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
 @media (max-width: 414px) {
   .header-container {
     justify-content: center;
@@ -142,11 +158,6 @@ img.rot:hover {
 
   .container-label h2 {
     font-size: 1.75rem;
-  }
-
-  .user-avatar img {
-    width: 40px;
-    height: 40px;
   }
 }
 </style>
