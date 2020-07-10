@@ -76,7 +76,7 @@ export default {
   position: fixed;
   top: calc(50% - 200px);
   left: calc(50% - 217px);
-  z-index: 10;
+  z-index: 100;
   display: flex;
   flex-direction: column;
   align-items: center;

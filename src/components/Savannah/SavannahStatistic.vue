@@ -216,11 +216,6 @@ export default {
   border: none;
   transition: color 0.3s;
 
-  &:hover {
-    color: $color-dodger-blue;
-    background: transparent;
-  }
-
   &_playing {
     color: $color-dodger-blue;
   }
@@ -230,12 +225,6 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
-
-  &:hover {
-    .detail__delete {
-      display: block;
-    }
-  }
 }
 
 .detail__words {
@@ -253,6 +242,20 @@ export default {
   @include english-puzzle-button(150px);
 
   margin-bottom: 10px;
+}
+
+@media (hover: hover) {
+  .detail__speech:hover,
+  .detail__delete:hover {
+    color: $color-dodger-blue;
+    background: transparent;
+  }
+
+  .detail__sentence:hover {
+    .detail__delete {
+      display: block;
+    }
+  }
 }
 
 @media screen and (max-width: $puzzle-mobile-size) {

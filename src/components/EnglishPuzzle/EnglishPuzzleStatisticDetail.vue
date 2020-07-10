@@ -49,6 +49,7 @@ import { dataSrc } from '@/helpers/constants.helper';
 import AppSpinner from '@/components/AppSpinner.vue';
 import IconBase from '@/components/IconBase.vue';
 import IconVolume from '@/components/icons/IconVolume.vue';
+import routerConsts from '@/router/routerConsts';
 
 export default {
   name: 'EnglishPuzzleStatistic',
@@ -93,7 +94,7 @@ export default {
       audio.play();
     },
     onStatistic() {
-      this.$router.push('/english-puzzle-statistic');
+      this.$router.push(routerConsts.EnglishPuzzleStatisticPage.path);
     },
     onContinue() {
       if (this.isLastRound) {
@@ -109,7 +110,7 @@ export default {
       try {
         await this.resetGame();
         this.setIsStartScreen(false);
-        this.$router.push('/english-puzzle');
+        this.$router.push(routerConsts.englishPuzzlePage.path);
       } catch (error) {
         this.setError(error.message);
       } finally {
@@ -179,11 +180,6 @@ export default {
   border: none;
   transition: color 0.3s;
 
-  &:hover {
-    color: $color-dodger-blue;
-    background: transparent;
-  }
-
   &_playing {
     color: $color-dodger-blue;
   }
@@ -205,6 +201,13 @@ export default {
 
   margin-bottom: 10px;
   margin-left: 10px;
+}
+
+@media (hover: hover) {
+  .detail__speech:hover {
+    color: $color-dodger-blue;
+    background: transparent;
+  }
 }
 
 @media screen and (max-width: $puzzle-mobile-size) {

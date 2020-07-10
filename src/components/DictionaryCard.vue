@@ -236,10 +236,6 @@ export default {
       margin-left: 14px;
       background-color: $color-apple;
     }
-
-    &:hover {
-      background: $color-apple;
-    }
   }
 
   &__close {
@@ -432,6 +428,10 @@ export default {
 }
 
 @media (hover: hover) {
+  .icon__info:hover {
+    background-color: $color-apple;
+  }
+
   .icon__speak-it:hover {
     color: $color-cornflower-blue;
   }

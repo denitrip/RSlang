@@ -98,6 +98,7 @@
           <h3>display settings</h3>
           <b-form-checkbox
             class="setting__checkbox"
+            :class="{ setting__checkbox_disable: isLastCheckbox && settingsData.isWordVisible }"
             name="checkbox-translation"
             v-model="settingsData.isWordVisible"
           >
@@ -105,6 +106,7 @@
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
+            :class="{ setting__checkbox_disable: isLastCheckbox && settingsData.isMeaningVisible }"
             name="checkbox-meaining"
             v-model="settingsData.isMeaningVisible"
           >
@@ -112,6 +114,7 @@
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
+            :class="{ setting__checkbox_disable: isLastCheckbox && settingsData.isExampleVisible }"
             name="checkbox-example"
             v-model="settingsData.isExampleVisible"
           >
@@ -189,6 +192,13 @@ export default {
   },
   computed: {
     ...mapState('Settings', ['settings']),
+    isLastCheckbox() {
+      const isExampleVisible = Number(this.settingsData.isExampleVisible);
+      const isMeaningVisible = Number(this.settingsData.isMeaningVisible);
+      const isWordVisible = Number(this.settingsData.isWordVisible);
+      const count = isExampleVisible + isMeaningVisible + isWordVisible;
+      return count === 1;
+    },
   },
   created() {
     const settings = getLocalStorageUserSettings();
@@ -312,11 +322,7 @@ export default {
       background-color: $color-wild-sand;
       border: none;
       border-radius: 50%;
-    }
-
-    .counter__control:hover {
-      color: white;
-      background-color: $color-dodger-blue;
+      transition: color 0.3s, background-color 0.3s;
     }
 
     .counter__input {
@@ -333,6 +339,11 @@ export default {
 
   &__checkbox {
     margin-bottom: 12px;
+
+    &_disable {
+      pointer-events: none;
+      opacity: 0.5;
+    }
   }
 }
 
@@ -343,6 +354,13 @@ export default {
 
   &__btn {
     @include english-puzzle-button(150px);
+  }
+}
+
+@media (hover: hover) {
+  .counter__control:hover {
+    color: $color-white;
+    background-color: $color-dodger-blue;
   }
 }
 </style>

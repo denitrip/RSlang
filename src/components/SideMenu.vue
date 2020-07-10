@@ -64,7 +64,7 @@ export default {
   },
   data() {
     return {
-      isOpen: true,
+      isOpen: false,
       menuItems: [
         {
           name: routerConsts.learningPage.name,
@@ -130,7 +130,7 @@ export default {
     },
     onLogout() {
       this.logoutUser();
-      this.$router.push('/welcome');
+      this.$router.push(routerConsts.welcomePage.path);
     },
   },
 };
@@ -157,7 +157,7 @@ export default {
   min-height: 100vh;
   color: $color-white;
   text-align: center;
-  background: $color-nile-blue;
+  background-color: $color-nile-blue;
   transition: width 0.5s;
 
   &__logo {
@@ -167,7 +167,7 @@ export default {
     min-height: 86px;
     font-size: 36px;
     font-weight: 800;
-    background: $color-prussian-blue;
+    background-color: $color-prussian-blue;
   }
 
   &__burger {
@@ -178,12 +178,7 @@ export default {
     width: 60px;
     min-height: 86px;
     color: $color-white;
-    cursor: pointer;
-    background: $color-prussian-blue;
-
-    &:hover {
-      color: $color-golden-dream;
-    }
+    background-color: $color-prussian-blue;
   }
 
   &__burger-wrapper {
@@ -193,7 +188,6 @@ export default {
     width: 30px;
     height: 24px;
     cursor: pointer;
-    transition: transform 0.3s;
 
     &::before,
     &::after {
@@ -214,8 +208,8 @@ export default {
     &::after {
       width: 100%;
       height: 2.5px;
-      background-color: white;
-      transition: transform 0.3s;
+      background-color: $color-white;
+      transition: transform 0.3s, background-color 0.3s, opacity 0.3s;
     }
 
     &_open {
@@ -233,15 +227,6 @@ export default {
         top: 50%;
         opacity: 0.1;
         transform: rotate(-45deg);
-      }
-    }
-
-    &:hover {
-      .menu__burger-line,
-      &::before,
-      &::after {
-        background-color: $color-golden-dream;
-        opacity: 1;
       }
     }
   }
@@ -267,32 +252,6 @@ export default {
     p {
       margin-left: 10px;
     }
-
-    &:hover {
-      g {
-        color: $color-golden-dream;
-      }
-
-      padding-left: 60px;
-      background: $color-prussian-blue;
-    }
-  }
-
-  &__switch {
-    display: flex;
-    align-items: center;
-    align-self: flex-end;
-    justify-content: center;
-    width: 25px;
-    height: 50px;
-    cursor: pointer;
-    background: $color-prussian-blue no-repeat center;
-    border-radius: 50px 0 0 50px;
-    transition: background-color 0.5s;
-
-    &:hover {
-      background-color: $color-rhino;
-    }
   }
 
   &__logout {
@@ -310,10 +269,6 @@ export default {
 
     p {
       margin-left: 8px;
-    }
-
-    &:hover {
-      color: $color-golden-dream;
     }
   }
 }
@@ -381,6 +336,42 @@ export default {
       z-index: 19;
       width: 60px;
     }
+  }
+}
+
+@media (hover: hover) {
+  .menu__burger-wrapper:hover {
+    .menu__burger-line,
+    &::before,
+    &::after {
+      background-color: $color-golden-dream;
+      opacity: 1;
+    }
+  }
+
+  .menu-open {
+    .menu__link:hover {
+      padding-left: 60px;
+      background: $color-prussian-blue;
+
+      g {
+        color: $color-golden-dream;
+      }
+    }
+  }
+
+  .menu-close {
+    .menu__link:hover {
+      background: $color-prussian-blue;
+
+      g {
+        color: $color-golden-dream;
+      }
+    }
+  }
+
+  .menu__logout:hover {
+    color: $color-golden-dream;
   }
 }
 

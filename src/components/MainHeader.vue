@@ -4,9 +4,9 @@
       {{ currentRoute }}
     </div>
     <div class="user-section">
-      <router-link :to="routerConsts.settings.path"
-        ><img src="../assets/img/header/settings_image.png" alt="#" class="rot"
-      /></router-link>
+      <router-link :to="routerConsts.settings.path">
+        <img src="../assets/img/header/settings_image.png" alt="#" class="rot" />
+      </router-link>
       <div class="user-details">
         <div class="user-name" :title="email">
           {{ email }}
@@ -51,7 +51,7 @@ export default {
     ...mapActions('Auth', ['logoutUser']),
     onLogout() {
       this.logoutUser();
-      this.$router.push('/welcome');
+      this.$router.push(routerConsts.welcomePage.path);
     },
   },
 };
@@ -72,13 +72,9 @@ export default {
   }
 }
 
-img.rot {
+.rot {
   width: 20px;
   height: 20px;
-}
-
-img.rot:hover {
-  animation: 1s linear 0s normal none infinite running rot;
 }
 
 @keyframes rot {
@@ -93,10 +89,7 @@ img.rot:hover {
 
 .logout {
   color: $color-black;
-
-  &:hover {
-    color: $color-dodger-blue;
-  }
+  transition: color 0.3s;
 }
 
 .container-label {
@@ -109,6 +102,7 @@ img.rot:hover {
   font-weight: bold;
   line-height: 44px;
   color: $color-gigas;
+  text-transform: capitalize;
 
   @include media-tablet {
     justify-content: center;
@@ -148,7 +142,18 @@ img.rot:hover {
   white-space: nowrap;
 }
 
-@media (max-width: 414px) {
+@media (hover: hover) {
+  .logout:hover {
+    color: $color-dodger-blue;
+    cursor: pointer;
+  }
+
+  .rot:hover {
+    animation: 1s linear 0s normal none infinite running rot;
+  }
+}
+
+@media screen and (max-width: $mobile-big-width) {
   .header-container {
     justify-content: center;
     padding-left: 60px;

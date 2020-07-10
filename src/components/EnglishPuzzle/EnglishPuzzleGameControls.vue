@@ -44,6 +44,7 @@
 <script>
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex';
 import AppSpinner from '@/components/AppSpinner.vue';
+import routerConsts from '@/router/routerConsts';
 
 export default {
   name: 'EnglishPuzzleGameControls',
@@ -163,7 +164,7 @@ export default {
 
     onResults() {
       this.setWordsStats(this.words);
-      this.$router.push('/english-puzzle-statistic/detail');
+      this.$router.push(routerConsts.englishPuzzleStatsDetailed.path);
     },
   },
 };

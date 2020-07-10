@@ -69,8 +69,10 @@
         <p>{{ difficultWordsCount }} difficult words</p>
       </div>
     </div>
-    <ShortTermStatistic v-if="isShortTermStatisticShow" />
-    <Notification v-if="isNotificationShow" />
+    <transition name="fade" mode="out-in">
+      <ShortTermStatistic v-if="isShortTermStatisticShow" />
+      <Notification v-if="isNotificationShow" />
+    </transition>
   </div>
   <learning-words v-else></learning-words>
 </template>
