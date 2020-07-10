@@ -186,7 +186,7 @@ export default {
     display: flex;
     align-items: center;
     width: 30px;
-    height: 24px;
+    height: 25px;
     cursor: pointer;
 
     &::before,
@@ -207,7 +207,7 @@ export default {
     &::before,
     &::after {
       width: 100%;
-      height: 2.5px;
+      height: 3px;
       background-color: $color-white;
       transition: transform 0.3s, background-color 0.3s, opacity 0.3s;
     }
