@@ -1,5 +1,5 @@
 <template functional>
-  <div class="game__wrapper">
+  <div class="game__wrapper" key="englishPuzzle-game">
     <component :is="props.components.EnglishPuzzleGameMenu"></component>
     <component :is="props.components.EnglishPuzzleGameTooltips"></component>
     <component :is="props.components.EnglishPuzzleGameMain"></component>

@@ -1,5 +1,5 @@
 <template functional>
-  <div class="start-screen">
+  <div class="start-screen" key="ourGame-start-screen">
     <h1 class="start-screen__title">Our Game</h1>
     <h3 class="start-screen__description">
       The “Our Game” mini-game is a workout that helps visualize English words.

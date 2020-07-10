@@ -1,5 +1,5 @@
 <template functional>
-  <div class="start-screen">
+  <div class="start-screen" key="speakit-start-screen">
     <h1 class="start-screen__title">Speakit</h1>
     <h3 class="start-screen__description">
       Click on the words to hear them sound.

@@ -1,5 +1,5 @@
 <template functional>
-  <div class="start-screen">
+  <div class="start-screen" key="savannah-start-screen">
     <h1 class="start-screen__title">savannah</h1>
     <h3 class="start-screen__description">
       The “Savannah” mini-game is a simulator for translating your passive learned dictionary into
