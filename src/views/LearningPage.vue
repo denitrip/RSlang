@@ -4,7 +4,7 @@
       <h1><span>Hello.</span> Let’s start learning!</h1>
       <p>
         On this page, you can monitor your progress and select the desired set of words to learn,
-        for example, <b>“New words”</b>, <b>“Repetition”</b> or <b>“All words”</b>. Good luck!
+        for example, <b>“New words”</b>, <b>“Repeat words”</b> or <b>“Difficult words”</b>. Good luck!
       </p>
     </div>
     <div class="learning-today card-wrap">
@@ -15,13 +15,11 @@
           <span>{{ settings.maxCardDay }}</span> words
         </div>
         <b-progress
-          height="10px"
           :value="todayLearned"
           :max="settings.maxCardDay"
           class="learning-today__progress"
         ></b-progress>
       </div>
-      <button class="btn-rs">Start learning</button>
     </div>
     <div class="learning-category">
       <div class="learning-category__card card-wrap">
