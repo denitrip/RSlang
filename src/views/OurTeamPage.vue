@@ -1,38 +1,43 @@
 <template>
   <div class="our-team">
     <div class="our-team__wrapper">
-      <div class="our-team__card" v-for="man in people" :key="man.name">
+      <div class="our-team__card" v-for="man in people" v-show="man.show" :key="man">
         <img :src="man.image" alt="img" class="our-team__img" />
         <img :src="man.imageSmall" alt="img" class="our-team__img-small" />
         <div class="our-team__information">
           <h3 class="our-team__name">{{ man.name }}</h3>
           <h5 class="our-team__major">{{ man.major }}</h5>
           <p class="our-team__my-work">
-            Тут мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения. Тут
-            мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения
+            {{ man.myWork }}
           </p>
           <div class="our-team__contacts">
-            <span class="icon-circle icon-circle_blue">
-              <span class="icon">
-                <IconBase width="19" height="16" viewBox="0 0 19 16" icon-color="white">
-                  <IconTelegram />
-                </IconBase>
+            <a :href="`https://t.me/${man.telegram}`" target="_blank">
+              <span class="icon-circle icon-circle_blue">
+                <span class="icon">
+                  <IconBase width="19" height="16" viewBox="0 0 19 16" icon-color="white">
+                    <IconTelegram />
+                  </IconBase>
+                </span>
               </span>
-            </span>
-            <span class="icon-circle icon-circle_blue">
-              <span class="icon icon_linkedin">
-                <IconBase width="20" height="19" viewBox="0 0 15 18" icon-color="white">
-                  <IconLinkedin />
-                </IconBase>
+            </a>
+            <a :href="`https://www.linkedin.com/in/${man.linkedin}/`" target="_blank">
+              <span class="icon-circle icon-circle_blue">
+                <span class="icon icon_linkedin">
+                  <IconBase width="20" height="19" viewBox="0 0 15 18" icon-color="white">
+                    <IconLinkedin />
+                  </IconBase>
+                </span>
               </span>
-            </span>
-            <span class="icon-circle icon-circle_blue">
-              <span class="icon">
-                <IconBase width="20" height="19" viewBox="0 0 20 19" icon-color="white">
-                  <IconDiscord />
-                </IconBase>
+            </a>
+            <a :href="`https://discord.gg/${man.discord}`" target="_blank">
+              <span class="icon-circle icon-circle_blue">
+                <span class="icon">
+                  <IconBase width="20" height="19" viewBox="0 0 20 19" icon-color="white">
+                    <IconDiscord />
+                  </IconBase>
+                </span>
               </span>
-            </span>
+            </a>
           </div>
         </div>
       </div>
@@ -53,68 +58,115 @@ export default {
     return {
       people: [
         {
+          image: require('../assets/img/ourTeamImages/bigPhoto/Dzianis.png'),
+          imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Denis.png'),
+          name: 'Dzianis Puchko',
+          major: 'Mentor',
+          linkedin: 'dpuchko',
+          telegram: 'denitrip',
+          discord: '#',
+          show: true,
+          myWork: `Mentoring, coordination and motivation of the team. 
+            Consultations in the development of approaches. 
+            Scrum-master of the project.`,
+        },
+        {
+          image: require('../assets/img/ourTeamImages/bigPhoto/Yaroslav.png'),
+          imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Yaroslav.png'),
+          name: 'Yaroslav Denisyuk',
+          major: 'Team Lead',
+          show: true,
+          linkedin: 'arcanar7',
+          telegram: 'arcanar7',
+          discord: 'bnBGK5',
+          myWork: `Implement custom game, English puzzle mini-game, 
+            Savannah game, Audiocall game, 
+            Interval repetition logic, connect statistic and settings, 
+            logout logic, project configurations, adaptive.
+            `,
+        },
+        {
           image: require('../assets/img/ourTeamImages/bigPhoto/Oleg.png'),
           imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Oleg.png'),
           name: 'Oleg Rashinskiy',
           major: SOFTWARE_ENGINEER,
-          myWork:
-            'Тут мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения. Тут мы рассказывае какие мы молодцы и какой вклад внесли в разработку приложения',
+          show: true,
+          linkedin: 'olegrashinskiy',
+          telegram: 'OlegAwesome',
+          discord: '#',
+          myWork: `Implement SpeakIt mini-game, 
+            connect statistic SpeakIt with backend, our team page, 
+            dictionary page, dictionary card, learning card, 
+            cards responsive design, 
+            mobile view for dictionary card.`,
         },
         {
           image: require('../assets/img/ourTeamImages/bigPhoto/Andrey.png'),
           imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Andrei.png'),
           name: 'Andrei Karol',
           major: SOFTWARE_ENGINEER,
-          myWork:
-            'Тут мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения. Тут мы расскаваем, какие мы молодцы и какой вклад внесли в разработку приложения',
-        },
-        {
-          image: require('../assets/img/ourTeamImages/bigPhoto/Yaroslav.png'),
-          imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Yaroslav.png'),
-          name: 'Yaroslav Denisyuk',
-          major: SOFTWARE_ENGINEER,
-          myWork:
-            'Тут мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения. Т мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения',
-        },
-        {
-          image: require('../assets/img/ourTeamImages/bigPhoto/Dzianis.png'),
-          imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Denis.png'),
-          name: 'Dzianis Puchko',
-          major: 'Team Lead',
-          myWork:
-            'Тут мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения. Тут мы рассказываем, кие мы молодцы и какой вклад внесли в разработку приложения',
-        },
-        {
-          image: require('../assets/img/ourTeamImages/bigPhoto/Vasiliy.png'),
-          imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Vasiliy.png'),
-          name: 'Vasiliy Sukhavenka',
-          major: SOFTWARE_ENGINEER,
-          myWork:
-            'Тут мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения. Тут мы рссказываем, какие мы молодцы и какой вклад внесли в разработку приложения',
-        },
-        {
-          image: require('../assets/img/ourTeamImages/bigPhoto/Dzhangar.png'),
-          imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Dzhangar.png'),
-          name: 'Dzhangar Zolvanov',
-          major: SOFTWARE_ENGINEER,
-          myWork:
-            'Тут мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения. Тут м рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения',
+          show: true,
+          linkedin: 'andreykorol2019',
+          telegram: 'Remy_lee',
+          discord: 'PkwKxe',
+          myWork: `Sprint mini-game, login form, dictionary page, 
+            learning page and card, 
+            connect statistic page with backend, 
+            "settings" page, add favicon, 
+            adaptive for dictionary page, sidemenu mobile.`,
         },
         {
           image: require('../assets/img/ourTeamImages/bigPhoto/Ruslan.png'),
           imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Ruslan.png'),
           name: 'Ruslan Bobreshov',
           major: SOFTWARE_ENGINEER,
-          myWork:
-            'Тут мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения. Ту мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения',
+          show: true,
+          linkedin: '#',
+          telegram: 'DavidSarif',
+          discord: 'R4U7VG',
+          myWork: `Start page/login, promo-video, 
+            selling presentation, the project's readme, 
+            login form, saving of settings on backend, 
+            load users settings, home page,
+            routing, save settings locally, redirect.`,
+        },
+        {
+          image: require('../assets/img/ourTeamImages/bigPhoto/Vasiliy.png'),
+          imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Vasiliy.png'),
+          name: 'Vasiliy Suhovenko',
+          major: SOFTWARE_ENGINEER,
+          show: true,
+          linkedin: 'vsuhovenko',
+          telegram: 'svd_bel',
+          discord: 'EX2yRH',
+          myWork: `Sprint mini-game, 
+          connect statistic Sprint with backend, 
+          homepage template, sidemenu, sidemenu routing, 
+          statistic canvas graph, main header.`,
+        },
+        {
+          image: require('../assets/img/ourTeamImages/bigPhoto/Dzhangar.png'),
+          imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Dzhangar.png'),
+          name: 'Dzhangar Zolvanov',
+          major: SOFTWARE_ENGINEER,
+          show: true,
+          linkedin: '#',
+          telegram: 'dajiquwe',
+          discord: '#',
+          myWork: `Main page header, notification menu and functionality, 
+            welcome page "start learning" and "watch video" logic, 
+            custom game idea, user info into header, notification message "settings".`,
         },
         {
           image: require('../assets/img/ourTeamImages/bigPhoto/Anastasiya.png'),
           imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Anastasiya.png'),
           name: 'Anastasiya Homanava',
           major: 'Experience Designer',
-          myWork:
-            'Тут мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения. Тт мы рассказываем, какие мы молодцы и какой вклад внесли в разработку приложения',
+          show: false,
+          linkedin: 'anastasiyahomanava',
+          telegram: 'nastya_mishami',
+          discord: '#',
+          myWork: 'Development user interface and user experience design.',
         },
       ],
     };
