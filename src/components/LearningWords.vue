@@ -48,6 +48,7 @@ import IconVolumeOff from '@/components/icons/IconVolumeOff.vue';
 import IconTranslate from '@/components/icons/IconTranslate.vue';
 
 export default {
+  name: 'LearningWords',
   components: {
     LearningCard,
     IconBase,

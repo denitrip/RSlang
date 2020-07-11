@@ -82,31 +82,7 @@
     <transition name="fade" mode="out-in">
       <div class="buttons-wrapper" v-if="isCompleteState">
         <button
-          class="learning__button"
-          v-if="settings.isRepeatVisible"
-          :disabled="isWordLoading"
-          @click="onRepeatClick"
-        >
-          Repeat
-        </button>
-        <button
-          class="learning__button"
-          v-if="settings.isDifficultVisible"
-          @click="controlsNextCard(wordGroups.difficult)"
-          :disabled="isWordLoading"
-        >
-          Difficult
-        </button>
-        <button
-          class="learning__button"
-          v-if="settings.isGoodVisible"
-          :disabled="isWordLoading"
-          @click="onGoodClick"
-        >
-          Good
-        </button>
-        <button
-          class="learning__button"
+          class="learning__button learning__button_easy"
           v-if="settings.isEasyVisible"
           :disabled="isWordLoading"
           @click="onEasyClick"
@@ -114,7 +90,31 @@
           Easy
         </button>
         <button
-          class="learning__button"
+          class="learning__button learning__button_good"
+          v-if="settings.isGoodVisible"
+          :disabled="isWordLoading"
+          @click="onGoodClick"
+        >
+          Good
+        </button>
+        <button
+          class="learning__button learning__button_repeat"
+          v-if="settings.isRepeatVisible"
+          :disabled="isWordLoading"
+          @click="onRepeatClick"
+        >
+          Repeat
+        </button>
+        <button
+          class="learning__button learning__button_difficult"
+          v-if="settings.isDifficultVisible"
+          @click="controlsNextCard(wordGroups.difficult)"
+          :disabled="isWordLoading"
+        >
+          Difficult
+        </button>
+        <button
+          class="learning__button learning__button_delete"
           v-if="settings.isDeleteVisible"
           @click="controlsNextCard(wordGroups.deleted)"
           :disabled="isWordLoading"
@@ -134,7 +134,7 @@ import { mapState, mapActions, mapMutations } from 'vuex';
 import { wordGroups, dataSrc } from '@/helpers/constants.helper';
 
 export default {
-  name: 'DictionaryCard',
+  name: 'LearningCard',
   components: {
     IconBase,
     IconSmallSpeakIt,
@@ -552,6 +552,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin-top: 14px;
 }
 
 .learning__button {
@@ -571,7 +572,7 @@ export default {
   display: flex;
   align-items: center;
   width: 100%;
-  margin-top: 24px;
+  margin-top: 10px;
   color: $color-white;
   cursor: pointer;
   background: $color-dodger-blue;
@@ -597,6 +598,48 @@ export default {
     pointer-events: none;
     cursor: default;
     opacity: 0.4;
+  }
+
+  &_delete {
+    background-color: $color-wild-watermelon;
+
+    &:hover {
+      background: $color-geraldine radial-gradient(circle, transparent 1%, $color-geraldine 1%)
+        center/15000%;
+    }
+
+    &:active {
+      background-color: $color-sundown;
+    }
+  }
+
+  &_good,
+  &_easy,
+  &_repeat {
+    background-color: $color-shuttle-gray;
+
+    &:hover {
+      background: $color-manatee radial-gradient(circle, transparent 1%, $color-manatee 1%)
+        center/15000%;
+    }
+
+    &:active {
+      background-color: $color-ghost;
+    }
+  }
+
+  &_difficult {
+    color: $color-black;
+    background-color: $color-golden-dream;
+
+    &:hover {
+      background: $color-portica radial-gradient(circle, transparent 1%, $color-portica 1%)
+        center/15000%;
+    }
+
+    &:active {
+      background-color: $color-texas;
+    }
   }
 }
 

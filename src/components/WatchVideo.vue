@@ -21,7 +21,6 @@ import routerConsts from '@/router/routerConsts';
 
 export default {
   name: 'WatchVideo',
-  components: {},
   data() {
     return {
       routerConsts,
