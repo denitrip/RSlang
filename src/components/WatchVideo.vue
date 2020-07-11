@@ -69,8 +69,8 @@ iframe {
 .button {
   box-sizing: border-box;
   width: 100%;
+  height: 59px;
   font-size: 20px;
-  line-height: 54px;
   text-align: center;
   white-space: nowrap;
   cursor: pointer;
@@ -87,7 +87,6 @@ iframe {
 }
 
 .button--bordered {
-  margin-left: 16px;
   color: $color-dodger-blue;
   border: 1px solid $color-dodger-blue;
 }

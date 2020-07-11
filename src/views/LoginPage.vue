@@ -45,13 +45,18 @@
           <p class="title">Learn new words every day with RSlang</p>
           <p class="subtitle">
             An application for learning foreign words with interval repetition techniques, tracking
-            individual progress and mini-games
+            individual progress and mini-games.
           </p>
+          <p class="text-rules text-rules_title">Interval repetition rules:</p>
+          <p class="text-rules">— default learning interval is 24 hours;</p>
+          <p class="text-rules">— user made a mistake or clicked repeat button - 2 hours;</p>
+          <p class="text-rules">— user pressed the good button - 48 hours;</p>
+          <p class="text-rules">— user pressed the easy button - 120 hours.</p>
           <ul class="main_buttons">
             <li class="main_buttons-button">
-              <router-link :to="routerConsts.signUpPage.path" class="StartLearning"
-                ><button class="button button--filled">Start learning</button></router-link
-              >
+              <router-link :to="routerConsts.signUpPage.path" class="StartLearning">
+                <button class="button button--filled">Start learning</button>
+              </router-link>
             </li>
             <li class="main_buttons-button">
               <WatchVideo />
@@ -160,8 +165,12 @@ export default {
   width: 100%;
   max-width: $content-width;
   height: 100vh;
-  padding: 20px;
+  padding: 20px 40px;
   margin: 0 auto;
+
+  @media screen and (max-width: $mobile-big-width) {
+    padding: 20px;
+  }
 }
 
 main {
@@ -289,7 +298,12 @@ header {
 }
 
 .main_buttons {
-  justify-content: center;
+  justify-content: flex-start;
+  margin-top: 24px;
+
+  @media screen and (max-width: $tablet-width) {
+    justify-content: center;
+  }
 }
 
 .header_buttons,
@@ -301,6 +315,9 @@ header {
 }
 
 .header_buttons-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 175px;
   height: 59px;
 
@@ -308,17 +325,20 @@ header {
     width: 150px;
     height: 50px;
     margin-bottom: 10px;
-    line-height: 46px;
   }
 }
 
 .main_buttons-button {
-  width: 45%;
+  width: 100%;
+  max-width: 250px;
   height: 59px;
-  line-height: 56px;
 
   @media screen and (max-width: $mobile-big-width) {
     width: 120px;
+  }
+
+  &:nth-child(1) {
+    margin-right: 16px;
   }
 }
 
@@ -327,13 +347,15 @@ header {
 }
 
 .title {
-  width: 35vw;
-  margin: 8px 0;
+  width: 100%;
+  max-width: 41vw;
+  margin-bottom: 24px;
   font-size: 56px;
   font-weight: 900;
+  line-height: 1.2;
 
   @media screen and (max-width: $tablet-width) {
-    width: 94vw;
+    max-width: 94vw;
     font-size: 38px;
     text-align: center;
   }
@@ -344,11 +366,21 @@ header {
 }
 
 .subtitle {
-  margin-bottom: 32px;
-  line-height: 30px;
+  margin-bottom: 24px;
+  line-height: 1.5;
 
   @media screen and (max-width: $tablet-width) {
     text-align: center;
+  }
+}
+
+.text-rules {
+  @media screen and (max-width: $tablet-width) {
+    text-align: center;
+  }
+
+  &_title {
+    font-weight: 600;
   }
 }
 
