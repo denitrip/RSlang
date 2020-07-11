@@ -5,7 +5,7 @@
     </transition>
     <div class="video" v-if="isVideoShow">
       <iframe
-        src="https://www.youtube.com/embed/fFIW-p53gB8"
+        v-bind:src="videoLink"
         frameborder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
@@ -18,6 +18,7 @@
 
 <script>
 import routerConsts from '@/router/routerConsts';
+import { videoLink } from '@/helpers/constants.helper';
 
 export default {
   name: 'WatchVideo',
@@ -25,6 +26,7 @@ export default {
     return {
       routerConsts,
       isVideoShow: false,
+      videoLink,
     };
   },
   methods: {
