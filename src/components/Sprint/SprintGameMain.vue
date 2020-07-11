@@ -358,6 +358,11 @@ export default {
 }
 
 .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 40px;
   border: 1px solid transparent;
   transition: opacity 0.2s, border-color 0.2s;
 
