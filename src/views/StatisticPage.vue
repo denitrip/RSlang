@@ -69,7 +69,7 @@ export default {
   justify-content: center;
   height: 100%;
   margin: auto 0;
-  background-color: $color-ghost;
+  background-color: $color-catskill-white;
 
   &__wrapper {
     display: flex;

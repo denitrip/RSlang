@@ -1,11 +1,11 @@
 <template>
   <header class="header-container">
-    <div class="container-label">
+    <div class="container-label" :title="currentRoute">
       {{ currentRoute }}
     </div>
     <div class="user-section">
       <router-link :to="routerConsts.settings.path">
-        <img src="../assets/img/header/settings_image.png" alt="#" class="rot" />
+        <img src="@/assets/img/header/settings_image.png" alt="#" class="rot" title="Settings" />
       </router-link>
       <div class="user-details">
         <div class="user-name" :title="email">
@@ -64,11 +64,11 @@ export default {
   align-items: center;
   justify-content: space-between;
   height: 86px;
-  margin: 0 60px 0 75px;
+  padding: 0 60px 0 75px;
 
   @include media-tablet {
     justify-content: center;
-    margin: 0;
+    padding: 0 20px;
   }
 }
 
@@ -88,6 +88,7 @@ export default {
 }
 
 .logout {
+  margin-left: 5px;
   color: $color-black;
   transition: color 0.3s;
 }
@@ -97,15 +98,17 @@ export default {
   padding: 0;
   margin: 0;
   margin-left: 0;
+  overflow: hidden;
   font-size: 36px;
   font-weight: 900;
   font-weight: bold;
   line-height: 44px;
   color: $color-gigas;
+  text-overflow: ellipsis;
   text-transform: capitalize;
+  white-space: nowrap;
 
   @include media-tablet {
-    justify-content: center;
     margin: 0;
     font-size: 24px;
     line-height: 44px;
@@ -115,7 +118,6 @@ export default {
 .user-section {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   margin-left: 10px;
 }
 
@@ -123,7 +125,7 @@ export default {
   display: block;
   align-items: center;
   width: max-content;
-  margin-left: 16px;
+  margin-left: 10px;
 
   @include media-mobile {
     display: none;
@@ -155,8 +157,7 @@ export default {
 
 @media screen and (max-width: $mobile-big-width) {
   .header-container {
-    justify-content: center;
-    padding-left: 60px;
+    padding-left: 70px;
     margin: 0;
   }
 

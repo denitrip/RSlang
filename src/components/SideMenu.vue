@@ -23,7 +23,9 @@
           <IconBase :iconName="item.name" width="34px" height="34px" :viewBox="item.icon.viewbox">
             <component :is="`Icon${item.icon.name}`" />
           </IconBase>
-          <p v-if="isOpen">{{ item.name }}</p>
+          <transition name="fade">
+            <p v-if="isOpen">{{ item.name }}</p>
+          </transition>
         </router-link>
       </nav>
       <div class="menu__logout" @click="onLogout">
@@ -137,16 +139,23 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.menu__arrowHide {
-  transition: 0.5s;
-}
-
 .active-link {
+  background-color: $color-prussian-blue;
+  animation: fade-link 1s;
+
   g {
     color: $color-golden-dream;
   }
+}
 
-  background: $color-prussian-blue;
+@keyframes fade-link {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .menu {
