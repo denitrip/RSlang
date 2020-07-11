@@ -1,7 +1,7 @@
 <template>
   <div class="our-team">
     <div class="our-team__wrapper">
-      <div class="our-team__card" v-for="man in people" v-show="man.show" :key="man">
+      <div class="our-team__card" v-for="man in people" v-show="man.show" :key="man.name">
         <img :src="man.image" alt="img" class="our-team__img" />
         <img :src="man.imageSmall" alt="img" class="our-team__img-small" />
         <div class="our-team__information">
@@ -183,7 +183,7 @@ export default {
 <style scoped lang="scss">
 .our-team {
   padding: 35px 0 45px 0;
-  background-color: $color-ghost;
+  background-color: $color-catskill-white;
 
   @include media-tablet {
     padding: 10px 0 15px 0;

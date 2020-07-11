@@ -51,7 +51,7 @@ export default {
   height: 100%;
   padding-top: 24px;
   overflow-y: auto;
-  background-color: $color-ghost;
+  background-color: $color-catskill-white;
 
   &__title {
     font-size: 36px;
