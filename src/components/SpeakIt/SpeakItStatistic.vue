@@ -27,9 +27,15 @@ export default {
   name: 'SpeakitStatistic',
   computed: {
     ...mapState('Statistic', ['statistics']),
+    ...mapState('Speakit', ['wordsStats']),
   },
   methods: {
-    ...mapMutations('Speakit', ['setCurrentRoundStats', 'setWordsStats']),
+    ...mapMutations('Speakit', [
+      'setCurrentRoundStats',
+      'setWordsStats',
+      'setCorrectAnswer',
+      'setIncorrectAnswer',
+    ]),
     ...mapActions('Error', ['setError']),
 
     async onSetRoundStats(round) {
@@ -40,6 +46,17 @@ export default {
         });
         this.setWordsStats(words);
         this.setCurrentRoundStats(round);
+        const correct = [];
+        const incorrect = [];
+        round.arr.forEach((item) => {
+          if (item.know) {
+            correct.push(words.find((i) => i.word === item.id));
+          } else {
+            incorrect.push(words.find((i) => i.word === item.id));
+          }
+        });
+        this.setCorrectAnswer(correct);
+        this.setIncorrectAnswer(incorrect);
         this.$router.push(routerConsts.speakitStatsDetailed.path);
       } catch (error) {
         this.setError(error.message);

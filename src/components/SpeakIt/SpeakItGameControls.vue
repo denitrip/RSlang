@@ -15,7 +15,6 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
 import { dataSrc, correctSound, errorMessage } from '@/helpers/constants.helper';
-import defaultPicture from '@/assets/img/speakIt/do_you_speak.jpg';
 import routerConsts from '@/router/routerConsts';
 
 export default {
@@ -36,7 +35,6 @@ export default {
       'isGameEnd',
       'correctAnswer',
       'incorrectAnswer',
-      'isResetGame',
       'wordRecording',
       'isCorrectWord',
       'pictureSrc',
@@ -47,15 +45,6 @@ export default {
   destroyed() {
     this.recognition.removeEventListener('end', this.startRecognition);
     this.recognition.stop();
-    this.setIncorrectAnswer([...this.words]);
-    this.setCorrectAnswer([]);
-    this.setPictureSrc(defaultPicture);
-    this.setWordRecording('');
-    this.setTranslation('');
-    this.setIsStartGame(false);
-    this.setIsCorrectWord(false);
-    this.setIsEndGame(false);
-    this.setIsStartScreen(true);
   },
   created() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -81,16 +70,14 @@ export default {
   },
   methods: {
     ...mapMutations('Speakit', [
+      'resetGame',
       'setIsStartGame',
-      'setIsEndGame',
       'setCorrectAnswer',
-      'setIncorrectAnswer',
       'setWordRecording',
       'setIsCorrectWord',
       'setPictureSrc',
       'setWordsArray',
-      'setTranslation',
-      'setIsStartScreen',
+      'setWordsStats',
     ]),
     ...mapActions('Speakit', ['saveStats', 'onSetCompleteRounds', 'saveSettings']),
     ...mapActions('Error', ['setError']),
@@ -110,15 +97,8 @@ export default {
       if (this.recognition) {
         this.recognition.removeEventListener('end', this.startRecognition);
         this.recognition.stop();
-        this.setIncorrectAnswer([...this.words]);
         this.correctResult = [];
-        this.setCorrectAnswer([]);
-        this.setPictureSrc(defaultPicture);
-        this.setWordRecording('');
-        this.setTranslation('');
-        this.setIsStartGame(false);
-        this.setIsCorrectWord(false);
-        this.setIsEndGame(false);
+        this.resetGame();
       } else {
         this.setError(errorMessage);
       }
@@ -153,6 +133,7 @@ export default {
         this.recognition.stop();
         this.onSetCompleteRounds();
         this.setWordsArray(this.addWordsToStatisticArray());
+        this.setWordsStats(this.words);
         await this.saveStats();
         await this.saveSettings();
         this.$router.push(routerConsts.speakitStatsDetailed.path);

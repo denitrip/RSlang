@@ -30,16 +30,19 @@ export default {
   computed: {
     ...mapState('Speakit', ['isStartScreen', 'words']),
   },
+  destroyed() {
+    this.setIsStartScreen(true);
+  },
   methods: {
     ...mapActions('Error', ['setError']),
-    ...mapActions('Speakit', ['getWords', 'resetGame']),
-    ...mapMutations('Speakit', ['setIsStartScreen', 'setIncorrectAnswer']),
+    ...mapActions('Speakit', ['getWords']),
+    ...mapMutations('Speakit', ['setIsStartScreen', 'setIncorrectAnswer', 'resetGame']),
 
     async onStartGame() {
       this.isStartLoading = true;
       try {
         await this.getWords();
-        await this.resetGame();
+        this.resetGame();
         this.setIncorrectAnswer([...this.words]);
         this.setIsStartScreen(false);
       } catch (error) {

@@ -72,7 +72,6 @@ export default {
       'incorrectAnswer',
       'selectedLevel',
       'selectedRound',
-      'isRoundComplete',
       'words',
     ]),
     ...mapGetters('Speakit', ['isLastRound']),
@@ -83,14 +82,8 @@ export default {
       'setSelectedLevel',
       'setSelectedRound',
       'setIsStartScreen',
-      'setCorrectAnswer',
-      'setIncorrectAnswer',
-      'setWordRecording',
-      'setIsStartGame',
-      'setTranslation',
-      'setPictureSrc',
     ]),
-    ...mapActions('Speakit', ['resetGame']),
+    ...mapActions('Speakit', ['getWords']),
     ...mapActions('Error', ['setError']),
 
     onPlayAudio(audioSrc) {
@@ -113,14 +106,9 @@ export default {
     async onResetGame() {
       this.isStartLoading = true;
       try {
-        await this.resetGame();
-        this.setIsStartGame(false);
+        await this.getWords();
         this.setIsStartScreen(false);
-        this.setCorrectAnswer([]);
-        this.setIncorrectAnswer([...this.words]);
-        this.setPictureSrc(defaultPicture);
-        this.setWordRecording('');
-        this.setTranslation('');
+        this.resetGame();
         this.$router.push(routerConsts.speakitPage.path);
       } catch (error) {
         this.setError(error.message);
