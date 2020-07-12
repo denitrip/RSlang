@@ -6,7 +6,7 @@
 
 ##### The project is an application, dedicated for learning English words including interval repetition techniques, tracking individual progress and mini-games.
 
-#### You can try it [here]().
+#### You can try it [here](https://rslang-team16-arcanar7.web.app/).
 
 <hr>
 
