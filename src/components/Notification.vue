@@ -74,7 +74,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 99;
   width: 100%;
   height: 100%;
   background-color: $overlay-color;
@@ -124,6 +124,7 @@ export default {
   background-color: transparent;
   border: 1px solid transparent;
   border-radius: 50%;
+  outline: none;
   transition: background-color 0.3s, color 0.3s;
 }
 
@@ -177,7 +178,7 @@ export default {
 
 @media screen and (max-width: $puzzle-mobile-size) {
   .window {
-    top: 0;
+    top: 90px;
     left: 0;
     margin: 10px;
   }

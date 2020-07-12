@@ -18,7 +18,7 @@
           :key="item.name"
           :to="item.route"
           active-class="active-link"
-          @click.native="closeMobileMenu"
+          @click.native="close"
         >
           <IconBase :iconName="item.name" width="34px" height="34px" :viewBox="item.icon.viewbox">
             <component :is="`Icon${item.icon.name}`" />
@@ -49,7 +49,7 @@ import IconGroupOfMen from '@/components/icons/IconGroupOfMen.vue';
 import IconSettings from '@/components/icons/IconSettings.vue';
 import IconAudiobook from '@/components/icons/IconAudiobook.vue';
 import routerConsts from '@/router/routerConsts';
-import { mapActions } from 'vuex';
+import { mapActions, mapState, mapMutations } from 'vuex';
 
 export default {
   name: 'SideMenu',
@@ -64,75 +64,22 @@ export default {
     IconSettings,
     IconAudiobook,
   },
-  data() {
-    return {
-      isOpen: false,
-      menuItems: [
-        {
-          name: routerConsts.learningPage.name,
-          route: routerConsts.learningPage.path,
-          icon: {
-            name: 'Audiobook',
-            viewbox: '0 0 64 64',
-          },
-        },
-        {
-          name: routerConsts.dictionaryPage.name,
-          route: routerConsts.dictionaryPage.path,
-          icon: {
-            name: 'Dictionary',
-            viewbox: '0 0 512 512',
-          },
-        },
-        {
-          name: routerConsts.miniGamesPage.name,
-          route: routerConsts.miniGamesPage.path,
-          icon: {
-            name: 'Joystick',
-            viewbox: '0 0 64 64',
-          },
-        },
-        {
-          name: routerConsts.statisticPage.name,
-          route: routerConsts.statisticPage.path,
-          icon: {
-            name: 'BarChart',
-            viewbox: '0 0 480 480',
-          },
-        },
-        {
-          name: routerConsts.ourTeamPage.name,
-          route: routerConsts.ourTeamPage.path,
-          icon: {
-            name: 'GroupOfMen',
-            viewbox: '0 0 151 151',
-          },
-        },
-        {
-          name: routerConsts.settings.name,
-          route: routerConsts.settings.path,
-          icon: {
-            name: 'Settings',
-            viewbox: '0 0 480 480',
-          },
-        },
-      ],
-    };
+  computed: {
+    ...mapState('SideMenu', ['menuItems', 'isOpen']),
   },
   methods: {
     ...mapActions('Auth', ['logoutUser']),
+    ...mapMutations('SideMenu', ['setIsOpen']),
 
     openMenu() {
-      this.isOpen = !this.isOpen;
-    },
-    closeMobileMenu() {
-      if (document.documentElement.clientWidth < 761) {
-        this.isOpen = false;
-      }
+      this.setIsOpen(!this.isOpen);
     },
     onLogout() {
       this.logoutUser();
       this.$router.push(routerConsts.welcomePage.path);
+    },
+    close() {
+      this.setIsOpen(false);
     },
   },
 };
@@ -159,6 +106,8 @@ export default {
 }
 
 .menu {
+  position: fixed;
+  z-index: 15;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -181,6 +130,9 @@ export default {
 
   &__burger {
     position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 19;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -283,6 +235,7 @@ export default {
 }
 
 .nav-wrapper {
+  z-index: 15;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -300,6 +253,10 @@ export default {
     padding-left: 15px;
     margin-left: 0;
   }
+
+  .menu__logo {
+    font-size: 0;
+  }
 }
 
 @media screen and (max-width: $desktop-width) {
@@ -315,13 +272,6 @@ export default {
 @media screen and (max-width: $tablet-width) {
   .menu__navigation {
     margin-top: 10px;
-  }
-
-  .menu-open {
-    position: fixed;
-    left: 0;
-    z-index: 20;
-    width: 100vw;
   }
 }
 
@@ -339,11 +289,6 @@ export default {
 
     .nav-wrapper {
       display: none;
-    }
-
-    .menu__burger {
-      z-index: 19;
-      width: 60px;
     }
   }
 }

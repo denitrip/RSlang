@@ -13,6 +13,7 @@ import Notification from '@/store/modules/notification';
 import OurGame from '@/store/modules/ourGame';
 import Sprint from '@/store/modules/sprint';
 import Speakit from '@/store/modules/speakit';
+import SideMenu from '@/store/modules/sideMenu';
 
 Vue.use(Vuex);
 
@@ -31,5 +32,6 @@ export default new Vuex.Store({
     OurGame,
     Sprint,
     Speakit,
+    SideMenu,
   },
 });

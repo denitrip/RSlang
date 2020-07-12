@@ -65,6 +65,8 @@ export default {
   justify-content: space-between;
   height: 86px;
   padding: 0 60px 0 75px;
+  background-color: $color-white;
+  box-shadow: 1px 5px 14px $box-shadow-one-color;
 
   @include media-tablet {
     justify-content: center;
@@ -97,7 +99,6 @@ export default {
   display: inline-block;
   padding: 0;
   margin: 0;
-  margin-left: 0;
   overflow: hidden;
   font-size: 36px;
   font-weight: 900;
@@ -109,7 +110,6 @@ export default {
   white-space: nowrap;
 
   @include media-tablet {
-    margin: 0;
     font-size: 24px;
     line-height: 44px;
   }

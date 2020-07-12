@@ -23,4 +23,5 @@ export const keys = {
 };
 export const wordDeletedMassage = 'Word deleted successfully';
 export const maxRoundStatsCount = 10;
+export const todayLearnedString = 'Statistic/todayLearned';
 export const videoLink = 'https://www.youtube.com/embed/3-mPN4cvRYY';
