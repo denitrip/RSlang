@@ -93,6 +93,16 @@ export default {
     setWallpaperSrc(state, payload) {
       state.wallpaperSrc = payload;
     },
+    resetGame(state) {
+      state.incorrectAnswer = [...state.words];
+      state.correctAnswer = [];
+      state.pictureSrc = defaultPicture;
+      state.wordRecording = '';
+      state.translation = '';
+      state.isStartGame = false;
+      state.isCorrectWord = false;
+      state.isEndGame = false;
+    },
   },
   actions: {
     async getWords({ state, commit }) {
