@@ -4,7 +4,8 @@
       <h1><span>Hello.</span> Let’s start learning!</h1>
       <p>
         On this page, you can monitor your progress and select the desired set of words to learn,
-        for example, <b>“New words”</b>, <b>“Repeat words”</b> or <b>“Difficult words”</b>. Good luck!
+        for example, <b>“New words”</b>, <b>“Repeat words”</b> or <b>“Difficult words”</b>. Good
+        luck!
       </p>
     </div>
     <div class="learning-today card-wrap">

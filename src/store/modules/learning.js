@@ -1,4 +1,9 @@
-import { apiAddress, application, wordGroups } from '@/helpers/constants.helper';
+import {
+  apiAddress,
+  application,
+  wordGroups,
+  todayLearnedString,
+} from '@/helpers/constants.helper';
 
 export default {
   namespaced: true,
@@ -148,11 +153,16 @@ export default {
         body: JSON.stringify(payload),
       });
     },
-    async getNewWords({ state, rootState, commit }) {
+    async getNewWords({ state, rootState, commit, rootGetters }) {
       const { userId, token } = rootState.Auth.user;
-      const { wordsPerDay } = rootState.Settings.settings;
+      const { wordsPerDay, maxCardDay } = rootState.Settings.settings;
       const { todayLearnedNewWord } = state;
-      const newWordsCount = wordsPerDay - todayLearnedNewWord;
+      const todayLearned = rootGetters[todayLearnedString];
+      const cardsCount = maxCardDay - todayLearned;
+      let newWordsCount = wordsPerDay - todayLearnedNewWord;
+      if (newWordsCount > cardsCount) {
+        newWordsCount = cardsCount;
+      }
       const response = await fetch(
         `${apiAddress}users/${userId}/aggregatedWords?wordsPerPage=${newWordsCount}&filter={"userWord":null}`,
         {
@@ -220,7 +230,7 @@ export default {
     async getDifficultWords({ state, commit, dispatch, rootState, rootGetters }) {
       await dispatch('getAllUserWords');
       const { userWords } = state;
-      const todayLearned = rootGetters['Statistic/todayLearned'];
+      const todayLearned = rootGetters[todayLearnedString];
       const { maxCardDay } = rootState.Settings.settings;
       const cardsCount = maxCardDay - todayLearned;
 
@@ -237,7 +247,7 @@ export default {
     async getLearnedWords({ state, commit, dispatch, rootState, rootGetters }) {
       await dispatch('getAllUserWords');
       const { userWords } = state;
-      const todayLearned = rootGetters['Statistic/todayLearned'];
+      const todayLearned = rootGetters[todayLearnedString];
       const { maxCardDay } = rootState.Settings.settings;
       const cardsCount = maxCardDay - todayLearned;
 

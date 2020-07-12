@@ -2,12 +2,7 @@
   <div>
     <div class="bkg-shortTerm" @click="close"></div>
     <div class="shortTermStatistic">
-      <img
-        class="shortTermStatistic__btn-close"
-        src="../assets/img/btn-close.png"
-        alt="close"
-        @click="close"
-      />
+      <button class="shortTermStatistic__btn-close" @click="close">&times;</button>
       <h3 class="shortTermStatistic__head">Series is completed</h3>
       <div class="shortTermStatistic__cards">
         <p>Cards completed:</p>
@@ -66,7 +61,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 10;
+  z-index: 99;
   width: 100%;
   height: 100%;
   background-color: $overlay-color;
@@ -91,9 +86,20 @@ export default {
 
   &__btn-close {
     position: absolute;
-    top: 25px;
+    top: 15px;
     right: 25px;
-    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+    color: $color-manatee;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    outline: none;
+    transition: background-color 0.3s, color 0.3s;
   }
 
   &__head {
@@ -126,9 +132,16 @@ export default {
   }
 }
 
+@media (hover: hover) {
+  .shortTermStatistic__btn-close:hover {
+    color: $color-white;
+    background-color: $color-manatee;
+  }
+}
+
 @media screen and (max-width: $puzzle-mobile-size) {
   .shortTermStatistic {
-    top: 0;
+    top: 90px;
     left: 0;
     margin: 10px;
   }
