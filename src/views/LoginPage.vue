@@ -52,6 +52,20 @@
           <p class="text-rules">— user made a mistake or clicked repeat button - 2 hours;</p>
           <p class="text-rules">— user pressed the good button - 48 hours;</p>
           <p class="text-rules">— user pressed the easy button - 120 hours.</p>
+          <div class="repository">
+            <a
+              class="repository__link"
+              href="https://github.com/denitrip/RSlang/tree/develop"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="repository"
+            >
+              <IconBase>
+                <IconGithub />
+              </IconBase>
+            </a>
+            <p>- link to the repository.</p>
+          </div>
           <ul class="main_buttons">
             <li class="main_buttons-button">
               <router-link :to="routerConsts.signUpPage.path" class="StartLearning">
@@ -111,10 +125,12 @@ import { mapActions } from 'vuex';
 import routerConsts from '@/router/routerConsts';
 import loginForm from '@/components/LoginForm.vue';
 import WatchVideo from '@/components/WatchVideo.vue';
+import IconBase from '@/components/IconBase.vue';
+import IconGithub from '@/components/icons/IconGithub.vue';
 
 export default {
   name: 'LoginPage',
-  components: { loginForm, WatchVideo },
+  components: { loginForm, WatchVideo, IconGithub, IconBase },
   data() {
     return {
       currentRoute: this.$router.currentRoute.name,
@@ -346,6 +362,20 @@ header {
   z-index: 2;
 }
 
+.repository {
+  display: flex;
+  margin-top: 24px;
+
+  &__link {
+    margin-right: 5px;
+    transition: color 0.3s;
+  }
+
+  @media screen and (max-width: $tablet-width) {
+    justify-content: center;
+  }
+}
+
 .title {
   width: 100%;
   max-width: 41vw;
@@ -457,6 +487,10 @@ header {
   .button--filled:hover {
     background-color: $color-malibu;
     border-color: $color-malibu;
+  }
+
+  .repository__link:hover {
+    color: $color-black;
   }
 }
 </style>
