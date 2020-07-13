@@ -1,0 +1,67 @@
+{
+  "name": "rslang",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "npm run lint && vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "clean:dist": "rimraf dist",
+    "deploy": "npm run build && firebase deploy"
+  },
+  "dependencies": {
+    "bootstrap": "^4.5.0",
+    "bootstrap-vue": "^2.15.0",
+    "chart.js": "^2.9.3",
+    "core-js": "^3.6.5",
+    "vue": "^2.6.11",
+    "vue-chartjs": "^3.5.0",
+    "vue-circular-count-down-timer": "^1.0.4",
+    "vue-router": "^3.3.4",
+    "vuex": "^3.4.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.4.0",
+    "@vue/cli-plugin-eslint": "~4.4.0",
+    "@vue/cli-service": "~4.4.0",
+    "@vue/eslint-config-airbnb": "^5.0.2",
+    "babel-eslint": "^10.1.0",
+    "commit-message-validator": "^0.1.11",
+    "eslint": "^6.7.2",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-sonarjs": "^0.5.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.2",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.2",
+    "stylelint": "^13.6.0",
+    "stylelint-config-recess-order": "^2.0.4",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-scss": "^3.17.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commit-message-validator",
+      "pre-push": "npm run build && npm run lint"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,md,scss,vue}": "prettier --write",
+    "*.{js,vue}": "npm run lint"
+  },
+  "config": {
+    "commit-message-validator": {
+      "pattern": "^RS-(XXX|\\d{1,5}) (build|ci|chore|docs|feat|fix|perf|refactor|revert|style|test) ?\\((\\*|.{1,20})\\): ",
+      "errorMessage": "Commit message does not satisfy the requirements"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
