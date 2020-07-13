@@ -75,7 +75,11 @@
         Check
         <span class="btn-arrow"></span>
       </button>
-      <div class="show-answer" @click="showAnswer" v-if="settings.isShowAnswerVisible">
+      <div
+        class="show-answer"
+        @click="showAnswer"
+        v-if="settings.isShowAnswerVisible && !isCompleteState"
+      >
         Show answer
       </div>
     </form>
