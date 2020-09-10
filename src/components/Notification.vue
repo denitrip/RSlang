@@ -2,29 +2,29 @@
   <div>
     <div class="notification" @click="close"></div>
     <div class="window">
-      <button class="close-button" @click="close">&times;</button>
-      <h2 class="title">Well done!</h2>
-      <h2 class="title">It´s enough for today</h2>
+      <button class="close-button" @click="close" :title="$t('notify.closeButtonText')">
+        &times;
+      </button>
+      <h2 class="title">{{ $t('notify.title1') }}</h2>
+      <h2 class="title">{{ $t('notify.title2') }}</h2>
       <p class="text">
-        You still have new cards, but the daily limit has been reached.<br />
-        You can increase your daily limit in the application
-        <router-link :to="routerConsts.settings.path">settings.</router-link> But don’t forget that
-        the more new cards you see, the more words to repeat.<br />
-        If you want to continue training, click to
-        <span @click="close"
-          ><router-link :to="routerConsts.learningPage.path">learn more.</router-link></span
-        >
+        {{ $t('notify.text1') }}<br />
+        {{ $t('notify.text2') }}
+        <router-link :to="routerConsts.settings.path">{{ $t('notify.linkSettings') }}</router-link>
+        {{ $t('notify.text3') }}<br />
+        {{ $t('notify.text4') }}
+        <span @click="close">
+          <router-link :to="routerConsts.learningPage.path">
+            {{ $t('notify.linkLearning') }}
+          </router-link>
+        </span>
       </p>
       <div class="buttons-wrapper">
         <router-link :to="routerConsts.settings.path">
-          <button class="Primary-1">
-            Settings
-          </button>
+          <button class="Primary-1">{{ $t('notify.settingsButtonText') }}</button>
         </router-link>
         <router-link :to="routerConsts.learningPage.path">
-          <button class="Primary-2" @click="close">
-            Learn more
-          </button>
+          <button class="Primary-2" @click="close">{{ $t('notify.learningButtonText') }}</button>
         </router-link>
       </div>
     </div>

@@ -6,44 +6,39 @@
         :class="{ checked: isLernedTab }"
         @click="toogleTab(wordGroups.learned)"
       >
-        Learned words
+        {{ $t('dictionary.learnedWords') }}
       </div>
       <div
         class="dictionary__tab"
         :class="{ checked: isDifficultTab }"
         @click="toogleTab(wordGroups.difficult)"
       >
-        Difficult
+        {{ $t('dictionary.difficultWords') }}
       </div>
       <div
         class="dictionary__tab"
         :class="{ checked: isDeletedTab }"
         @click="toogleTab(wordGroups.deleted)"
       >
-        Deleted
+        {{ $t('dictionary.deletedWords') }}
       </div>
     </div>
     <transition name="fade" mode="out-in">
       <div class="tab-wrapper" :key="getTab" :class="{ 'tab-wrapper_loading': isChangeLoading }">
-        <div class="dictionary__controls">
-          <div class="dictionary__controls__checked">
-            <b-form-checkbox name="checkbox-checked-cards" size="lg" v-model="selectAll">
-              Selected {{ selectedWords.length }} words
-            </b-form-checkbox>
-          </div>
+        <div class="dictionary-controls">
           <AppSpinner
             v-if="isChangeLoading"
             size="lds-spinner_small-plus"
             colorName="color-dodger-blue"
           />
-          <div class="dictionary__controls__buttons">
+          <div class="dictionary-controls__buttons">
             <button
               class="lern-btn"
               v-if="!isLernedTab"
               :disabled="!selectedWords.length || isChangeLoading"
               @click="changeWordsDifficulty(wordGroups.learned)"
             >
-              Learned
+              {{ $t('dictionary.toLearnedButton') }}
             </button>
             <button
               class="diff-btn"
@@ -51,7 +46,7 @@
               :disabled="!selectedWords.length || isChangeLoading"
               @click="changeWordsDifficulty(wordGroups.difficult)"
             >
-              Difficult
+              {{ $t('dictionary.toDifficultButton') }}
             </button>
             <button
               class="del-btn"
@@ -59,8 +54,27 @@
               :disabled="!selectedWords.length || isChangeLoading"
               @click="changeWordsDifficulty(wordGroups.deleted)"
             >
-              Delete
+              {{ $t('dictionary.deleteButton') }}
             </button>
+          </div>
+        </div>
+        <div class="dictionary-controls__words">
+          <b-form-checkbox name="checkbox-checked-cards" size="lg" v-model="selectAll">
+            {{
+              `${$t('dictionary.selectText1')}
+                ${selectedWords.length}
+                ${$tc('dictionary.selectText2', selectedWords.length)}`
+            }}
+          </b-form-checkbox>
+          <div class="rows-select">
+            <select v-model="perPage">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            <p class="rows-select__text">{{ $t('dictionary.perPageText') }}</p>
           </div>
         </div>
         <AppSpinner v-if="isWordsLoading" size="lds-spinner_large" colorName="color-dodger-blue" />
@@ -82,9 +96,7 @@
               last-number
             ></b-pagination>
           </div>
-          <div class="empty-words" v-else key="empty">
-            The list of words is empty.
-          </div>
+          <div class="empty-words" v-else key="empty">{{ $t('dictionary.emptyList') }}</div>
         </div>
       </div>
     </transition>
@@ -112,7 +124,7 @@ export default {
       isChangeLoading: false,
       wordGroups,
       currentPage: 1,
-      perPage: 5,
+      perPage: 10,
     };
   },
   computed: {
@@ -314,19 +326,15 @@ $line-top-position: 70px;
     border-bottom: 4px solid $color-dodger-blue;
 
     @include media-mobile {
-      width: 60px;
-    }
-
-    @include media-mobile {
       @include font($size: 1.18rem, $height: 13px);
     }
   }
 }
 
-.dictionary__controls {
+.dictionary-controls {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   width: 100%;
   padding: 0 40px;
   margin-bottom: 16px;
@@ -339,12 +347,33 @@ $line-top-position: 70px;
   @include media-tablet {
     flex-direction: column-reverse;
     padding: 0 8px;
-    margin-bottom: 8px;
   }
 
   @include media-mobile {
     padding: 0 0;
-    margin-bottom: 8px;
+  }
+
+  &__words {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 40px;
+    margin-bottom: 16px;
+
+    @include media-laptop {
+      padding: 0 20px;
+      margin-bottom: 8px;
+    }
+
+    @include media-tablet {
+      flex-direction: column;
+      padding: 0 8px;
+    }
+
+    @include media-mobile {
+      padding: 0 0;
+    }
   }
 
   &__buttons {
@@ -393,6 +422,14 @@ $line-top-position: 70px;
     .del-btn {
       background-color: $color-wild-watermelon;
     }
+  }
+}
+
+.rows-select {
+  display: flex;
+
+  &__text {
+    margin-left: 10px;
   }
 }
 

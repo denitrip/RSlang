@@ -10,7 +10,7 @@
           class="icon icon__speak-it"
           :class="{ 'icon__speak-it_play': isSoundPlay }"
         >
-          <IconBase iconName="sound" width="36" height="30" viewBox="0 0 36 30">
+          <IconBase :iconName="$t('sound')" width="36" height="30" viewBox="0 0 36 30">
             <IconSpeakIt />
           </IconBase>
         </span>
@@ -26,17 +26,29 @@
           class="icon icon__speak-it--mobile"
           :class="{ 'icon__speak-it_play': isSoundPlay }"
         >
-          <IconBase iconName="sound" width="36" height="30" viewBox="0 0 36 29">
+          <IconBase :iconName="$t('sound')" width="36" height="30" viewBox="0 0 36 29">
             <IconSpeakIt />
           </IconBase>
         </span>
-        <b-button class="icon__info" variant="success" @click="flipCard">i</b-button>
+        <b-button
+          class="icon__info"
+          variant="success"
+          @click="flipCard"
+          :title="$t('dictionary.infoButtonText')"
+        >
+          i
+        </b-button>
         <span
           v-show="isLearned || isDeleted"
           @click="changeWordDifficulty(wordGroups.difficult)"
           class="icon icon__do-you-know"
         >
-          <IconBase iconName="to difficult" width="26" height="30" viewBox="0 0 26 30">
+          <IconBase
+            :iconName="$t('dictionary.toDifficultButton')"
+            width="26"
+            height="30"
+            viewBox="0 0 26 30"
+          >
             <IconDoYouKnow />
           </IconBase>
         </span>
@@ -45,7 +57,12 @@
           @click="changeWordDifficulty(wordGroups.learned)"
           class="icon icon__backup"
         >
-          <IconBase iconName="to learned" width="29" height="29" viewBox="0 0 29 29">
+          <IconBase
+            :iconName="$t('dictionary.toLearnedButton')"
+            width="29"
+            height="29"
+            viewBox="0 0 29 29"
+          >
             <IconBackup />
           </IconBase>
         </span>
@@ -54,7 +71,12 @@
           @click="changeWordDifficulty(wordGroups.deleted)"
           class="icon icon__bucket"
         >
-          <IconBase iconName="delete" width="24" height="30" viewBox="0 0 24 30">
+          <IconBase
+            :iconName="$t('dictionary.deleteButton')"
+            width="24"
+            height="30"
+            viewBox="0 0 24 30"
+          >
             <IconBucket />
           </IconBase>
         </span>
@@ -68,7 +90,7 @@
       </div>
       <div class="meaning" v-if="settings.isMeaningVisible">
         <div class="text">{{ word.textMeaning | deleteItalic }}</div>
-        <div class="text-translate">{{ word.textExampleTranslate }}</div>
+        <div class="text-translate">{{ word.textMeaningTranslate }}</div>
       </div>
       <div class="example" v-if="settings.isExampleVisible">
         <div class="text">{{ word.textExample | deleteBold }}</div>
@@ -76,17 +98,29 @@
       </div>
       <div class="progress-date">
         <div class="text-translate">
-          First {{ new Date(word.userWord.optional.firstLearnedDate).toLocaleString() }}
+          {{ $t('dictionary.firstLearn') }}
+          {{ new Date(word.userWord.optional.firstLearnedDate).toLocaleString() }}
         </div>
         <div class="text-translate">
-          Last {{ new Date(word.userWord.optional.lastLearnedDate).toLocaleString() }}
+          {{ $t('dictionary.lastLearn') }}
+          {{ new Date(word.userWord.optional.lastLearnedDate).toLocaleString() }}
         </div>
         <div class="text-translate">
-          Next {{ new Date(word.userWord.optional.nextLearnedDate).toLocaleString() }}
+          {{ $t('dictionary.nextLearn') }}
+          {{ new Date(word.userWord.optional.nextLearnedDate).toLocaleString() }}
         </div>
       </div>
-      <div class="text">Repeated {{ word.userWord.optional.learnedCount }} times</div>
-      <b-button-close @click="flipCard" class="icon__close">×</b-button-close>
+      <div class="text">
+        {{ $t('dictionary.repeatedText1') }} {{ word.userWord.optional.learnedCount }}
+        {{ $t('dictionary.repeatedText2') }}
+      </div>
+      <b-button-close
+        @click="flipCard"
+        class="icon__close"
+        :title="$t('dictionary.closeButtonText')"
+      >
+        ×
+      </b-button-close>
     </div>
   </div>
 </template>

@@ -1,27 +1,18 @@
 <template functional>
   <div class="start-screen" key="ourGame-start-screen">
-    <h1 class="start-screen__title">Our Game</h1>
-    <h3 class="start-screen__description">
-      The “Our Game” mini-game is a workout that helps visualize English words.
-    </h3>
-    <p>
-      After the start of the game, you will see a word in English and four picture options. You can
-      choose the right answer in two ways:
-    </p>
-    <p>1. Click on it with the mouse;</p>
-    <p>2. Use the keys 1, 2, 3, 4, 5.</p>
-    <p>
-      The game has 6 difficulty levels. For each correct answer 10 points are awarded. For each
-      incorrect answer 5 points are removed. For each difficulty level an additional 10 points are
-      awarded. When you reach 10 correct answers, you go to the next level of difficulty.
-    </p>
+    <h1 class="start-screen__title">{{ parent.$t('ourGame.title') }}</h1>
+    <h3 class="start-screen__description">{{ parent.$t('ourGame.descriptionH3') }}</h3>
+    <p>{{ parent.$t('ourGame.descriptionP1') }}</p>
+    <p>{{ parent.$t('ourGame.descriptionP2') }}</p>
+    <p>{{ parent.$t('ourGame.descriptionP3') }}</p>
+    <p>{{ parent.$t('ourGame.descriptionP4') }}</p>
     <button
       class="start-screen__button"
       @click="listeners.startGame"
       :disabled="props.isStartLoading"
     >
       <component :is="props.components.AppSpinner" v-if="props.isStartLoading"></component>
-      Start
+      {{ parent.$t('start') }}
     </button>
   </div>
 </template>

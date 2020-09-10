@@ -1,3 +1,5 @@
+import i18n from '@/i18n';
+
 export default {
   deleteBold(str) {
     return str.replace(/<b>|<\/b>/g, '');
@@ -18,7 +20,7 @@ export default {
       hour: 'numeric',
       minute: 'numeric',
     };
-    return new Date(value).toLocaleString('en-US', options);
+    return new Date(value).toLocaleString(i18n.locale, options);
   },
   knowStats(array) {
     let know = 0;

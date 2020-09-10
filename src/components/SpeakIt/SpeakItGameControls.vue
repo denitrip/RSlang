@@ -1,12 +1,14 @@
 <template>
   <div class="tools">
     <div class="buttons-control">
-      <button class="button restart-button" @click="restartGame">Restart</button>
+      <button class="button restart-button" @click="restartGame">
+        {{ $t('speakIt.restartButton') }}
+      </button>
       <button class="button speak-button recording" :disabled="isStartGame" @click="startGame">
-        Speak please
+        {{ $t('speakIt.speakButton') }}
       </button>
       <button class="button finish-button" :disabled="isGameEnd" @click="finishGame">
-        Finish
+        {{ $t('speakIt.finishButton') }}
       </button>
     </div>
   </div>
@@ -179,11 +181,12 @@ export default {
 .speak-button,
 .finish-button {
   font-size: 1.5em;
-  color: white;
+  color: $color-white;
   cursor: pointer;
-  background: $color-dodger-blue;
-  border: 0.5px solid black;
+  background-color: $color-dodger-blue;
+  border: none;
   border-radius: 10px;
+  transition: background-color 0.3s;
 
   @include media-tablet {
     margin: 0 10px;
@@ -219,6 +222,12 @@ export default {
     width: 100%;
     max-width: 200px;
     height: 50px;
+  }
+}
+
+@media (hover: hover) {
+  .button:hover {
+    background-color: $color-cornflower-blue;
   }
 }
 </style>

@@ -2,24 +2,24 @@
   <div class="game__menu">
     <div class="game__settings">
       <div class="setting__sound" @click="soundToggle">
-        <IconBase iconName="sound" width="36px" height="24px" v-if="isSound">
+        <IconBase :iconName="$t('sound')" width="36px" height="24px" v-if="isSound">
           <IconVolume />
         </IconBase>
-        <IconBase iconName="sound" width="36px" height="24px" v-else>
+        <IconBase :iconName="$t('sound')" width="36px" height="24px" v-else>
           <IconVolumeOff />
         </IconBase>
       </div>
-      <p class="level">Level: {{ group + 1 }}</p>
-      <p class="score">Score: {{ score }}</p>
+      <p class="level">{{ $t('ourGame.level') }}: {{ group + 1 }}</p>
+      <p class="score">{{ $t('ourGame.score') }}: {{ score }}</p>
     </div>
     <div class="game__lives">
       <span class="hearth__lost" v-for="(item, i) in lost" :key="`${i}-lost`">
-        <IconBase iconName="live" width="24px" height="24px">
+        <IconBase :iconName="$t('ourGame.live')" width="24px" height="24px">
           <IconHearthLost />
         </IconBase>
       </span>
       <span class="hearth" v-for="(item, i) in lives" :key="`${i}-live`">
-        <IconBase iconName="live" width="24px" height="24px">
+        <IconBase :iconName="$t('ourGame.live')" width="24px" height="24px">
           <IconHearth />
         </IconBase>
       </span>

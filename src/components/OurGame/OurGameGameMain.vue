@@ -14,7 +14,7 @@
       </p>
       <div class="attempt-words">
         <div class="loading" v-if="isStartLoading">
-          <h2>Level: {{ group + 1 }}</h2>
+          <h2>{{ $t('ourGame.level') }}: {{ group + 1 }}</h2>
           <AppSpinner size="lds-spinner_large" colorName="color-dodger-blue" />
         </div>
         <span

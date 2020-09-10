@@ -2,25 +2,33 @@
   <div>
     <div class="bkg-shortTerm" @click="close"></div>
     <div class="shortTermStatistic">
-      <button class="shortTermStatistic__btn-close" @click="close">&times;</button>
-      <h3 class="shortTermStatistic__head">Series is completed</h3>
+      <button
+        class="shortTermStatistic__btn-close"
+        @click="close"
+        :title="$t('shortTermStatistic.closeButtonText')"
+      >
+        &times;
+      </button>
+      <h3 class="shortTermStatistic__head">{{ $t('shortTermStatistic.title') }}</h3>
       <div class="shortTermStatistic__cards">
-        <p>Cards completed:</p>
+        <p>{{ $t('shortTermStatistic.completed') }}</p>
         <p>{{ cardsCount }}</p>
       </div>
       <div class="shortTermStatistic__correct-answer">
-        <p>Correct answer:</p>
+        <p>{{ $t('shortTermStatistic.correct') }}</p>
         <p>{{ correctAnswer }}</p>
       </div>
       <div class="shortTermStatistic__new-words">
-        <p>New words:</p>
+        <p>{{ $t('shortTermStatistic.newWords') }}</p>
         <p>{{ newWords }}</p>
       </div>
       <div class="shortTermStatistic__longest-correct-series">
-        <p>Longest series of correct answers:</p>
+        <p>{{ $t('shortTermStatistic.longestSeries') }}</p>
         <p>{{ longestSeries }}</p>
       </div>
-      <button class="shortTermStatistic__button" @click="close">OK</button>
+      <button class="shortTermStatistic__button" @click="close">
+        {{ $t('shortTermStatistic.okButtonText') }}
+      </button>
     </div>
   </div>
 </template>

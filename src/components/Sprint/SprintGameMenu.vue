@@ -2,10 +2,10 @@
   <div class="game__menu">
     <div class="game__settings">
       <div class="setting__sound" v-if="!isGameEnd" @click="soundToggle">
-        <IconBase iconName="sound" width="30px" height="24px" v-if="isSound">
+        <IconBase :iconName="$t('sound')" width="30px" height="24px" v-if="isSound">
           <IconVolume />
         </IconBase>
-        <IconBase iconName="sound" width="30px" height="24px" v-else>
+        <IconBase :iconName="$t('sound')" width="30px" height="24px" v-else>
           <IconVolumeOff />
         </IconBase>
       </div>

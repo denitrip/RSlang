@@ -1,8 +1,10 @@
 <template>
   <form class="login" @submit.prevent="onSubmit" novalidate>
-    <h4 class="h4 wrap">{{ isRegisterPage ? 'Sign up' : 'Log in' }}</h4>
+    <h4 class="h4 wrap">{{ isRegisterPage ? $t('auth.signUp') : $t('auth.logIn') }}</h4>
     <div class="wrap">
-      <label for="login" :class="{ email__wrong_color: isValidErrorEmail }">Email</label>
+      <label for="login" :class="{ email__wrong_color: isValidErrorEmail }">
+        {{ $t('auth.email') }}
+      </label>
       <input
         class="input"
         :class="{
@@ -16,16 +18,14 @@
         @blur="email.touch()"
       />
       <span v-if="isValidErrorEmail" class="email__wrong email__wrong_color">
-        <template v-if="!isRequiredEmail">
-          Required.
-        </template>
-        <template v-else-if="!isEmail">
-          The e-mail adress is incomplete.
-        </template>
+        <template v-if="!isRequiredEmail">{{ $t('auth.required') }}</template>
+        <template v-else-if="!isEmail">{{ $t('auth.isEmailText') }}</template>
       </span>
     </div>
     <div class="wrap">
-      <label for="password" :class="{ email__wrong_color: isValidErrorPassword }">Password</label>
+      <label for="password" :class="{ email__wrong_color: isValidErrorPassword }">
+        {{ $t('auth.password') }}
+      </label>
       <input
         class="input"
         :class="{ email__wrong_border: isValidErrorPassword }"
@@ -38,25 +38,16 @@
         class="eye"
         :class="isPasswordShow ? 'password__eye_close' : 'password__eye'"
         @click="showPassword"
-        :title="isPasswordShow ? 'hide password' : 'show password'"
+        :title="isPasswordShow ? $t('auth.hidePassword') : $t('auth.showPassword')"
       ></span>
       <span v-if="isValidErrorPassword" class="email__wrong email__wrong_color">
-        <template v-if="!isRequiredPassword">
-          Required
-        </template>
-        <template v-else-if="!isMinLength">
-          Password must be equal or more than 8 characters
-        </template>
-        <template v-else-if="!isPassword">
-          Password must contain at least one uppercase letter, one lowercase letter, one number and
-          one special character
-        </template>
+        <template v-if="!isRequiredPassword">{{ $t('auth.required') }}</template>
+        <template v-else-if="!isMinLength">{{ $t('auth.minLengthPassword') }}</template>
+        <template v-else-if="!isPassword">{{ $t('auth.isPassword') }}</template>
       </span>
     </div>
     <div class="wrap" v-if="isRegisterPage">
-      <label for="repeatPassword">
-        Repeat password
-      </label>
+      <label for="repeatPassword">{{ $t('auth.repeatPasswordLabel') }}</label>
       <input
         class="input"
         :class="{ email__wrong_border: isValidErrorRepeatPassword }"
@@ -69,15 +60,11 @@
         class="eye"
         :class="isRepeatPasswordShow ? 'password__eye_close' : 'password__eye'"
         @click="showRepeatPassword"
-        :title="isRepeatPasswordShow ? 'hide password' : 'show password'"
+        :title="isRepeatPasswordShow ? $t('auth.hidePassword') : $t('auth.showPassword')"
       ></span>
       <span v-if="isValidErrorRepeatPassword" class="email__wrong email__wrong_color">
-        <template v-if="!isRequiredRepeatPassword">
-          Required
-        </template>
-        <template v-else-if="!isSameAs">
-          Passwords must be identical
-        </template>
+        <template v-if="!isRequiredRepeatPassword">{{ $t('auth.required') }}</template>
+        <template v-else-if="!isSameAs">{{ $t('auth.repeatPasswordText') }}</template>
       </span>
     </div>
     <button
@@ -86,7 +73,7 @@
       class="btn btn-login wrap"
       :disabled="isRegistrationValid || isAuthLoading"
     >
-      Sign Up
+      {{ $t('auth.signUp') }}
       <AppSpinner v-if="isAuthLoading"></AppSpinner>
       <span v-else class="btn-arrow"></span>
     </button>
@@ -96,21 +83,17 @@
       class="btn btn-login wrap"
       :disabled="isLoginValid || isAuthLoading"
     >
-      Log in
+      {{ $t('auth.logIn') }}
       <AppSpinner v-if="isAuthLoading"></AppSpinner>
       <span v-else class="btn-arrow"></span>
     </button>
     <div class="signup wrap" v-if="isRegisterPage">
-      <label for="signup">Already have an account?</label>
-      <router-link :to="routerConsts.loginPage.path">
-        Log In
-      </router-link>
+      <label for="signup">{{ $t('auth.loginLink') }}</label>
+      <router-link :to="routerConsts.loginPage.path">{{ $t('auth.logIn') }}</router-link>
     </div>
     <div class="signup wrap" v-else>
-      <label for="signup">Don't have account?</label>
-      <router-link :to="routerConsts.signUpPage.path">
-        Sign Up
-      </router-link>
+      <label for="signup">{{ $t('auth.registerLink') }}</label>
+      <router-link :to="routerConsts.signUpPage.path">{{ $t('auth.signUp') }}</router-link>
     </div>
   </form>
 </template>
@@ -385,11 +368,27 @@ export default {
 
 .signup {
   text-align: center;
+
+  a {
+    margin-left: 5px;
+  }
 }
 
 @media screen and (max-width: $mobile-big-width) {
   .login {
     padding: 20px;
+  }
+}
+
+@media (hover: hover) {
+  .signup {
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .btn:hover {
+    background-color: $color-malibu;
   }
 }
 </style>

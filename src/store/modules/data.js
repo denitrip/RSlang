@@ -4,32 +4,32 @@ export default {
     miniGames: [
       {
         icon: 'Megaphone',
-        title: 'Speak It!',
+        title: 'speakitPage',
         link: 'speak-it',
       },
       {
         icon: 'Puzzle',
-        title: 'English Puzzle',
+        title: 'englishPuzzlePage',
         link: 'english-puzzle',
       },
       {
         icon: 'Savannah',
-        title: 'Savannah',
+        title: 'savannahPage',
         link: 'savannah',
       },
       {
         icon: 'AudioCall',
-        title: 'Audiocall',
+        title: 'audiocallPage',
         link: 'audiocall',
       },
       {
         icon: 'Running',
-        title: 'Sprint',
+        title: 'sprintPage',
         link: 'sprint',
       },
       {
         icon: 'Poker',
-        title: 'Our game',
+        title: 'ourGamePage',
         link: 'our-game',
       },
     ],

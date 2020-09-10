@@ -1,6 +1,6 @@
 <template>
   <div class="menu" :class="{ 'menu-open': isOpen, 'menu-close': !isOpen }">
-    <div class="menu__logo">RSlang</div>
+    <div class="menu__logo">{{ $t('logo') }}</div>
     <div class="menu__burger">
       <div
         class="menu__burger-wrapper"
@@ -20,19 +20,24 @@
           active-class="active-link"
           @click.native="close"
         >
-          <IconBase :iconName="item.name" width="34px" height="34px" :viewBox="item.icon.viewbox">
+          <IconBase
+            :iconName="$t(`sideMenu.${item.name}`)"
+            width="34px"
+            height="34px"
+            :viewBox="item.icon.viewBox"
+          >
             <component :is="`Icon${item.icon.name}`" />
           </IconBase>
           <transition name="fade">
-            <p v-if="isOpen">{{ item.name }}</p>
+            <p v-if="isOpen">{{ $t(`sideMenu.${item.name}`) }}</p>
           </transition>
         </router-link>
       </nav>
       <div class="menu__logout" @click="onLogout">
-        <IconBase iconName="Log Out" width="34px" height="34px" viewBox="0 0 36 26">
+        <IconBase :iconName="$t('auth.logOut')" width="34px" height="34px" viewBox="0 0 36 26">
           <IconLogOut />
         </IconBase>
-        <p v-if="isOpen">Log Out</p>
+        <p v-if="isOpen">{{ $t('auth.logOut') }}</p>
       </div>
     </div>
   </div>

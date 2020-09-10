@@ -12,7 +12,7 @@
       ></iframe>
     </div>
 
-    <button @click="open" class=" button button--bordered">Watch video</button>
+    <button @click="open" class=" button button--bordered">{{ $t('watchVideoButtonText') }}</button>
   </div>
 </template>
 

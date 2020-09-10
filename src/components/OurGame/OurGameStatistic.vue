@@ -1,8 +1,8 @@
 <template>
   <section class="statistic__wrapper">
-    <h1 class="statistic__title">Game statistic</h1>
-    <h2 class="statistic__score" v-if="isTableShow">Result Table</h2>
-    <h2 class="statistic__score" v-else>Score: {{ score }}</h2>
+    <h1 class="statistic__title">{{ $t('shortStatistic.title') }}</h1>
+    <h2 class="statistic__score" v-if="isTableShow">{{ $t('shortStatistic.resultTable') }}</h2>
+    <h2 class="statistic__score" v-else>{{ $t('shortStatistic.score') }}: {{ score }}</h2>
     <div class="statistic__detail">
       <div class="statistic__table" v-if="isTableShow">
         <div class="table__item" v-for="(item, index) in statistics.ourGameStats" :key="index">
@@ -12,12 +12,17 @@
       </div>
       <div class="details" v-else>
         <div class="detail__dont-know">
-          <span>I don' know </span>
+          <span>{{ $t('shortStatistic.dontKnowTitle') }}</span>
           <span class="detail__dont-know-count">{{ dontKnowArray.length }}</span>
           <div class="detail__sentence" v-for="item in dontKnowArray" :key="item.word">
             <div class="detail__wrap">
               <span class="detail__speech" @click="onPlayAudio(item.audio)">
-                <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
+                <icon-base
+                  :icon-name="$t('speechButtonTitle')"
+                  width="20px"
+                  height="20px"
+                  viewBox="0 0 576 512"
+                >
                   <icon-volume />
                 </icon-base>
               </span>
@@ -26,12 +31,17 @@
           </div>
         </div>
         <div class="detail__know">
-          <span>I know </span>
+          <span>{{ $t('shortStatistic.knowTitle') }}</span>
           <span class="detail__know-count">{{ knowArray.length }}</span>
           <div class="detail__sentence" v-for="item in knowArray" :key="`${item.word}`">
             <div class="detail__wrap">
               <span class="detail__speech" @click="onPlayAudio(item.audio)">
-                <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
+                <icon-base
+                  :icon-name="$t('speechButtonTitle')"
+                  width="20px"
+                  height="20px"
+                  viewBox="0 0 576 512"
+                >
                   <icon-volume />
                 </icon-base>
               </span>
@@ -42,10 +52,10 @@
       </div>
       <div class="detail__buttons">
         <button class="detail__button-continue" @click="onContinue">
-          Continue
+          {{ $t('shortStatistic.continueButtonText') }}
         </button>
         <button class="detail__button-table" @click="onShowTable" v-if="!isTableShow">
-          Result table
+          {{ $t('shortStatistic.resultTable') }}
         </button>
       </div>
     </div>

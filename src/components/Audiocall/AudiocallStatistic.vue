@@ -1,15 +1,20 @@
 <template>
   <section class="statistic__wrapper">
-    <h1 class="statistic__title">Game statistic</h1>
+    <h1 class="statistic__title">{{ $t('shortStatistic.title') }}</h1>
     <div class="statistic__detail">
       <div class="details" :class="[{ details_deleting: isDeleting }]">
         <div class="detail__dont-know">
-          <span>I don' know </span>
+          <span>{{ $t('shortStatistic.dontKnowTitle') }}</span>
           <span class="detail__dont-know-count">{{ dontKnowArray.length }}</span>
           <div class="detail__sentence" v-for="item in dontKnowArray" :key="item.word">
             <div class="detail__wrap">
               <span class="detail__speech" @click="onPlayAudio(item.audio)">
-                <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
+                <icon-base
+                  :icon-name="$t('speechButtonTitle')"
+                  width="20px"
+                  height="20px"
+                  viewBox="0 0 576 512"
+                >
                   <icon-volume />
                 </icon-base>
               </span>
@@ -20,19 +25,29 @@
               @click="onDeleteWord(item)"
               v-if="item.userWord.difficulty !== wordGroups.deleted"
             >
-              <icon-base icon-name="delete" width="20px" height="20px" viewBox="0 0 24 30">
+              <icon-base
+                :icon-name="$t('shortStatistic.deleteButtonTitle')"
+                width="20px"
+                height="20px"
+                viewBox="0 0 24 30"
+              >
                 <icon-bucket />
               </icon-base>
             </span>
           </div>
         </div>
         <div class="detail__know">
-          <span>I know </span>
+          <span>{{ $t('shortStatistic.knowTitle') }}</span>
           <span class="detail__know-count">{{ knowArray.length }}</span>
           <div class="detail__sentence" v-for="item in knowArray" :key="`${item.word}`">
             <div class="detail__wrap">
               <span class="detail__speech" @click="onPlayAudio(item.audio)">
-                <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
+                <icon-base
+                  :icon-name="$t('speechButtonTitle')"
+                  width="20px"
+                  height="20px"
+                  viewBox="0 0 576 512"
+                >
                   <icon-volume />
                 </icon-base>
               </span>
@@ -43,7 +58,12 @@
               @click="onDeleteWord(item)"
               v-if="item.userWord.difficulty !== wordGroups.deleted"
             >
-              <icon-base icon-name="delete" width="20px" height="20px" viewBox="0 0 24 30">
+              <icon-base
+                :icon-name="$t('shortStatistic.deleteButtonTitle')"
+                width="20px"
+                height="20px"
+                viewBox="0 0 24 30"
+              >
                 <icon-bucket />
               </icon-base>
             </span>
@@ -52,7 +72,7 @@
       </div>
       <div class="detail__buttons">
         <button class="detail__button-continue" @click="onContinue">
-          Continue
+          {{ $t('shortStatistic.continueButtonText') }}
         </button>
       </div>
     </div>
@@ -61,7 +81,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
-import { dataSrc, wordGroups, wordDeletedMassage } from '@/helpers/constants.helper';
+import { dataSrc, wordGroups, wordDeletedMessage } from '@/helpers/constants.helper';
 import IconBase from '@/components/IconBase.vue';
 import IconVolume from '@/components/icons/IconVolume.vue';
 import IconBucket from '@/components/icons/IconBucket.vue';
@@ -107,7 +127,7 @@ export default {
       try {
         await this.changeUserWordDifficulty({ difficulty: wordGroups.deleted, word });
         this.changeStatsArray(word);
-        this.setInfo(wordDeletedMassage);
+        this.setInfo(wordDeletedMessage);
       } catch (error) {
         this.setError(error.message);
       } finally {

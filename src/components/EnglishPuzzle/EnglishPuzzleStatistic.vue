@@ -8,8 +8,8 @@
       @click.prevent="() => onSetRoundStats(item)"
     >
       <span class="statistic__date">{{ index + 1 }}. {{ item.date | toDate }} </span>
-      <span class="statistic__level">Level: {{ item.lvl }} </span>
-      <span class="statistic__round">Round: {{ item.page }} (</span>
+      <span class="statistic__level">{{ $t('englishPuzzle.level') }}: {{ item.lvl }} </span>
+      <span class="statistic__round">{{ $t('englishPuzzle.round') }}: {{ item.page }} (</span>
       <span class="statistic__know">{{ item.arr | knowStats }}</span>
       /
       <span class="statistic__dont-know">{{ item.arr | dontKnowStats }}</span
@@ -61,11 +61,21 @@ export default {
   color: $color-dodger-blue;
   text-decoration: none;
   cursor: pointer;
-  transition: color 0.3s;
+  border-bottom: 1px solid transparent;
+  transition: color 0.3s, border-color 0.3s;
 }
 
 .statistic__know {
   color: $color-apple;
+}
+
+.statistic__level,
+.statistic__round {
+  display: inline-block;
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
 }
 
 .statistic__dont-know {
@@ -75,7 +85,7 @@ export default {
 @media (hover: hover) {
   .statistic__link:hover {
     color: $color-pickled-bluewood;
-    text-decoration: underline;
+    border-bottom-color: $color-pickled-bluewood;
   }
 }
 

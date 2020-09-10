@@ -1,6 +1,7 @@
 import { application, apiAddress, maxRoundStatsCount } from '@/helpers/constants.helper';
 import { getWordsByLevelAndRound, CurrentRoundStats } from '@/helpers/englishPuzzle.helper';
 import defaultPicture from '@/assets/img/speakIt/do_you_speak.jpg';
+import i18n from '@/i18n';
 
 export default {
   namespaced: true,
@@ -128,7 +129,7 @@ export default {
         const roundCount = await response.json();
         commit('setRoundCount', roundCount.count);
       } else {
-        throw new Error('Something went wrong');
+        throw new Error(i18n.t('speakIt.responseError'));
       }
     },
     async resetGame({ dispatch }) {

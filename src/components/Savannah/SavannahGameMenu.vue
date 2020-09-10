@@ -2,15 +2,15 @@
   <div class="game__menu">
     <div class="game__settings">
       <div class="setting__sound" @click="soundToggle">
-        <IconBase iconName="sound" width="30px" height="24px" v-if="isSound">
+        <IconBase :iconName="$t('sound')" width="30px" height="24px" v-if="isSound">
           <IconVolume />
         </IconBase>
-        <IconBase iconName="sound" width="30px" height="24px" v-else>
+        <IconBase :iconName="$t('sound')" width="30px" height="24px" v-else>
           <IconVolumeOff />
         </IconBase>
       </div>
       <button class="change-picture" title="Change wallpaper" @click="changePicture">
-        <IconBase icon-name="Change wallpaper" width="20px" height="20px">
+        <IconBase :iconName="$t('savannah.changeWallpaper')" width="20px" height="20px">
           <IconChange />
         </IconBase>
       </button>
@@ -35,12 +35,12 @@
     </div>
     <div class="game__lives">
       <span class="hearth__lost" v-for="(item, i) in lost" :key="`${i}-lost`">
-        <IconBase iconName="live" width="24px" height="24px">
+        <IconBase :iconName="$t('savannah.live')" width="24px" height="24px">
           <IconHearthLost />
         </IconBase>
       </span>
       <span class="hearth" v-for="(item, i) in lives" :key="`${i}-live`">
-        <IconBase iconName="live" width="24px" height="24px">
+        <IconBase :iconName="$t('savannah.live')" width="24px" height="24px">
           <IconHearth />
         </IconBase>
       </span>

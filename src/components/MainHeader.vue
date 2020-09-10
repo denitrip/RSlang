@@ -1,11 +1,16 @@
 <template>
   <header class="header-container">
-    <div class="container-label" :title="currentRoute">
-      {{ currentRoute }}
+    <div class="container-label" :title="routeName">
+      {{ routeName }}
     </div>
     <div class="user-section">
       <router-link :to="routerConsts.settings.path">
-        <img src="@/assets/img/header/settings_image.png" alt="#" class="rot" title="Settings" />
+        <img
+          src="@/assets/img/header/settings_image.png"
+          alt="#"
+          class="rot"
+          :title="$t('sideMenu.settings')"
+        />
       </router-link>
       <div class="user-details">
         <div class="user-name" :title="email">
@@ -13,7 +18,7 @@
         </div>
       </div>
       <div class="logout" @click="onLogout">
-        <IconBase iconName="Log Out" width="34px" height="34px" viewBox="0 0 36 26">
+        <IconBase :iconName="$t('auth.logOut')" width="34px" height="34px" viewBox="0 0 36 26">
           <IconLogOut />
         </IconBase>
       </div>
@@ -41,6 +46,9 @@ export default {
   },
   computed: {
     ...mapState('Auth', ['email']),
+    routeName() {
+      return this.$t(`sideMenu.${this.currentRoute}`);
+    },
   },
   watch: {
     $route(to) {

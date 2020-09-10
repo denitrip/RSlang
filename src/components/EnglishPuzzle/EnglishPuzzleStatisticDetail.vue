@@ -8,11 +8,16 @@
     <p class="detail__description">{{ picture.description }}</p>
     <div class="details">
       <div class="detail__dont-know">
-        <span>I don' know </span>
+        <span>{{ $t('shortStatistic.dontKnowTitle') }}</span>
         <span class="detail__dont-know-count">{{ dontKnowArray.length }}</span>
         <div class="detail__sentence" v-for="item in dontKnowArray" :key="item.id">
           <span class="detail__speech" @click="() => onPlayAudio(wordsStats[item.id].audioExample)">
-            <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
+            <icon-base
+              :icon-name="$t('speechButtonTitle')"
+              width="20px"
+              height="20px"
+              viewBox="0 0 576 512"
+            >
               <icon-volume />
             </icon-base>
           </span>
@@ -20,11 +25,16 @@
         </div>
       </div>
       <div class="detail__know">
-        <span>I know </span>
+        <span>{{ $t('shortStatistic.knowTitle') }}</span>
         <span class="detail__know-count">{{ knowArray.length }}</span>
         <div class="detail__sentence" v-for="item in knowArray" :key="`${item.id}`">
           <span class="detail__speech" @click="() => onPlayAudio(wordsStats[item.id].audioExample)">
-            <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
+            <icon-base
+              :icon-name="$t('speechButtonTitle')"
+              width="20px"
+              height="20px"
+              viewBox="0 0 576 512"
+            >
               <icon-volume />
             </icon-base>
           </span>
@@ -35,9 +45,11 @@
     <div class="detail__buttons">
       <button class="detail__button-continue" @click="onContinue" :disabled="isStartLoading">
         <app-spinner v-if="isStartLoading"></app-spinner>
-        Continue
+        {{ $t('shortStatistic.continueButtonText') }}
       </button>
-      <button class="detail__button-statistic" @click="onStatistic">Statistic</button>
+      <button class="detail__button-statistic" @click="onStatistic">
+        {{ $t('shortStatistic.statisticButtonText') }}
+      </button>
     </div>
   </div>
 </template>

@@ -9,8 +9,8 @@
       <IconBase width="57px" height="71px">
         <component :is="`Icon${game.icon}`" />
       </IconBase>
-      <h2 class="mini-games__title">{{ game.title }}</h2>
-      <router-link :to="`/${game.link}`" class="mini-games__link">Play!</router-link>
+      <h2 class="mini-games__title">{{ $t(`sideMenu.${game.title}`) }}</h2>
+      <router-link :to="`/${game.link}`" class="mini-games__link">{{ $t('playGame') }}</router-link>
     </div>
   </div>
 </template>

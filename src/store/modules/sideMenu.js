@@ -10,7 +10,7 @@ export default {
         route: routerConsts.learningPage.path,
         icon: {
           name: 'Audiobook',
-          viewbox: '0 0 64 64',
+          viewBox: '0 0 64 64',
         },
       },
       {
@@ -18,7 +18,7 @@ export default {
         route: routerConsts.dictionaryPage.path,
         icon: {
           name: 'Dictionary',
-          viewbox: '0 0 512 512',
+          viewBox: '0 0 512 512',
         },
       },
       {
@@ -26,7 +26,7 @@ export default {
         route: routerConsts.miniGamesPage.path,
         icon: {
           name: 'Joystick',
-          viewbox: '0 0 64 64',
+          viewBox: '0 0 64 64',
         },
       },
       {
@@ -34,7 +34,7 @@ export default {
         route: routerConsts.statisticPage.path,
         icon: {
           name: 'BarChart',
-          viewbox: '0 0 480 480',
+          viewBox: '0 0 480 480',
         },
       },
       {
@@ -42,7 +42,7 @@ export default {
         route: routerConsts.ourTeamPage.path,
         icon: {
           name: 'GroupOfMen',
-          viewbox: '0 0 151 151',
+          viewBox: '0 0 151 151',
         },
       },
       {
@@ -50,7 +50,7 @@ export default {
         route: routerConsts.settings.path,
         icon: {
           name: 'Settings',
-          viewbox: '0 0 480 480',
+          viewBox: '0 0 480 480',
         },
       },
     ],

@@ -12,7 +12,7 @@
             :key="routerConsts.loginPage.path"
           >
             <li class="header_buttons-button button button--bordered">
-              Log In
+              {{ $t('auth.logIn') }}
             </li>
           </router-link>
           <router-link
@@ -21,18 +21,18 @@
             :key="routerConsts.signUpPage.path"
           >
             <li class="header_buttons-button button button--filled">
-              Sign Up
+              {{ $t('auth.signUp') }}
             </li>
           </router-link>
           <div class="header_buttons" v-if="isWelcomePage">
             <router-link :to="routerConsts.loginPage.path" :key="routerConsts.loginPage.path">
               <li class="header_buttons-button button button--bordered">
-                Log In
+                {{ $t('auth.logIn') }}
               </li>
             </router-link>
             <router-link :to="routerConsts.signUpPage.path" :key="routerConsts.signUpPage.path">
               <li class="header_buttons-button button button--filled">
-                Sign Up
+                {{ $t('auth.signUp') }}
               </li>
             </router-link>
           </div>
@@ -42,34 +42,31 @@
     <transition name="fade" mode="out-in">
       <main v-if="isWelcomePage" class="main-welcome" key="main-welcome">
         <div class="main-descr">
-          <p class="title">Learn new words every day with RSlang</p>
-          <p class="subtitle">
-            An application for learning foreign words with interval repetition techniques, tracking
-            individual progress and mini-games.
-          </p>
-          <p class="text-rules text-rules_title">Interval repetition rules:</p>
-          <p class="text-rules">— default learning interval is 24 hours;</p>
-          <p class="text-rules">— user made a mistake or clicked repeat button - 2 hours;</p>
-          <p class="text-rules">— user pressed the good button - 48 hours;</p>
-          <p class="text-rules">— user pressed the easy button - 120 hours.</p>
+          <p class="title">{{ $t('auth.title') }}</p>
+          <p class="subtitle">{{ $t('auth.subtitle') }}</p>
+          <p class="text-rules text-rules_title">{{ $t('auth.rulesTitle') }}</p>
+          <p class="text-rules">{{ $t('auth.rulesText1') }}</p>
+          <p class="text-rules">{{ $t('auth.rulesText2') }}</p>
+          <p class="text-rules">{{ $t('auth.rulesText3') }}</p>
+          <p class="text-rules">{{ $t('auth.rulesText4') }}</p>
           <div class="repository">
             <a
               class="repository__link"
               href="https://github.com/denitrip/RSlang/tree/develop"
               target="_blank"
               rel="noopener noreferrer"
-              title="repository"
+              :title="$t('auth.repositoryLinkTitle')"
             >
               <IconBase>
                 <IconGithub />
               </IconBase>
             </a>
-            <p>- link to the repository.</p>
+            <p>{{ $t('auth.repositoryLinkText') }}</p>
           </div>
           <ul class="main_buttons">
             <li class="main_buttons-button">
               <router-link :to="routerConsts.signUpPage.path" class="StartLearning">
-                <button class="button button--filled">Start learning</button>
+                <button class="button button--filled">{{ $t('startLearning') }}</button>
               </router-link>
             </li>
             <li class="main_buttons-button">
@@ -77,11 +74,12 @@
             </li>
           </ul>
         </div>
-        <img src="~@/assets/images/welcome-bg.png" alt class="main-image" />
+        <img src="~@/assets/images/welcome-bg.png" alt="welcome" class="main-image" />
       </main>
       <main v-if="isLogIn" class="main-login" key="main-login">
         <p class="title">
-          <span class="text-colored">We miss you,</span> are you ready to continue training?
+          <span class="text-colored">{{ $t('auth.loginText1') }}</span>
+          {{ $t('auth.loginText2') }}
         </p>
         <div class="form-wrapper form-wrapper--login">
           <loginForm />
@@ -89,8 +87,8 @@
       </main>
       <main v-if="isSignUp" class="main-signup" key="main-signup">
         <p class="title">
-          Let’s start our jorney with
-          <span class="text-colored">RSlang!</span>
+          {{ $t('auth.signUpText1') }}
+          <span class="text-colored">{{ $t('auth.signUpText2') }}</span>
         </p>
         <div class="form-wrapper form-wrapper--signup">
           <loginForm />
@@ -101,19 +99,19 @@
       <ul class="footer_features">
         <li class="footer_features-feature">
           <div class="feature-before"></div>
-          <p>Interval repetition technique</p>
+          <p>{{ $t('auth.featuresText1') }}</p>
         </li>
         <li class="footer_features-feature">
           <div class="feature-before"></div>
-          <p>Mini games</p>
+          <p>{{ $t('auth.featuresText2') }}</p>
         </li>
         <li class="footer_features-feature">
           <div class="feature-before"></div>
-          <p>A large number of settings</p>
+          <p>{{ $t('auth.featuresText3') }}</p>
         </li>
         <li class="footer_features-feature">
           <div class="feature-before"></div>
-          <p>Learning statistics</p>
+          <p>{{ $t('auth.featuresText4') }}</p>
         </li>
       </ul>
     </footer>
@@ -127,6 +125,7 @@ import loginForm from '@/components/LoginForm.vue';
 import WatchVideo from '@/components/WatchVideo.vue';
 import IconBase from '@/components/IconBase.vue';
 import IconGithub from '@/components/icons/IconGithub.vue';
+import { loginErrorMessage } from '@/helpers/constants.helper';
 
 export default {
   name: 'LoginPage',
@@ -155,7 +154,7 @@ export default {
   },
   created() {
     if (this.$route.query.loginError) {
-      this.setError('Please log in to access this page.');
+      this.setError(loginErrorMessage);
     }
   },
   methods: {

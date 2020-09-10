@@ -1,5 +1,6 @@
 import { application, apiAddress } from '@/helpers/constants.helper';
 import { setLocalStorageUserStatistic } from '@/helpers/localStorage.helper';
+import i18n from '@/i18n';
 
 export default {
   namespaced: true,
@@ -70,7 +71,7 @@ export default {
       } else if (response.status === 404) {
         await dispatch('sendStatistic');
       } else {
-        throw new Error('Something went wrong, setting your local statistics to default');
+        throw new Error(i18n.t('statistic.receiveError'));
       }
     },
     async sendStatistic({ state, rootState }) {
@@ -97,7 +98,7 @@ export default {
         body: payload,
       });
       if (!response.ok) {
-        throw new Error('Something went wrong, sorry :C');
+        throw new Error(i18n.t('statistic.sendError'));
       }
     },
     async updateStatistic({ state, commit, dispatch }) {

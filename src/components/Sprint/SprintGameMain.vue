@@ -15,7 +15,7 @@
       </div>
 
       <div class="game__point">
-        <p>Points: {{ score }}</p>
+        <p>{{ $t('sprint.points') }}: {{ score }}</p>
         <p v-if="showPlusPoints">+{{ price }}</p>
       </div>
 
@@ -40,8 +40,8 @@
           @keyup.left="correctBtn"
         >
           <b-icon icon="arrow-left"></b-icon>
-          Correct</b-button
-        >
+          {{ $t('sprint.correctButtonText') }}
+        </b-button>
         <b-button
           class="button"
           :class="{ button_active: isPressRight }"
@@ -49,16 +49,16 @@
           variant="danger"
           @click="wrongBtn"
         >
-          Wrong
+          {{ $t('sprint.wrongButtonText') }}
           <b-icon icon="arrow-right"></b-icon>
         </b-button>
       </div>
     </div>
 
     <div class="statistic" v-else>
-      <h1 class="statistic__title">Game statistic</h1>
-      <h3 class="statistic__points" v-if="isTableShow">Result table</h3>
-      <h3 class="statistic__points" v-else>Points: {{ score }}</h3>
+      <h1 class="statistic__title">{{ $t('shortStatistic.title') }}</h1>
+      <h3 class="statistic__points" v-if="isTableShow">{{ $t('shortStatistic.resultTable') }}</h3>
+      <h3 class="statistic__points" v-else>{{ $t('sprint.points') }}: {{ score }}</h3>
       <div class="statistic__table" v-if="isTableShow">
         <div class="table__item" v-for="(item, index) in statistics.sprintStats" :key="index">
           {{ index + 1 }}. {{ item.score }} - {{ item.date | toDate }}
@@ -68,12 +68,17 @@
       <div class="statistic__data" v-else>
         <div class="statistic__dont-know">
           <div class="statistic__category">
-            <span class="statistic__name">I don't know</span>
+            <span class="statistic__name">{{ $t('shortStatistic.dontKnowTitle') }}</span>
             <span class="count">{{ dontKnowWords.length }}</span>
           </div>
           <div class="words" v-for="item in dontKnowWords" :key="item.word">
             <span @click="onPlayAudio(item.audio)">
-              <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
+              <icon-base
+                :icon-name="$t('speechButtonTitle')"
+                width="20px"
+                height="20px"
+                viewBox="0 0 576 512"
+              >
                 <icon-volume />
               </icon-base>
             </span>
@@ -82,12 +87,17 @@
         </div>
         <div class="statistic__know">
           <div class="statistic__category">
-            <span class="statistic__name">I know</span>
+            <span class="statistic__name">{{ $t('shortStatistic.knowTitle') }}</span>
             <span class="count">{{ knowWords.length }}</span>
           </div>
           <div class="words" v-for="item in knowWords" :key="item.word">
             <span @click="onPlayAudio(item.audio)">
-              <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
+              <icon-base
+                :icon-name="$t('speechButtonTitle')"
+                width="20px"
+                height="20px"
+                viewBox="0 0 576 512"
+              >
                 <icon-volume />
               </icon-base>
             </span>
@@ -98,10 +108,10 @@
 
       <div class="detail-buttons">
         <button class="statistic__button-continue" @click="onContinue">
-          Continue
+          {{ $t('shortStatistic.continueButtonText') }}
         </button>
         <button class="statistic__button-continue" v-if="!isTableShow" @click="onShowTable">
-          Result table
+          {{ $t('shortStatistic.resultTable') }}
         </button>
       </div>
     </div>
@@ -361,7 +371,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100px;
   height: 40px;
   border: 1px solid transparent;
   transition: opacity 0.2s, border-color 0.2s;
@@ -377,6 +386,10 @@ export default {
     cursor: default !important;
     opacity: 0.5;
   }
+}
+
+.button + .button {
+  margin-left: 10px;
 }
 
 .game {
@@ -427,9 +440,9 @@ export default {
 
   &__answer {
     display: flex;
-    justify-content: space-between;
-    width: 210px;
-    padding-top: 7%;
+    justify-content: center;
+    width: 100%;
+    margin-top: 30px;
   }
 }
 

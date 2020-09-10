@@ -3,40 +3,40 @@
     <button
       class="controls__button"
       v-if="isSentenceError"
-      title="I don't know"
+      :title="$t('englishPuzzle.dontKnowButton')"
       key="I don't know"
       @click="onDiscoverAnswer"
     >
-      I don't know
+      {{ $t('englishPuzzle.dontKnowButton') }}
     </button>
     <button
       class="controls__button"
       v-if="isSentenceOver"
-      title="Check"
+      :title="$t('englishPuzzle.checkButton')"
       key="Check"
       @click="onCheck"
     >
-      Check
+      {{ $t('englishPuzzle.checkButton') }}
     </button>
     <button
       class="controls__button"
       v-if="isSentenceComplete"
-      title="Continue"
+      :title="$t('englishPuzzle.continueButton')"
       key="Continue"
       :disabled="isStartLoading"
       @click="onContinue"
     >
       <app-spinner v-if="isStartLoading"></app-spinner>
-      Continue
+      {{ $t('englishPuzzle.continueButton') }}
     </button>
     <button
       class="controls__button"
       v-if="isRoundComplete"
-      title="Results"
+      :title="$t('englishPuzzle.resultsButton')"
       key="Results"
       @click="onResults"
     >
-      Results
+      {{ $t('englishPuzzle.resultsButton') }}
     </button>
   </div>
 </template>

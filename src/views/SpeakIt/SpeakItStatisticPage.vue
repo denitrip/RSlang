@@ -1,6 +1,6 @@
 <template>
   <div class="statistic">
-    <h1 class="statistic__title">Statistic</h1>
+    <h1 class="statistic__title">{{ $t('statistic.title') }}</h1>
     <section class="statistic__wrapper wrapper">
       <transition name="fade" mode="out-in">
         <router-view />

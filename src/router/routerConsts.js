@@ -1,90 +1,90 @@
 export default {
   homePage: {
     path: '/',
-    name: 'Home',
+    name: 'homePage',
   },
   loginPage: {
     path: '/login',
-    name: 'Login',
+    name: 'loginPage',
   },
   welcomePage: {
     path: '/welcome',
-    name: 'Welcome',
+    name: 'welcomePage',
   },
   signUpPage: {
     path: '/sign-up',
-    name: 'Sign Up',
+    name: 'signUpPage',
   },
   miniGamesPage: {
     path: '/mini-games',
-    name: 'Mini Games',
+    name: 'miniGamesPage',
   },
   ourTeamPage: {
     path: '/our-team',
-    name: 'Our Team',
+    name: 'ourTeamPage',
   },
   learningPage: {
     path: '/learning',
-    name: 'Learning',
+    name: 'learningPage',
   },
   dictionaryPage: {
     path: '/dictionary',
-    name: 'Dictionary',
+    name: 'dictionaryPage',
   },
   statisticPage: {
     path: '/statistic',
-    name: 'Statistic',
+    name: 'statisticPage',
   },
   settings: {
     path: '/settings',
-    name: 'Settings',
+    name: 'settings',
   },
   englishPuzzlePage: {
     path: '/english-puzzle',
-    name: 'English Puzzle',
+    name: 'englishPuzzlePage',
   },
   EnglishPuzzleStatisticPage: {
     path: '/english-puzzle-statistic',
-    name: 'English Puzzle Statistic',
+    name: 'EnglishPuzzleStatisticPage',
   },
   englishPuzzleStats: {
     path: '',
-    name: 'English Puzzle Stats',
+    name: 'englishPuzzleStats',
   },
   englishPuzzleStatsDetailed: {
     path: '/english-puzzle-statistic/detail',
-    name: 'English Puzzle Stats Detail',
+    name: 'englishPuzzleStatsDetailed',
   },
   savannahPage: {
     path: '/savannah',
-    name: 'Savannah',
+    name: 'savannahPage',
   },
   speakitPage: {
     path: '/speak-it',
-    name: 'Speakit',
+    name: 'speakitPage',
   },
   SpeakitStatisticPage: {
     path: '/speakit-statistic',
-    name: 'Speakit Statistic',
+    name: 'SpeakitStatisticPage',
   },
   speakitStats: {
     path: '',
-    name: 'Speak Stats',
+    name: 'speakitStats',
   },
   speakitStatsDetailed: {
     path: '/speakit-statistic/detail',
-    name: 'Speakit Stats Detail',
+    name: 'speakitStatsDetailed',
   },
   audiocallPage: {
     path: '/audiocall',
-    name: 'Audiocall',
+    name: 'audiocallPage',
   },
   ourGamePage: {
     path: '/our-game',
-    name: 'Our Game',
+    name: 'ourGamePage',
   },
   sprintPage: {
     path: '/sprint',
-    name: 'Sprint',
+    name: 'sprintPage',
   },
 };

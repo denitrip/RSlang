@@ -6,7 +6,12 @@
       @click="onPlayAudio"
       :disabled="!isSpeech"
     >
-      <icon-base icon-name="Speech" width="30px" height="30px" viewBox="0 0 576 512">
+      <icon-base
+        :icon-name="$t('speechButtonTitle')"
+        width="30px"
+        height="30px"
+        viewBox="0 0 576 512"
+      >
         <icon-volume />
       </icon-base>
     </button>
