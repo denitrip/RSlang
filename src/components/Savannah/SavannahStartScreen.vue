@@ -1,27 +1,23 @@
 <template functional>
   <div class="start-screen" key="savannah-start-screen">
-    <h1 class="start-screen__title">savannah</h1>
-    <h3 class="start-screen__description">
-      The “Savannah” mini-game is a simulator for translating your passive learned dictionary into
-      the active stage.
-    </h3>
-    <p>
-      After the start of the game, you will see a falling word in English (or Russian, if the game
-      mode is RU->EN) and four translation options. You can choose the right answer in two ways:
-    </p>
-    <p>1. Click on it with the mouse;</p>
-    <p>2. Use the keys 1, 2, 3, 4.</p>
+    <h1 class="start-screen__title">{{ parent.$t('savannah.title') }}</h1>
+    <h3 class="start-screen__description">{{ parent.$t('savannah.descriptionH3') }}</h3>
+    <p>{{ parent.$t('savannah.descriptionP1') }}</p>
+    <p>{{ parent.$t('savannah.descriptionP2') }}</p>
+    <p>{{ parent.$t('savannah.descriptionP3') }}</p>
     <button
       class="start-screen__button"
       @click="listeners.startGame"
       :disabled="props.isStartLoading || props.isWordsEmpty"
     >
       <component :is="props.components.AppSpinner" v-if="props.isStartLoading"></component>
-      Start
+      {{ parent.$t('start') }}
     </button>
     <div class="words-empty" v-if="props.isWordsEmpty">
-      <p>You have not learned words yet.</p>
-      <router-link class="words-empty__link" :to="props.link">Start learning</router-link>
+      <p>{{ parent.$t('savannah.empty') }}</p>
+      <router-link class="words-empty__link" :to="props.link">
+        {{ parent.$t('startLearning') }}
+      </router-link>
     </div>
   </div>
 </template>

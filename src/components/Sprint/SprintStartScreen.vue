@@ -1,26 +1,23 @@
 <template functional>
   <div class="start-screen" key="sprint-start-screen">
-    <h1 class="start-screen__title">sprint</h1>
-    <h3 class="start-screen__description">
-      The “Sprint” mini-game is a simulator for repetition of learned words from your dictionary.
-    </h3>
-    <p>
-      After the start of the game, you will see word and translation. You need to choose is it right
-      or wrong.
-    </p>
-    <p>1. Use mouse to choose.</p>
-    <p>2. Use the keys Left and Right.</p>
+    <h1 class="start-screen__title">{{ parent.$t('sprint.title') }}</h1>
+    <h3 class="start-screen__description">{{ parent.$t('sprint.descriptionH3') }}</h3>
+    <p>{{ parent.$t('sprint.descriptionP1') }}</p>
+    <p>{{ parent.$t('sprint.descriptionP2') }}</p>
+    <p>{{ parent.$t('sprint.descriptionP3') }}</p>
     <button
       class="start-screen__button"
       @click="listeners.startGame"
       :disabled="props.isStartLoading"
     >
       <component :is="props.components.AppSpinner" v-if="props.isStartLoading"></component>
-      Start
+      {{ parent.$t('start') }}
     </button>
     <div class="words-empty" v-if="props.isWordsEmpty">
-      <p>You have not learned words yet.</p>
-      <router-link class="words-empty__link" :to="props.link">Start learning</router-link>
+      <p>{{ parent.$t('sprint.empty') }}</p>
+      <router-link class="words-empty__link" :to="props.link">
+        {{ parent.$t('startLearning') }}
+      </router-link>
     </div>
   </div>
 </template>

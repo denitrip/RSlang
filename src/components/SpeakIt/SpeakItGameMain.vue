@@ -90,11 +90,11 @@ export default {
   max-width: 1197px;
   margin: 0 auto;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet-width) {
     padding: 0 40px;
   }
 
-  @media (max-width: 414px) {
+  @media (max-width: $mobile-big-width) {
     padding: 0;
   }
 }
@@ -127,7 +127,7 @@ export default {
   height: 260px;
   margin-top: 20px;
   border-radius: 20px;
-  box-shadow: 0 0 25px 4px rgba(0, 0, 0, 0.404);
+  box-shadow: 0 0 25px 4px $overlay-color;
 
   @include media-mobile {
     width: 290px;
@@ -156,7 +156,7 @@ export default {
   margin-bottom: 14px;
   font-size: 30px;
   line-height: 40px;
-  color: white;
+  color: $color-white;
   text-align: center;
   background-color: transparent;
   background-image: url('~@/assets/img/speakIt/microphone.svg');
@@ -164,9 +164,9 @@ export default {
   background-position: 10px 15px;
   background-size: 20px;
   border: 0;
-  border-bottom: 1px solid rgb(206, 212, 218);
+  border-bottom: 1px solid $color-ghost;
 
-  @media (max-width: 414px) {
+  @media (max-width: $mobile-big-width) {
     width: 90%;
   }
 }
@@ -177,7 +177,7 @@ export default {
   justify-content: space-around;
   width: 100%;
 
-  @media (max-width: 320px) {
+  @media (max-width: $mobile-small-width) {
     flex-direction: column;
     align-items: center;
   }
@@ -190,8 +190,8 @@ export default {
   padding: 10px;
   margin: 0 15px 30px 15px;
   cursor: pointer;
-  background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.384);
+  background-color: $color-white;
+  border: 1px solid $overlay-color;
   border-radius: 10px;
 
   &_startGame {
@@ -224,7 +224,7 @@ export default {
   width: 20px;
   height: 20px;
   margin: 0 15px 0 0;
-  color: #00c49d;
+  color: $caribbean-green;
   background: url('~@/assets/img/speakIt/speaker.svg');
 }
 </style>

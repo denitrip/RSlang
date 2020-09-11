@@ -2,12 +2,17 @@
   <div class="statistic__detail">
     <div class="details">
       <div class="detail__dont-know">
-        <span>I don' know </span>
+        <span>{{ $t('shortStatistic.dontKnowTitle') }}</span>
         <span class="detail__dont-know-count">{{ incorrectAnswer.length }}</span>
         <div class="detail__sentence" v-for="item in incorrectAnswer" :key="item.word">
           <div class="detail__wrap">
             <span class="detail__speech" @click="onPlayAudio(item.audio)">
-              <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
+              <icon-base
+                :icon-name="$t('speechButtonTitle')"
+                width="20px"
+                height="20px"
+                viewBox="0 0 576 512"
+              >
                 <icon-volume />
               </icon-base>
             </span>
@@ -16,12 +21,17 @@
         </div>
       </div>
       <div class="detail__know">
-        <span>I know </span>
+        <span>{{ $t('shortStatistic.knowTitle') }}</span>
         <span class="detail__know-count">{{ correctAnswer.length }}</span>
         <div class="detail__sentence" v-for="item in correctAnswer" :key="`${item.word}`">
           <div class="detail__wrap">
             <span class="detail__speech" @click="onPlayAudio(item.audio)">
-              <icon-base icon-name="Speech" width="20px" height="20px" viewBox="0 0 576 512">
+              <icon-base
+                :icon-name="$t('speechButtonTitle')"
+                width="20px"
+                height="20px"
+                viewBox="0 0 576 512"
+              >
                 <icon-volume />
               </icon-base>
             </span>
@@ -32,16 +42,18 @@
     </div>
     <div class="detail__buttons">
       <button class="detail__button" @click="onResetGame" :disabled="isStartLoading">
-        Restart Round
+        {{ $t('shortStatistic.restartButtonText') }}
       </button>
       <button
         class="detail__button button__next-button"
         @click="onNextRound"
         :disabled="isStartLoading"
       >
-        Next Round
+        {{ $t('shortStatistic.nextRoundButtonText') }}
       </button>
-      <button class="detail__button" @click="onStatistic">Statistic</button>
+      <button class="detail__button" @click="onStatistic">
+        {{ $t('shortStatistic.statisticButtonText') }}
+      </button>
     </div>
   </div>
 </template>

@@ -1,5 +1,6 @@
 import paintings from '@/data/paintings.data';
 import { application, pictureSrc, apiAddress } from '@/helpers/constants.helper';
+import i18n from '@/i18n';
 
 export function shuffle(array) {
   const result = [...array];
@@ -47,7 +48,7 @@ export async function getWordsByLevelAndRound({ level, round }) {
   if (response.ok) {
     words = await response.json();
   } else {
-    throw new Error('Something went wrong');
+    throw new Error(i18n.t('englishPuzzle.responseError'));
   }
   return words;
 }

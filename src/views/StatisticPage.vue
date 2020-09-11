@@ -22,7 +22,7 @@ export default {
         labels: this.statistics.stats.map((el) => el.label),
         datasets: [
           {
-            label: 'Learned Words',
+            label: this.$t('statistic.learnedWords'),
             data: this.statistics.stats.map((el) => el.value),
             backgroundColor: [
               'rgba(54, 162, 235, 0.5)',
@@ -41,7 +41,10 @@ export default {
         maintainAspectRatio: false,
         title: {
           display: true,
-          text: `Total: ${this.statistics.stats.reduce((sum, el) => sum + el.value, 0)}`,
+          text: `${this.$t('statistic.total')} ${this.statistics.stats.reduce(
+            (sum, el) => sum + el.value,
+            0,
+          )}`,
         },
         legend: {
           display: false,

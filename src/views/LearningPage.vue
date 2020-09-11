@@ -1,19 +1,25 @@
 <template>
   <div class="learning" v-if="isMainPage">
     <div class="learning__header">
-      <h1><span>Hello.</span> Let’s start learning!</h1>
+      <h1>
+        <span>{{ $t('learning.titleText1') }}</span>
+        {{ $t('learning.titleText2') }}
+      </h1>
       <p>
-        On this page, you can monitor your progress and select the desired set of words to learn,
-        for example, <b>“New words”</b>, <b>“Repeat words”</b> or <b>“Difficult words”</b>. Good
-        luck!
+        {{ $t('learning.descriptionText1') }}<b>{{ $t('learning.descriptionText2') }}</b>
+        ,
+        <b>{{ $t('learning.descriptionText3') }}</b>
+        {{ $t('learning.descriptionText4') }}<b>{{ $t('learning.descriptionText5') }}</b>
+        {{ $t('learning.descriptionText6') }}
       </p>
     </div>
     <div class="learning-today card-wrap">
-      <h3>Today learning</h3>
+      <h3>{{ $t('learning.todayTitle') }}</h3>
       <div class="learning-today__lerned">
         <div class="learning-today__lerned-text">
-          Today learned: <span>{{ todayLearned }}</span> from
-          <span>{{ settings.maxCardDay }}</span> words
+          {{ $t('learning.todayStats1') }}<span>{{ todayLearned }}</span>
+          {{ $t('learning.todayStats2') }}<span>{{ settings.maxCardDay }}</span>
+          {{ $tc('learning.todayStats3', settings.maxCardDay) }}
         </div>
         <b-progress
           :value="todayLearned"
@@ -24,14 +30,15 @@
     </div>
     <div class="learning-category">
       <div class="learning-category__card card-wrap">
-        <h4>New words</h4>
-        <p>Click here to learn new words for today.</p>
+        <h4>{{ $t('learning.newWordsCardTitle') }}</h4>
+        <p>{{ $t('learning.newWordsCardDescription') }}</p>
         <button
           class="btn-rs"
           @click="trainNewWords"
           :disabled="isNewWordsLoading || newWordsComplete || cardsComplete"
         >
-          Let’s train! <AppSpinner v-if="isNewWordsLoading"></AppSpinner>
+          {{ $t('learning.learnButtonText') }}
+          <AppSpinner v-if="isNewWordsLoading"></AppSpinner>
         </button>
         <b-progress
           height="10px"
@@ -43,29 +50,31 @@
       </div>
 
       <div class="learning-category__card card-wrap">
-        <h4>Repeat words</h4>
-        <p>Click here to repeat the learned words.</p>
+        <h4>{{ $t('learning.repeatWordsCardTitle') }}</h4>
+        <p>{{ $t('learning.repeatWordsCardDescription') }}</p>
         <button
           class="btn-rs"
           @click="trainLearnedWords"
           :disabled="isLearnedWordsLoading || !learnedWordsCount || cardsComplete"
         >
-          Let’s train! <AppSpinner v-if="isLearnedWordsLoading"></AppSpinner>
+          {{ $t('learning.learnButtonText') }}
+          <AppSpinner v-if="isLearnedWordsLoading"></AppSpinner>
         </button>
-        <p>{{ learnedWordsCount }} learned words</p>
+        <p>{{ `${learnedWordsCount} ${$tc('learning.learnedCount', learnedWordsCount)}` }}</p>
       </div>
 
       <div class="learning-category__card card-wrap">
-        <h4>Difficult words</h4>
-        <p>Click here to repeat the difficult words.</p>
+        <h4>{{ $t('learning.difficultWordsCardTitle') }}</h4>
+        <p>{{ $t('learning.difficultWordsCardDescription') }}</p>
         <button
           class="btn-rs"
           @click="trainDifficultWords"
           :disabled="isDifficultWordsLoading || !difficultWordsCount || cardsComplete"
         >
-          Let’s train! <AppSpinner v-if="isDifficultWordsLoading"></AppSpinner>
+          {{ $t('learning.learnButtonText') }}
+          <AppSpinner v-if="isDifficultWordsLoading"></AppSpinner>
         </button>
-        <p>{{ difficultWordsCount }} difficult words</p>
+        <p>{{ `${difficultWordsCount} ${$tc('learning.difficultCount', difficultWordsCount)}` }}</p>
       </div>
     </div>
     <transition name="fade" mode="out-in">

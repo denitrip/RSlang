@@ -1,6 +1,7 @@
 import User from '@/helpers/auth.helper';
 import { application, apiAddress } from '@/helpers/constants.helper';
 import { setLocalStorageUserData, clearStorage } from '@/helpers/localStorage.helper';
+import i18n from '@/i18n';
 
 export default {
   namespaced: true,
@@ -24,9 +25,9 @@ export default {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
-        dispatch('Error/setInfo', 'Success! Your account has been created.', { root: true });
+        dispatch('Error/setInfo', i18n.t('auth.registerSuccess'), { root: true });
       } else {
-        throw new Error('Incorrect e-mail or password');
+        throw new Error(i18n.t('auth.authError'));
       }
     },
     async loginUser({ commit, dispatch }, { email, password }) {
@@ -44,7 +45,7 @@ export default {
         dispatch('Settings/receiveSettings', null, { root: true });
         dispatch('Statistic/receiveStatistic', null, { root: true });
       } else {
-        throw new Error('Incorrect e-mail or password');
+        throw new Error(i18n.t('auth.authError'));
       }
     },
     async deleteUser({ state, dispatch }) {
@@ -60,9 +61,9 @@ export default {
       });
 
       if (response.ok) {
-        dispatch('Error/setInfo', 'Success! The user has been deleted.', { root: true });
+        dispatch('Error/setInfo', i18n.t('auth.deleteSuccess'), { root: true });
       } else {
-        throw new Error('Access token is missing or invalid');
+        throw new Error(i18n.t('auth.tokenError'));
       }
     },
     logoutUser({ commit }) {

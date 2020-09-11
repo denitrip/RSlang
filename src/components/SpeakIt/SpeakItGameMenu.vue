@@ -2,18 +2,18 @@
   <div class="game__menu">
     <div class="game__levels">
       <button class="change-picture" title="Change wallpaper" @click="changePicture">
-        <IconBase icon-name="Change wallpaper" width="20px" height="20px">
+        <IconBase :iconName="$t('speakIt.changeWallpaper')" width="20px" height="20px">
           <IconChange />
         </IconBase>
       </button>
       <div class="level">
-        <label class="level__label">Level</label>
+        <label class="level__label">{{ $t('speakIt.level') }}</label>
         <select :value="selectedLevel" @change="onSetSelectedLevel" class="level__select">
           <option v-for="i in 6" :value="i" :key="`${i}level`">
             {{ i }}
           </option>
         </select>
-        <label class="round__label">Round</label>
+        <label class="round__label">{{ $t('speakIt.round') }}</label>
         <select :value="selectedRound" @change="onSetSelectedRound" class="round__select">
           <option
             :class="{ round_complete: i }"
@@ -182,13 +182,9 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 40px;
   margin-right: 10px;
   font-size: 1.5em;
-  color: white;
-  background: $color-dodger-blue;
-  border: 0.5px solid black;
+  color: $color-white;
   border-radius: 5px;
 
   @include media-tablet {

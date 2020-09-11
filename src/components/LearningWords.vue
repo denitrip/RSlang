@@ -3,10 +3,10 @@
     <div class="game__settings">
       <div class="settings-wrapper">
         <div class="setting__sound" @click="soundToggle">
-          <IconBase iconName="sound" width="36px" height="24px" v-if="settings.isAutoVoice">
+          <IconBase :iconName="$t('sound')" width="36px" height="24px" v-if="settings.isAutoVoice">
             <IconVolume />
           </IconBase>
-          <IconBase iconName="sound" width="36px" height="24px" v-else>
+          <IconBase :iconName="$t('sound')" width="36px" height="24px" v-else>
             <IconVolumeOff />
           </IconBase>
         </div>
@@ -18,12 +18,19 @@
           @input="onSetIsTranslate"
         />
         <label class="setting__label" for="isTranslate" title="Translate">
-          <icon-base icon-name="Translate" width="30px" height="20px" viewBox="0 0 640 512">
+          <icon-base
+            :iconName="$t('learning.translateIcon')"
+            width="30px"
+            height="20px"
+            viewBox="0 0 640 512"
+          >
             <icon-translate />
           </icon-base>
         </label>
       </div>
-      <button class="close-button" @click="closeTraining" title="Close training">&times;</button>
+      <button class="close-button" @click="closeTraining" :title="$t('learning.closeTraining')">
+        &times;
+      </button>
     </div>
     <div class="learning__progress">
       <b-progress

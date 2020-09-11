@@ -1,10 +1,13 @@
 import { application, apiAddress } from '@/helpers/constants.helper';
 import { setLocalStorageUserSettings } from '@/helpers/localStorage.helper';
+import i18n from '@/i18n';
 
 export default {
   namespaced: true,
   state: {
     settings: {
+      lang: 'ru',
+      langTitle: 'Русский',
       isAutoVoice: true,
       wordsPerDay: 10,
       maxCardDay: 20,
@@ -37,7 +40,14 @@ export default {
   },
   mutations: {
     setSettings(state, payload) {
-      state.settings = payload;
+      state.settings = { ...state.settings, ...payload };
+    },
+    setLang(state, { val, title }) {
+      state.settings = { ...state.settings, lang: val, langTitle: title };
+      i18n.locale = val;
+    },
+    setLocale(state) {
+      i18n.locale = state.settings.lang;
     },
   },
   actions: {
@@ -58,10 +68,11 @@ export default {
         const answer = await response.json();
         setLocalStorageUserSettings(answer.optional);
         commit('setSettings', answer.optional);
+        commit('setLocale');
       } else if (response.status === 404) {
         await dispatch('sendSettings');
       } else {
-        throw new Error('Something went wrong, setting your local settings to default');
+        throw new Error(i18n.t('settings.receiveError'));
       }
     },
     async sendSettings({ state, rootState }) {
@@ -84,7 +95,7 @@ export default {
         body: payload,
       });
       if (!response.ok) {
-        throw new Error('Something went wrong, sorry :C');
+        throw new Error(i18n.t('settings.sendError'));
       }
     },
   },
@@ -92,6 +103,9 @@ export default {
   getters: {
     getSettings(state) {
       return state.settings;
+    },
+    getLangTitle(state) {
+      return state.settings.langTitle;
     },
   },
 };

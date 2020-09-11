@@ -41,7 +41,12 @@
       </b-progress>
     </div>
     <SavannahStatistic v-else />
-    <IconBase iconName="Savannah sun" :width="sunSize" :height="sunSize" viewBox="0 0 220 220">
+    <IconBase
+      :iconName="$t('savannah.sun')"
+      :width="sunSize"
+      :height="sunSize"
+      viewBox="0 0 220 220"
+    >
       <IconSun />
     </IconBase>
   </div>

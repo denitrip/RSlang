@@ -1,38 +1,65 @@
 <template>
   <div class="our-team">
     <div class="our-team__wrapper">
-      <div class="our-team__card" v-for="man in people" v-show="man.show" :key="man.name">
+      <div class="our-team__card" v-for="man in people" :key="man.name">
         <img :src="man.image" alt="img" class="our-team__img" />
         <img :src="man.imageSmall" alt="img" class="our-team__img-small" />
         <div class="our-team__information">
-          <h3 class="our-team__name">{{ man.name }}</h3>
-          <h5 class="our-team__major">{{ man.major }}</h5>
-          <p class="our-team__my-work">
-            {{ man.myWork }}
-          </p>
+          <div>
+            <h3 class="our-team__name">{{ man.name }}</h3>
+            <h5 class="our-team__major">{{ man.major }}</h5>
+            <p class="our-team__my-work">{{ man.myWork }}</p>
+          </div>
           <div class="our-team__contacts">
-            <a :href="`https://t.me/${man.telegram}`" target="_blank">
-              <span class="icon-circle icon-circle_blue">
+            <a
+              :href="`https://t.me/${man.telegram}`"
+              target="_blank"
+              :title="$t('ourTeam.telegramIcon')"
+            >
+              <span class="icon-circle icon-circle_telegram">
                 <span class="icon">
-                  <IconBase width="19" height="16" viewBox="0 0 19 16" icon-color="white">
+                  <IconBase
+                    :iconName="$t('ourTeam.telegramIcon')"
+                    width="19"
+                    height="16"
+                    viewBox="0 0 19 16"
+                  >
                     <IconTelegram />
                   </IconBase>
                 </span>
               </span>
             </a>
-            <a :href="`https://www.linkedin.com/in/${man.linkedin}/`" target="_blank">
-              <span class="icon-circle icon-circle_blue">
+            <a
+              :href="`https://www.linkedin.com/in/${man.linkedin}/`"
+              target="_blank"
+              :title="$t('ourTeam.linkedInIcon')"
+            >
+              <span class="icon-circle icon-circle_linkedin">
                 <span class="icon icon_linkedin">
-                  <IconBase width="20" height="19" viewBox="0 0 15 18" icon-color="white">
+                  <IconBase
+                    :iconName="$t('ourTeam.linkedInIcon')"
+                    width="20"
+                    height="19"
+                    viewBox="0 0 15 18"
+                  >
                     <IconLinkedin />
                   </IconBase>
                 </span>
               </span>
             </a>
-            <a :href="`https://discord.gg/${man.discord}`" target="_blank">
-              <span class="icon-circle icon-circle_blue">
+            <a
+              :href="`https://discord.gg/${man.discord}`"
+              target="_blank"
+              :title="$t('ourTeam.discordIcon')"
+            >
+              <span class="icon-circle icon-circle_discord">
                 <span class="icon">
-                  <IconBase width="20" height="19" viewBox="0 0 20 19" icon-color="white">
+                  <IconBase
+                    :iconName="$t('ourTeam.discordIcon')"
+                    width="20"
+                    height="19"
+                    viewBox="0 0 20 19"
+                  >
                     <IconDiscord />
                   </IconBase>
                 </span>
@@ -51,7 +78,6 @@ import IconTelegram from '@/components/icons/IconTelegram.vue';
 import IconLinkedin from '@/components/icons/IconLinkedin.vue';
 import IconDiscord from '@/components/icons/IconDiscord.vue';
 
-const SOFTWARE_ENGINEER = 'Software engineer';
 export default {
   name: 'OurTeamPage',
   data() {
@@ -60,113 +86,82 @@ export default {
         {
           image: require('../assets/img/ourTeamImages/bigPhoto/Dzianis.png'),
           imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Denis.png'),
-          name: 'Dzianis Puchko',
-          major: 'Mentor',
+          name: this.$t('ourTeam.member1.name'),
+          major: this.$t('ourTeam.member1.major'),
           linkedin: 'dpuchko',
           telegram: 'denitrip',
           discord: '#',
-          show: true,
-          myWork: `Mentoring, coordination and motivation of the team. 
-            Consultations in the development of approaches. 
-            Scrum-master of the project.`,
+          myWork: this.$t('ourTeam.member1.myWork'),
         },
         {
           image: require('../assets/img/ourTeamImages/bigPhoto/Yaroslav.png'),
           imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Yaroslav.png'),
-          name: 'Yaroslav Denisyuk',
-          major: 'Team Lead',
-          show: true,
+          name: this.$t('ourTeam.member2.name'),
+          major: this.$t('ourTeam.member2.major'),
           linkedin: 'arcanar7',
           telegram: 'arcanar7',
-          discord: 'bnBGK5',
-          myWork: `Implement custom game, English puzzle mini-game, 
-            Savannah game, Audiocall game, 
-            Interval repetition logic, connect statistic and settings, 
-            logout logic, project configurations, adaptive.
-            `,
+          discord: 'XYF4Yy',
+          myWork: this.$t('ourTeam.member2.myWork'),
         },
         {
           image: require('../assets/img/ourTeamImages/bigPhoto/Oleg.png'),
           imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Oleg.png'),
-          name: 'Oleg Rashinskiy',
-          major: SOFTWARE_ENGINEER,
-          show: true,
+          name: this.$t('ourTeam.member3.name'),
+          major: this.$t('ourTeam.member3.major'),
           linkedin: 'olegrashinskiy',
           telegram: 'OlegAwesome',
           discord: '#',
-          myWork: `Implement SpeakIt mini-game, 
-            connect statistic SpeakIt with backend, our team page, 
-            dictionary page, dictionary card, learning card, 
-            cards responsive design, 
-            mobile view for dictionary card.`,
+          myWork: this.$t('ourTeam.member3.myWork'),
         },
         {
           image: require('../assets/img/ourTeamImages/bigPhoto/Andrey.png'),
           imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Andrei.png'),
-          name: 'Andrei Karol',
-          major: SOFTWARE_ENGINEER,
-          show: true,
+          name: this.$t('ourTeam.member4.name'),
+          major: this.$t('ourTeam.member4.major'),
           linkedin: 'andreykorol2019',
           telegram: 'Remy_lee',
           discord: 'PkwKxe',
-          myWork: `Sprint mini-game, login form, dictionary page, 
-            learning page and card, 
-            connect statistic page with backend, 
-            "settings" page, add favicon, 
-            adaptive for dictionary page, sidemenu mobile.`,
+          myWork: this.$t('ourTeam.member4.myWork'),
         },
         {
           image: require('../assets/img/ourTeamImages/bigPhoto/Ruslan.png'),
           imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Ruslan.png'),
-          name: 'Ruslan Bobreshov',
-          major: SOFTWARE_ENGINEER,
-          show: true,
+          name: this.$t('ourTeam.member5.name'),
+          major: this.$t('ourTeam.member5.major'),
           linkedin: '#',
           telegram: 'DavidSarif',
           discord: 'R4U7VG',
-          myWork: `Start page/login, promo-video, 
-            selling presentation, the project's readme, 
-            login form, saving of settings on backend, 
-            load users settings, home page,
-            routing, save settings locally, redirect.`,
+          myWork: this.$t('ourTeam.member5.myWork'),
         },
         {
           image: require('../assets/img/ourTeamImages/bigPhoto/Vasiliy.png'),
           imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Vasiliy.png'),
-          name: 'Vasiliy Suhovenko',
-          major: SOFTWARE_ENGINEER,
-          show: true,
+          name: this.$t('ourTeam.member6.name'),
+          major: this.$t('ourTeam.member6.major'),
           linkedin: 'vsuhovenko',
           telegram: 'svd_bel',
           discord: 'EX2yRH',
-          myWork: `Sprint mini-game, 
-          connect statistic Sprint with backend, 
-          homepage template, sidemenu, sidemenu routing, 
-          statistic canvas graph, main header.`,
+          myWork: this.$t('ourTeam.member6.myWork'),
         },
         {
           image: require('../assets/img/ourTeamImages/bigPhoto/Dzhangar.png'),
           imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Dzhangar.png'),
-          name: 'Dzhangar Zolvanov',
-          major: SOFTWARE_ENGINEER,
-          show: true,
+          name: this.$t('ourTeam.member7.name'),
+          major: this.$t('ourTeam.member7.major'),
           linkedin: '#',
           telegram: 'dajiquwe',
           discord: '#',
-          myWork: `Main page header, notification menu and functionality, 
-            welcome page "start learning" and "watch video" logic, 
-            custom game idea, user info into header, notification message "settings".`,
+          myWork: this.$t('ourTeam.member7.myWork'),
         },
         {
           image: require('../assets/img/ourTeamImages/bigPhoto/Anastasiya.png'),
           imageSmall: require('../assets/img/ourTeamImages/smallPhoto/Anastasiya.png'),
-          name: 'Anastasiya Homanava',
-          major: 'Experience Designer',
-          show: false,
+          name: this.$t('ourTeam.member8.name'),
+          major: this.$t('ourTeam.member8.major'),
           linkedin: 'anastasiyahomanava',
           telegram: 'nastya_mishami',
           discord: '#',
-          myWork: 'Development user interface and user experience design.',
+          myWork: this.$t('ourTeam.member8.myWork'),
         },
       ],
     };
@@ -198,34 +193,32 @@ export default {
   }
 
   &__card {
-    display: inline-flex;
+    display: flex;
     width: 545px;
-    height: 275px;
     margin: 6px 0;
+    overflow: hidden;
     background-color: $color-white;
     border-radius: 25px;
 
     @include media-tablet {
-      display: flex;
       flex-direction: column;
       width: 250px;
-      height: 380px;
     }
   }
 
   &__img-small {
     display: none;
+    object-fit: cover;
 
     @include media-tablet {
       display: block;
       width: 250px;
-      height: 151px;
     }
   }
 
   &__img {
     width: 187px;
-    height: 275px;
+    object-fit: cover;
 
     @include media-tablet {
       display: none;
@@ -233,15 +226,18 @@ export default {
   }
 
   &__information {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: 310px;
-    height: 199px;
-    margin-top: 35px;
-    margin-left: 24px;
+    height: 100%;
+    padding-top: 35px;
+    padding-bottom: 24px;
+    padding-left: 24px;
 
     @include media-tablet {
       width: auto;
-      height: 199px;
-      margin: 16px 17px 8px 17px;
+      padding: 16px 17px 8px 17px;
     }
   }
 
@@ -299,16 +295,36 @@ export default {
   width: 36px;
   height: 36px;
   margin-right: 8px;
+  color: $color-mine-shaft;
   cursor: pointer;
+  border: 1px solid $color-mine-shaft;
   border-radius: 25px;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 
   @include media-tablet {
     width: 30px;
     height: 30px;
   }
+}
 
-  &_blue {
-    background-color: $color-cornflower-blue;
+@media (hover: hover) {
+  .icon-circle:hover {
+    color: $color-white;
+  }
+
+  .icon-circle_telegram:hover {
+    background-color: $color-lochmara;
+    border-color: $color-lochmara;
+  }
+
+  .icon-circle_linkedin:hover {
+    background-color: $color-blue-chill;
+    border-color: $color-blue-chill;
+  }
+
+  .icon-circle_discord:hover {
+    background-color: $color-chetwode-blue;
+    border-color: $color-chetwode-blue;
   }
 }
 </style>

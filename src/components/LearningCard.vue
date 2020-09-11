@@ -13,7 +13,7 @@
           class="icon icon__speak-it "
           :class="{ 'icon__speak-it_played': isAudioPlay }"
         >
-          <IconBase width="22" height="20" viewBox="0 0 18 16">
+          <IconBase :iconName="$t('sound')" width="22" height="20" viewBox="0 0 18 16">
             <IconSmallSpeakIt />
           </IconBase>
         </span>
@@ -67,12 +67,12 @@
         ></div>
       </div>
       <button type="submit" class="button" :disabled="isWordLoading" v-if="isCompleteState">
-        Next
+        {{ $t('learning.nextLearn') }}
         <AppSpinner v-if="isWordLoading"></AppSpinner>
         <span class="btn-arrow" v-else></span>
       </button>
       <button type="submit" class="button" v-else :disabled="!answer">
-        Check
+        {{ $t('learning.checkWord') }}
         <span class="btn-arrow"></span>
       </button>
       <div
@@ -80,7 +80,7 @@
         @click="showAnswer"
         v-if="settings.isShowAnswerVisible && !isCompleteState"
       >
-        Show answer
+        {{ $t('learning.showAnswer') }}
       </div>
     </form>
     <transition name="fade" mode="out-in">
@@ -91,7 +91,7 @@
           :disabled="isWordLoading"
           @click="onEasyClick"
         >
-          Easy
+          {{ $t('learning.easyButtonText') }}
         </button>
         <button
           class="learning__button learning__button_good"
@@ -99,7 +99,7 @@
           :disabled="isWordLoading"
           @click="onGoodClick"
         >
-          Good
+          {{ $t('learning.goodButtonText') }}
         </button>
         <button
           class="learning__button learning__button_repeat"
@@ -107,7 +107,7 @@
           :disabled="isWordLoading"
           @click="onRepeatClick"
         >
-          Repeat
+          {{ $t('learning.repeatButtonText') }}
         </button>
         <button
           class="learning__button learning__button_difficult"
@@ -115,7 +115,7 @@
           @click="controlsNextCard(wordGroups.difficult)"
           :disabled="isWordLoading"
         >
-          Difficult
+          {{ $t('learning.difficultButtonText') }}
         </button>
         <button
           class="learning__button learning__button_delete"
@@ -123,7 +123,7 @@
           @click="controlsNextCard(wordGroups.deleted)"
           :disabled="isWordLoading"
         >
-          Delete
+          {{ $t('learning.deleteButtonText') }}
         </button>
       </div>
     </transition>
@@ -153,8 +153,8 @@ export default {
         audio: 'files/01_0001.mp3',
         audioMeaning: 'files/01_0001_meaning.mp3',
         audioExample: 'files/01_0001_example.mp3',
-        textMeaning: 'To agree is to have the same opinion or belief as another person',
-        textExample: 'The students agree they have too much homework',
+        textMeaning: 'To <i>agree</i> is to have the same opinion or belief as another person',
+        textExample: 'The students <b>agree</b> they have too much homework',
         transcription: '[əgríː]',
         wordTranslate: 'согласна',
         textMeaningTranslate:
@@ -348,9 +348,11 @@ export default {
     },
     repaintWord() {
       const result = [];
+      const answerLen = this.answer.length;
       // eslint-disable-next-line no-restricted-syntax
-      for (let i = 0; i < this.answer.length; i += 1) {
-        if (this.answer[i].toLowerCase() === this.word.word[i].toLowerCase()) {
+      for (let i = 0; i < answerLen; i += 1) {
+        const wordChar = this.word.word[i];
+        if (wordChar && this.answer[i].toLowerCase() === wordChar.toLowerCase()) {
           result.push(`<span style="color: #53b54a">${this.answer[i]}</span>`);
         } else {
           result.push(`<span style="color: #ff5267">${this.answer[i]}</span>`);
@@ -535,6 +537,7 @@ export default {
   left: 0;
   width: 100%;
   height: calc(100% - 16px);
+  overflow: hidden;
   user-select: none;
   background-color: $color-white;
 }

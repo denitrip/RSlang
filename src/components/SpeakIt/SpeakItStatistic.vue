@@ -8,8 +8,8 @@
       @click.prevent="() => onSetRoundStats(item)"
     >
       <span class="statistic__date">{{ index + 1 }}. {{ item.date | toDate }} </span>
-      <span class="statistic__level">Level: {{ item.lvl }} </span>
-      <span class="statistic__round">Round: {{ item.page }} (</span>
+      <span class="statistic__level">{{ $t('speakIt.level') }}: {{ item.lvl }} </span>
+      <span class="statistic__round">{{ $t('speakIt.round') }}: {{ item.page }} (</span>
       <span class="statistic__know">{{ item.arr | knowStats }}</span>
       /
       <span class="statistic__dont-know">{{ item.arr | dontKnowStats }}</span

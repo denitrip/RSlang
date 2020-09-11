@@ -1,108 +1,115 @@
 <template>
   <div class="setting">
     <div class="setting__wrap setting__main">
-      <h1 class="setting__h1">Main setting</h1>
+      <h1 class="setting__h1">{{ $t('settings.mainTitle') }}</h1>
       <div class="setting__menu">
         <div class="setting__submenu">
-          <h3>Voice Setting</h3>
+          <h3>{{ $t('settings.appTitle') }}</h3>
+          <div class="setting__lang">
+            <p>{{ $t('settings.langText') }}</p>
+            <language-select />
+          </div>
+          <h3>{{ $t('settings.voiceTitle') }}</h3>
           <b-form-checkbox name="check-button" switch v-model="settingsData.isAutoVoice" size="lg">
-            Automatic voice preview
+            {{ $t('settings.voiceText') }}
           </b-form-checkbox>
         </div>
       </div>
-
       <div class="setting__menu">
         <div class="setting__submenu">
-          <h3>day learning settings</h3>
-          <div>Number of new words to learn per day</div>
+          <h3>{{ $t('settings.learningTitle') }}</h3>
+          <div>{{ $t('settings.newWordsText') }}</div>
           <div class="setting__counter">
             <b-button
               class="counter__control counter__minus"
               variant="outline-primary"
               @click="minusWordCount"
-              >-</b-button
             >
+              -
+            </b-button>
             <div class="counter__input">{{ settingsData.wordsPerDay }}</div>
             <b-button
               class="counter__control counter__plus"
               variant="primary"
               @click="plusWordCount"
-              >+</b-button
             >
+              +
+            </b-button>
           </div>
         </div>
         <div class="setting__submenu">
           <h3 class="align_opacity">opacity</h3>
-          <div>Maximum number of cards to learn per day</div>
+          <div>{{ $t('settings.maxCardsText') }}</div>
           <div class="setting__counter">
             <b-button
               class="counter__control counter__minus"
               variant="outline-primary"
               @click="minusCardCount"
-              >-</b-button
             >
+              -
+            </b-button>
             <div class="counter__input">{{ settingsData.maxCardDay }}</div>
             <b-button
               class="counter__control counter__plus"
               variant="primary"
               @click="plusCardCount"
-              >+</b-button
             >
+              +
+            </b-button>
           </div>
         </div>
       </div>
     </div>
-
     <div class="setting__wrap--checkboxes setting__card">
-      <h1 class="setting__h1">Cards view settings</h1>
+      <h1 class="setting__h1">{{ $t('settings.cardsViewTitle') }}</h1>
       <div class="setting__menu">
         <div class="setting__submenu setting__display">
-          <h3>Button display settings</h3>
+          <h3>{{ $t('settings.buttonDisplayTitle') }}</h3>
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-repeat"
             v-model="settingsData.isRepeatVisible"
           >
-            «Repeat» button
+            {{ $t('settings.repeatButtonText') }}
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-difficult"
             v-model="settingsData.isDifficultVisible"
           >
-            «Difficult» button
+            {{ $t('settings.difficultButtonText') }}
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-good"
             v-model="settingsData.isGoodVisible"
           >
-            «Good» button
+            {{ $t('settings.goodButtonText') }}
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-easy"
             v-model="settingsData.isEasyVisible"
           >
-            «Easy» button
+            {{ $t('settings.easyButtonText') }}
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-delete"
             v-model="settingsData.isDeleteVisible"
           >
-            «Delete» button
+            {{ $t('settings.deleteButtonText') }}
           </b-form-checkbox>
         </div>
         <div class="setting__submenu">
-          <h3>display settings</h3>
+          <h3>{{ $t('settings.displayTitle') }}</h3>
           <b-form-checkbox
             class="setting__checkbox"
             :class="{ setting__checkbox_disable: isLastCheckbox && settingsData.isWordVisible }"
             name="checkbox-translation"
             v-model="settingsData.isWordVisible"
           >
-            Word translation
+            {{ $t('settings.wordTranslationText') }}
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
@@ -110,7 +117,7 @@
             name="checkbox-meaining"
             v-model="settingsData.isMeaningVisible"
           >
-            Meaning of the word
+            {{ $t('settings.meaningText') }}
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
@@ -118,28 +125,28 @@
             name="checkbox-example"
             v-model="settingsData.isExampleVisible"
           >
-            An example of using the word
+            {{ $t('settings.exampleText') }}
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-transcription"
             v-model="settingsData.isTranscriptionVisible"
           >
-            Word transcription
+            {{ $t('settings.wordTranscriptionText') }}
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-association"
             v-model="settingsData.isAssociationVisible"
           >
-            Picture association
+            {{ $t('settings.pictureText') }}
           </b-form-checkbox>
           <b-form-checkbox
             class="setting__checkbox"
             name="checkbox-show-answer"
             v-model="settingsData.isShowAnswerVisible"
           >
-            Show answer button
+            {{ $t('settings.showAnswerText') }}
           </b-form-checkbox>
         </div>
       </div>
@@ -151,7 +158,7 @@
         @click="saveSettings"
         :disabled="isSaveLoading"
       >
-        Save Settings
+        {{ $t('settings.saveButtonText') }}
         <AppSpinner v-if="isSaveLoading" />
       </b-button>
     </div>
@@ -165,10 +172,11 @@ import {
   setLocalStorageUserSettings,
   getLocalStorageUserSettings,
 } from '@/helpers/localStorage.helper';
+import LanguageSelect from '@/components/LanguageSelect.vue';
 
 export default {
   name: 'SettingPage',
-  components: { AppSpinner },
+  components: { AppSpinner, LanguageSelect },
   data() {
     return {
       settingsData: {
@@ -241,7 +249,7 @@ export default {
         this.setSettings(this.settingsData);
         setLocalStorageUserSettings(this.settingsData);
         await this.sendSettings();
-        this.setInfo('Settings saved!');
+        this.setInfo(this.$t('settings.savedInfoText'));
       } catch (error) {
         this.setError(error.message);
       } finally {
@@ -261,6 +269,12 @@ export default {
   height: fit-content;
   min-height: 100%;
   background-color: $color-catskill-white;
+
+  &__lang {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+  }
 
   &__wrap {
     padding: 55px 47px 70px;

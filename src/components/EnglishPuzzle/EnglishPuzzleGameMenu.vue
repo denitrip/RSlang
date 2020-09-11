@@ -1,13 +1,13 @@
 <template>
   <div class="game__menu">
     <div class="level">
-      <label class="level__label">Level</label>
+      <label class="level__label">{{ $t('englishPuzzle.level') }}</label>
       <select :value="selectedLevel" @change="onSetSelectedLevel" class="level__select">
         <option v-for="i in 6" :value="i" :key="`${i}level`">
           {{ i }}
         </option>
       </select>
-      <label class="round__label">Round</label>
+      <label class="round__label">{{ $t('englishPuzzle.round') }}</label>
       <select :value="selectedRound" @change="onSetSelectedRound" class="round__select">
         <option
           :class="{ round_complete: i }"
@@ -28,8 +28,13 @@
         :checked="isAutoSpeech"
         @input="onSetIsAutoSpeech"
       />
-      <label class="tooltip__label" for="isAutoSpeech" title="AutoSpeech">
-        <icon-base icon-name="AutoSpeech" width="20px" height="20px" viewBox="0 0 576 512">
+      <label class="tooltip__label" for="isAutoSpeech" :title="$t('englishPuzzle.autoSpeech')">
+        <icon-base
+          :icon-name="$t('englishPuzzle.autoSpeech')"
+          width="20px"
+          height="20px"
+          viewBox="0 0 576 512"
+        >
           <icon-volume />
         </icon-base>
       </label>
@@ -40,8 +45,13 @@
         :checked="isTranslate"
         @input="onSetIsTranslate"
       />
-      <label class="tooltip__label" for="isTranslate" title="Translate tooltip">
-        <icon-base icon-name="Translate tooltip" width="30px" height="20px" viewBox="0 0 640 512">
+      <label class="tooltip__label" for="isTranslate" :title="$t('englishPuzzle.translate')">
+        <icon-base
+          :icon-name="$t('englishPuzzle.translate')"
+          width="30px"
+          height="20px"
+          viewBox="0 0 640 512"
+        >
           <icon-translate />
         </icon-base>
       </label>
@@ -52,8 +62,13 @@
         :checked="isSpeech"
         @input="onSetIsSpeech"
       />
-      <label class="tooltip__label" for="isSpeech" title="Audio tooltip">
-        <icon-base icon-name="Audio tooltip" width="20px" height="20px" viewBox="0 0 512 512">
+      <label class="tooltip__label" for="isSpeech" :title="$t('englishPuzzle.audio')">
+        <icon-base
+          :icon-name="$t('englishPuzzle.audio')"
+          width="20px"
+          height="20px"
+          viewBox="0 0 512 512"
+        >
           <icon-speech />
         </icon-base>
       </label>
@@ -65,8 +80,18 @@
         @input="onSetIsImage"
         v-if="!isPictureOff"
       />
-      <label class="tooltip__label" for="isImage" title="Image tooltip" v-if="!isPictureOff">
-        <icon-base icon-name="Image tooltip" width="20px" height="20px" viewBox="0 0 512 512">
+      <label
+        class="tooltip__label"
+        for="isImage"
+        :title="$t('englishPuzzle.image')"
+        v-if="!isPictureOff"
+      >
+        <icon-base
+          :icon-name="$t('englishPuzzle.image')"
+          width="20px"
+          height="20px"
+          viewBox="0 0 512 512"
+        >
           <icon-image />
         </icon-base>
       </label>

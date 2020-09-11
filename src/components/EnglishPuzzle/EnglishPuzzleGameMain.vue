@@ -1,6 +1,8 @@
 <template>
   <div class="game__main">
-    <p class="sentence-count" v-if="isMobile">{{ sentenceNumber + 1 }} sentence</p>
+    <p class="sentence-count" v-if="isMobile">
+      {{ sentenceNumber + 1 }} {{ $t('englishPuzzle.sentence') }}
+    </p>
     <div class="game__board">
       <div class="board__numbers" v-if="!isMobile">
         <div class="number" v-for="i in 10" :key="`${i}number`">

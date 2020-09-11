@@ -7,11 +7,11 @@
         <div
           class="question"
           :class="[{ question_playing: isAudioPlay }, { question_check: isCheck }]"
-          title="Play sound"
+          :title="$t('playSound')"
           @click="onPlayQuestion"
         >
           <IconBase
-            iconName="Play sound"
+            :iconName="$t('playSound')"
             :width="isCheck ? '32px' : '120px'"
             :height="isCheck ? '24px' : '96px'"
           >
@@ -25,10 +25,10 @@
         <div
           class="question question_check"
           :class="[{ question_playing: isTextAudioPlay }]"
-          title="Play sound"
+          :title="$t('playSound')"
           @click="onPlayText"
         >
-          <IconBase iconName="Play sound" width="32px" height="24px">
+          <IconBase :iconName="$t('playSound')" width="32px" height="24px">
             <IconVolume />
           </IconBase>
         </div>
@@ -53,7 +53,7 @@
         <button
           class="controls__button"
           v-if="isCheck"
-          title="Next"
+          :title="$t('audiocall.nextButtonTitle')"
           @click="onCheckGameOver"
           @keydown.enter.prevent=""
         >
@@ -65,7 +65,7 @@
           @click="onSetAnswer(22, false)"
           @keydown.enter.prevent=""
         >
-          Don't know
+          {{ $t('audiocall.dontKnowButtonText') }}
         </button>
       </div>
       <b-progress height="16px" :max="wordsLength" class="game__progress-bar mb-3">

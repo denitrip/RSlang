@@ -1,19 +1,15 @@
 <template functional>
   <div class="start-screen" key="speakit-start-screen">
-    <h1 class="start-screen__title">Speakit</h1>
-    <h3 class="start-screen__description">
-      Click on the words to hear them sound.
-    </h3>
-    <h3 class="start-screen__description">
-      Click on the button and speak the words into the microphone.
-    </h3>
+    <h1 class="start-screen__title">{{ parent.$t('speakIt.title') }}</h1>
+    <h3 class="start-screen__description">{{ parent.$t('speakIt.description1') }}</h3>
+    <h3 class="start-screen__description">{{ parent.$t('speakIt.description2') }}</h3>
     <button
       class="start-screen__button"
       @click="listeners.startGame"
       :disabled="props.isStartLoading"
     >
       <component :is="props.components.AppSpinner" v-if="props.isStartLoading"></component>
-      Start
+      {{ parent.$t('start') }}
     </button>
   </div>
 </template>
